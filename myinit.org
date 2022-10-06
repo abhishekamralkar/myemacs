@@ -1,0 +1,101 @@
+#+STARTIP: overview
+* interface tweaks
+
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+(tool-bar-mode -1)
+(fset yes-or-no-p 'y-or-n-p)
+(global-set-key (kbd "<f5") 'revert-buffer)
+#+END_SRC
+
+* try
+#+begin_src emacs-lisp
+(use-package try
+  :ensure t)
+#+end_src
+
+* which-key
+  Helps whcn needed
+
+#+begin_src emacs-lisp
+(use-package which-key
+  :ensure t
+  :config (which-key-mode))
+#+end_src
+
+* org bullets
+  Nice bullets for org mode
+
+#+begin_src emacs-lisp
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+end_src
+
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+
+(defalias 'lst-buffers 'ibuffer)
+
+;; tab-bar
+;(use-package tabbar
+;  :ensure t
+;  :config
+;  (tabbar-mode 1))
+;(winner-mode 1)
+
+(use-package ace-window
+  :ensure t
+  :init
+  (progn
+    (global-set-key [remap other-window] 'ace-window)
+    (custom-set-faces
+     '(aw-leading-char-face
+       ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+    ))
+
+(use-package counsel
+  :ensure t
+  )
+
+(use-package ivy
+  :ensure t
+  :diminish (ivy-mode)
+  :bind (("C-x b" . ivy-switch-buffer))
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-display-style 'fancy))
+
+(use-package swiper
+  :ensure try
+  :bind (("C-s" . swiper)
+	 ("C-r" . swiper)
+	 ("C-c C-r" . ivy-resume)
+	 ("M-x" . counsel-M-x)
+	 ("C-x C-f" . counsel-find-file))
+  :config
+  (progn
+    (ivy-mode)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-display-style 'fancy)
+    (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+))
+
+(use-package avy
+  :ensure t
+  :bind ("M-s" . avy-goto-char))
+
+(use-package auto-complete
+  :ensure t
+  :init
+  (progn
+    (ac-config-default)
+    (global-auto-complete-mode t)
+    ))
+
+(use-package zenburn-theme
+  :ensure t
+  :config (load-theme 'zenburn t))
