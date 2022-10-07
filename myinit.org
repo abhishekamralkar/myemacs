@@ -1,66 +1,41 @@
-#+STARTIP: overview
 * interface tweaks
-
-#+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t)
-(tool-bar-mode -1)
-(fset yes-or-no-p 'y-or-n-p)
-(global-set-key (kbd "<f5") 'revert-buffer)
-#+END_SRC
-
+  #+begin_src emacs-lisp
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  ;(global-set-key (kbd "<f5") 'revert-buffer)
+  #+end_src
 * try
-#+begin_src emacs-lisp
-(use-package try
-  :ensure t)
-#+end_src
-
+  #+begin_src emacs-lisp
+  (use-package try
+    :ensure t)
+  #+end_src
 * which-key
-  Helps whcn needed
-
-#+begin_src emacs-lisp
-(use-package which-key
-  :ensure t
-  :config (which-key-mode))
-#+end_src
-
+  #+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :config (which-key-mode))
+  #+end_src
 * org bullets
-  Nice bullets for org mode
+  #+begin_src emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  #+end_src
+* counsel/ivy/swiper
+  #+begin_src emacs-lisp
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (ido-mode 1)
 
-#+begin_src emacs-lisp
-(use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-#+end_src
+  (defalias 'lst-buffers 'ibuffer)
 
-* ace-window
-#+begin_src emacs-lisp
-(use-package ace-window
-  :ensure t
-  :init
-  (progn
-    (global-set-key [remap other-window] 'ace-window)
-    (custom-set-faces
-     '(aw-leading-char-face
-       ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-    ))
-#+end_src
+  (use-package counsel
+   :ensure t
+   )
 
-* counsel/ivy
-
-#+begin_src emacs-lisp
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
-
-(defalias 'lst-buffers 'ibuffer)
-
-(use-package counsel
-  :ensure t
-  )
-
-
-(use-package ivy
+  (use-package ivy
   :ensure t
   :diminish (ivy-mode)
   :bind (("C-x b" . ivy-switch-buffer))
@@ -69,12 +44,7 @@
   (setq ivy-use-virtual-buffers t)
   (setq ivy-display-style 'fancy))
 
-#+end_src
-
-* swiper
-
-#+begin_src emacs-lisp
-(use-package swiper
+  (use-package swiper
   :ensure try
   :bind (("C-s" . swiper)
 	 ("C-r" . swiper)
@@ -87,25 +57,53 @@
     (setq ivy-use-virtual-buffers t)
     (setq ivy-display-style 'fancy)
     (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-))
-#+end_src
+  ))
+  #+end_src
 
 * auto complete
-
-#+begin_src emacs-lisp
-(use-package auto-complete
+  #+begin_src emacs-lisp
+  (use-package auto-complete
   :ensure t
   :init
   (progn
     (ac-config-default)
     (global-auto-complete-mode t)
     ))
-#+end_src
+  #+end_src
 
 * theme
-
-#+begin_src emacs-lisp
-(use-package zenburn-theme
+  #+begin_src emacs-lisp
+  (use-package zenburn-theme
   :ensure t
   :config (load-theme 'zenburn t))
-#+end_src 
+  #+end_src 
+
+* flycheck
+  #+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init
+    (global-flycheck-mode t)) 
+  #+end_src
+
+* Python 
+  #+begin_src emacs-lisp
+  (use-package jedi
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook 'jedi:ac-setup))
+  
+  ;(use-package elpy
+  ;:ensure t
+  ;:config
+  ;(elpy-enable))
+  #+end_src
+* yasnippet
+
+  #+begin_src emacs-lisp
+  (use-package yasnippet
+  :ensure t
+  :init
+  (yas-global-mode 1))
+  #+end_src
