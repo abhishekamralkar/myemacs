@@ -1,28 +1,67 @@
+* packages
+  
+  Melpa Source repo for the package installation.
+
+  #+begin_src
+  (require 'package)
+  (setq package-enable-at-startup nil)
+  (add-to-list 'package-archives
+	     '("melpa". "https://melpa.org/packages/"))
+  (package-initialize)
+
+  (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+  #+end_src
+
+
 * interface tweaks
+  
+  Make Emacs UI elegant.
+
   #+begin_src emacs-lisp
   (setq inhibit-startup-message t)
+  (set-buffer-modified-p t)
   (tool-bar-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
-  ;(global-set-key (kbd "<f5") 'revert-buffer)
+  (global-set-key (kbd "<f5") 'revert-buffer)
+  (menu-bar-mode 0)
+  (column-number-mode 1)
+  (global-hl-line-mode 1)
+  (show-paren-mode 1)
   #+end_src
+
+
 * try
+
+  Nide to have a package, if you do not want to try packages before installation.
+
   #+begin_src emacs-lisp
   (use-package try
     :ensure t)
   #+end_src
+
 * which-key
+
+  A useful package to show the key-bindings.
+
   #+begin_src emacs-lisp
   (use-package which-key
     :ensure t
     :config (which-key-mode))
   #+end_src
+
 * org bullets
+
+  Package to get nice bullets whicle in org-mode.
+
   #+begin_src emacs-lisp
   (use-package org-bullets
     :ensure t
     :config
      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
   #+end_src
+
 * counsel/ivy/swiper
   #+begin_src emacs-lisp
   (setq ido-enable-flex-matching t)
@@ -60,6 +99,7 @@
   ))
   #+end_src
 
+
 * auto complete
   #+begin_src emacs-lisp
   (use-package auto-complete
@@ -71,12 +111,25 @@
     ))
   #+end_src
 
-* theme
+
+* themes
   #+begin_src emacs-lisp
   (use-package zenburn-theme
   :ensure t
   :config (load-theme 'zenburn t))
   #+end_src 
+
+* fonts
+
+  Hack font use when on Linux andd Fire code in macos.
+  
+  (font-family-list)
+  #+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist
+             (cond
+              ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
+              ((string-equal system-type "gnu/linux") '(font . "Hack Regular-12"))))
+  #+end_src
 
 * flycheck
   #+begin_src emacs-lisp
@@ -85,6 +138,7 @@
     :init
     (global-flycheck-mode t)) 
   #+end_src
+
 
 * Python 
   #+begin_src emacs-lisp
@@ -99,6 +153,7 @@
   ;:config
   ;(elpy-enable))
   #+end_src
+
 * yasnippet
 
   #+begin_src emacs-lisp
@@ -107,3 +162,28 @@
   :init
   (yas-global-mode 1))
   #+end_src
+
+* golang
+  #+begin_src emacs-lisp
+  (use-package lsp-mode
+   :ensure t
+   :config
+   (add-hook 'before-save-hook 'gofmt-before-save)
+   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+   (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  
+   (use-package go-mode 
+   :ensure t
+   :config
+   (add-hook 'go-mode-hook #'lsp)
+   
+   (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
+   (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+   (add-hook 'go-mode-hook #'lsp-deferred)
+   (add-hook 'go-mode-hook #'yas-minor-mode))
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+
