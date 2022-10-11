@@ -24,11 +24,12 @@
   (set-buffer-modified-p t)
   (tool-bar-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
-  (global-set-key (kbd "<f5") 'revert-buffer)
+  ;(global-set-key (kbd "<f5") 'revert-buffer)
   (menu-bar-mode 0)
   (column-number-mode 1)
   (global-hl-line-mode 1)
   (show-paren-mode 1)
+  (setq require-final-newline t)
   #+end_src
 
 
@@ -40,6 +41,7 @@
   (use-package try
     :ensure t)
   #+end_src
+
 
 * which-key
 
@@ -61,6 +63,7 @@
     :config
      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
   #+end_src
+
 
 * counsel/ivy/swiper
   #+begin_src emacs-lisp
@@ -119,6 +122,7 @@
   :config (load-theme 'zenburn t))
   #+end_src 
 
+
 * fonts
 
   Hack font use when on Linux andd Fire code in macos.
@@ -128,8 +132,11 @@
   (add-to-list 'default-frame-alist
              (cond
               ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
-              ((string-equal system-type "gnu/linux") '(font . "Hack Regular-12"))))
+              ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
   #+end_src
+
+  #+RESULTS:
+  : ((font . Fira Code-12) (font . Hack Regular 12))
 
 * flycheck
   #+begin_src emacs-lisp
@@ -154,6 +161,7 @@
   ;(elpy-enable))
   #+end_src
 
+
 * yasnippet
 
   #+begin_src emacs-lisp
@@ -162,6 +170,7 @@
   :init
   (yas-global-mode 1))
   #+end_src
+
 
 * golang
   #+begin_src emacs-lisp
@@ -180,10 +189,19 @@
    (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
    (add-hook 'go-mode-hook #'lsp-deferred)
-   (add-hook 'go-mode-hook #'yas-minor-mode))
+   (add-hook 'go-mode-hook #'yas-minor-mode)
+   (add-hook 'go-mode-hook 'flycheck-mode))
    #+end_src
 
-   #+RESULTS:
-   : t
 
+* Undo Tree
 
+  #+begin_src emacs-lisp
+  (use-package undo-tree
+  :ensure t
+  :init
+  (global-undo-tree-mode))
+  #+end_src
+
+  #+RESULTS:
+  
