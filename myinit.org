@@ -99,6 +99,7 @@
   #+end_src
 
 * auto complete
+
   #+begin_src emacs-lisp
   (use-package auto-complete
   :ensure t
@@ -110,6 +111,7 @@
   #+end_src
 
 * themes
+
   #+begin_src emacs-lisp
   (use-package zenburn-theme
   :ensure t
@@ -133,6 +135,7 @@
 
 
 * flycheck
+  
   #+begin_src emacs-lisp
   (use-package flycheck
     :ensure t
@@ -141,6 +144,9 @@
   #+end_src
 
 * Python 
+
+  All my python related changes
+
   #+begin_src emacs-lisp
   (use-package jedi
   :ensure t
@@ -191,6 +197,27 @@
   :ensure t
   :init
   (global-undo-tree-mode))
-  #+end_src  
+  #+end_src:  
 
  
+* Misc packages
+
+  beacon-mode flashes the cursor whenever you scroll. It makes things easy to locate the cursor when scrolling
+
+  #+begin_src emacs-lisp
+  (use-package beacon
+   :ensure t
+   :config
+   (beacon-mode 1))
+  #+end_src
+
+  deletes all the whitespace when you hit backspace or delete
+
+  #+begin_src emacs-lisp
+  (use-package hungry-delete
+  :ensure t
+  :config
+  (global-hungry-delete-mode))
+  #+end_src
+
+
