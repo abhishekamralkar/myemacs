@@ -1,3 +1,6 @@
+#+title: My Emacs Config
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+
 * Packages
   
   Melpa Source repo for the package installation.
@@ -19,28 +22,19 @@
 
   (require 'use-package)
   (setq use-package-always-ensure t)
-
-  ;;(require 'package)
-  ;;(setq package-enable-at-startup nil)
-  ;;(add-to-list 'package-archives
-  ;;	     '("melpa". "https://melpa.org/packages/"))
-  ;;(package-initialize)
-
-  ;;(unless (package-installed-p 'use-package)
-  ;;(package-refresh-contents)
-  ;;(package-install 'use-package))
   #+end_src
 
-
+**  Automatic Package Update
+  
   #+begin_src emacs-lisp
-  (use-package auto-package-update
-  :custom
-  (auto-package-update-interval 7)
-  (auto-package-update-prompt-before-update t)
-  (auto-package-update-hide-results t)
-  :config
-  (auto-package-update-maybe)
-  (auto-package-update-at-time "09:00"))
+    (use-package auto-package-update
+      :custom
+      (auto-package-update-interval 7)
+      (auto-package-update-prompt-before-update t)
+      (auto-package-update-hide-results t)
+      :config
+      (auto-package-update-maybe)
+      (auto-package-update-at-time "09:00"))
   #+end_src
 
   ** Modeline
@@ -78,9 +72,7 @@
   (setq require-final-newline t)
   #+end_src
 
-  #+RESULTS:
-  : t
-
+ 
 * try
 
   Nice to have a package, if you do want to try packages before installation.
