@@ -37,23 +37,6 @@
       (auto-package-update-at-time "09:00"))
   #+end_src
 
-  ** Modeline
-  
-  doom-modeline is a better modeline
-
-  #+begin_src emacs-lisp
-  ;;M-x all-the-icons-install-fonts
-  (use-package all-the-icons
-    :ensure t)
-  #+end_src
-
-  #+begin_src emacs-lisp
-  (use-package doom-modeline
-     :ensure t
-     :init (doom-modeline-mode 1)
-     :custom ((doom-modeline-height 15)))
-  #+end_src
-
 * interface tweaks
   
   Make Emacs UI elegant.
@@ -72,7 +55,45 @@
   (setq require-final-newline t)
   #+end_src
 
- 
+** Modeline
+  
+  doom-modeline is a better modeline
+
+  #+begin_src emacs-lisp
+  ;;M-x all-the-icons-install-fonts
+  (use-package all-the-icons
+    :ensure t)
+  #+end_src
+
+  #+begin_src emacs-lisp
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1)
+    :custom ((doom-modeline-height 15)))
+  #+end_src
+
+** themes
+
+  #+begin_src emacs-lisp
+  ;;(use-package zenburn-theme
+  ;;:ensure t
+  ;;:config (load-theme 'zenburn t))
+  (use-package doom-themes
+    :init (load-theme 'doom-palenight t))
+  #+end_src 
+
+** fonts
+   
+  Fira Code font use when on Linux andd Fire code in macos.
+  
+  ;;(font-family-list)
+  #+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist
+        (cond
+           ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
+           ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
+  #+end_src
+
 * try
 
   Nice to have a package, if you do want to try packages before installation.
@@ -151,33 +172,6 @@
     (global-auto-complete-mode t)
     ))
   #+end_src
-
-* themes
-
-  #+begin_src emacs-lisp
-  ;;(use-package zenburn-theme
-  ;;:ensure t
-  ;;:config (load-theme 'zenburn t))
-  (use-package doom-themes
-  :init (load-theme 'doom-palenight t))
-  #+end_src 
-
-  #+RESULTS:
-
-* fonts
-
-  Hack font use when on Linux andd Fire code in macos.
-  
-  ;;(font-family-list)
-  #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist
-             (cond
-              ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
-              ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
-  #+end_src
-
-  #+RESULTS:
-  : ((font . Fira Code-12) (font . Hack Regular 12))
 
 * flycheck
   
