@@ -72,6 +72,8 @@
     :custom ((doom-modeline-height 15)))
   #+end_src
 
+  #+RESULTS:
+
 ** Theme[s]
 
   #+begin_src emacs-lisp
@@ -81,6 +83,8 @@
   (use-package doom-themes
     :init (load-theme 'doom-palenight t))
   #+end_src 
+
+  #+RESULTS:
 
 ** Fonts
    
@@ -107,43 +111,50 @@
 
 * Misc Packages
 
-  beacon-mode flashes the cursor whenever you scroll. It makes things easy to locate the cursor when scrolling
+** Beacon Mode
+   beacon-mode flashes the cursor whenever you scroll. It makes things easy to locate the cursor when scrolling
 
-  #+begin_src emacs-lisp
-  (use-package beacon
-    :ensure t
-    :config
-    (beacon-mode 1))
-  #+end_src
+   #+begin_src emacs-lisp
+   (use-package beacon
+     :ensure t
+     :config
+     (beacon-mode 1))
+   #+end_src
 
 ** Undo Tree
 
-  #+begin_src emacs-lisp
-  (use-package undo-tree
-    :ensure t
-    :init
-    (global-undo-tree-mode))
-  #+end_src:  
+   #+begin_src emacs-lisp
+   (use-package undo-tree
+     :ensure t
+     :init
+     (global-undo-tree-mode))
+   #+end_src:  
 
-** try
+** Try
 
-  Nice to have a package, if you do want to try packages before installation.
+   Nice to have a package, if you do want to try packages before installation.
 
-  #+begin_src emacs-lisp
-  (use-package try
-    :ensure t)
-  #+end_src
+   #+begin_src emacs-lisp
+   (use-package try
+     :ensure t)
+   #+end_src
 
-** which-key
+** Which Key
 
-  A useful package to show the key-bindings.
+   A useful package to show the key-bindings.
 
-  #+begin_src emacs-lisp
-  (use-package which-key
-    :ensure t
-    :config (which-key-mode))
-  #+end_src
+   #+begin_src emacs-lisp
+   (use-package which-key
+     :ensure t
+     :config (which-key-mode))
+   #+end_src
 
+** general
+   
+   #+begin_src emacs-lisp
+   (use-package general
+     :ensure t)
+   #+end_src
 * counsel/ivy/swiper
   #+begin_src emacs-lisp
   (setq ido-enable-flex-matching t)
@@ -181,90 +192,18 @@
   ))
   #+end_src
 
-
-#+begin_comment
-* auto complete
-
-  #+begin_src emacs-lisp
- (use-package auto-complete
-  :ensure t
-  :init
-  (progn
-    (ac-config-default)
-    (global-auto-complete-mode t)
-    ))
-  #+end_src
-
-* flycheck
-  
-  #+begin_src emacs-lisp
-  (use-package flycheck
-    :ensure t
-    :init
-    (global-flycheck-mode t)) 
-  #+end_src
-
-* Python 
-
-  All my python related changes
-
-  #+begin_src emacs-lisp
-  (use-package jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (add-hook 'python-mode-hook 'jedi:ac-setup))
-  
-  ;(use-package elpy
-  ;:ensure t
-  ;:config
-  ;(elpy-enable))
-  #+end_src
-
-* yasnippet
-
-  #+begin_src emacs-lisp
-  (use-package yasnippet
-  :ensure t
-  :init
-  (yas-global-mode 1))
-  #+end_src
-
-#+end_comment
-* golang
-  #+begin_src emacs-lisp
-  (use-package lsp-mode
-   :ensure t
-   :config
-   (add-hook 'before-save-hook 'gofmt-before-save)
-   (add-hook 'before-save-hook #'lsp-format-buffer t t)
-   (add-hook 'before-save-hook #'lsp-organize-imports t t))
-  
-   (use-package go-mode 
-   :ensure t
-   :config
-   (add-hook 'go-mode-hook #'lsp)
-   
-   (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
-   (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-   (add-hook 'go-mode-hook #'lsp-deferred)
-   (add-hook 'go-mode-hook #'yas-minor-mode)
-   (add-hook 'go-mode-hook 'flycheck-mode))
-   #+end_src
-
-
 * Programming
 
 ** lsp-mode
 
    #+begin_src emacs-lisp
-   (defun efs/lsp-mode-setup ()
+   (defun lsp-mode-setup ()
      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
      (lsp-headerline-breadcrumb-mode))
 
    (use-package lsp-mode
      :commands (lsp lsp-deferred)
-     :hook (lsp-mode . efs/lsp-mode-setup)
+     :hook (lsp-mode . lsp-mode-setup)
      :init
      (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
      :config
@@ -297,18 +236,16 @@
 
     ;; Bind `C-c l d` to `dap-hydra` for easy access
      (general-define-key
-      :keymaps 'lsp-mode-map
-      :prefix lsp-keymap-prefix
-      "d" '(dap-hydra t :wk "debugger")))
+       :keymaps 'lsp-mode-map
+       :prefix lsp-keymap-prefix
+       "d" '(dap-hydra t :wk "debugger")))
     #+end_src
 
 ** Python
 
    Make sure you have the pyls language server installed before trying lsp-mode!
 
-   #+begin_src emacs-lisp
-   pip install --user "python-language-server[all]"
-   #+end_src 
+   pip3 install --user "python-language-server[all]"
 
    #+begin_src emacs-lisp
    (use-package python-mode
@@ -347,7 +284,7 @@
    (use-package company-box
      :hook (company-mode . company-box-mode))
    #+end_src
-
+   
 ** Projectile
 
   #+begin_src emacs-lisp
@@ -359,8 +296,8 @@
     ("C-c p" . projectile-command-map)
     :init
     ;; NOTE: Set this to the folder where you keep your Git repos!
-    (when (file-directory-p "~/Projects/Code")
-    (setq projectile-project-search-path '("~/Projects/Code")))
+    (when (file-directory-p "~/Code")
+    (setq projectile-project-search-path '("~/Code")))
     (setq projectile-switch-project-action #'projectile-dired))
 
   (use-package counsel-projectile
@@ -384,9 +321,49 @@
   (use-package forge
     :after magit)
   #+end_src
+** golang
+ 
+  #+begin_src emacs-lisp
+  ;;(use-package lsp-mode
+  ;; :ensure t
+  ;; :config
+  ;; (add-hook 'before-save-hook 'gofmt-before-save)
+  ;; (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  ;; (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  
+ (use-package go-mode 
+   :ensure t
+   :config
+   (add-hook 'go-mode-hook #'lsp)
+   (require 'dap-dlv-go)
+   
+   (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
+   (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+   (add-hook 'go-mode-hook #'lsp-deferred))
+  #+end_src
 
+** Rainbow Delimiter
 
+  #+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode))
+  #+end_src
 
+** FlyCheck
+  
+   #+begin_src emacs-lisp
+   (use-package flycheck
+     :ensure t
+     :init
+     (global-flycheck-mode t)) 
+   #+end_src
+
+** Yasnippet
+   #+begin_src emacs-lisp
+   (use-package yasnippet
+     :ensure t
+     :init
+    (yas-global-mode 1))
+   #+end_src
 
   
-
