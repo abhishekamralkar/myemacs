@@ -37,7 +37,7 @@
       (auto-package-update-at-time "09:00"))
   #+end_src
 
-* interface tweaks
+* Emacs Interface Tweaks
   
   Make Emacs UI elegant.
 
@@ -72,7 +72,7 @@
     :custom ((doom-modeline-height 15)))
   #+end_src
 
-** themes
+** Theme[s]
 
   #+begin_src emacs-lisp
   ;;(use-package zenburn-theme
@@ -82,7 +82,7 @@
     :init (load-theme 'doom-palenight t))
   #+end_src 
 
-** fonts
+** Fonts
    
   Fira Code font use when on Linux andd Fire code in macos.
   
@@ -94,26 +94,7 @@
            ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
   #+end_src
 
-* try
-
-  Nice to have a package, if you do want to try packages before installation.
-
-  #+begin_src emacs-lisp
-  (use-package try
-    :ensure t)
-  #+end_src
-
-* which-key
-
-  A useful package to show the key-bindings.
-
-  #+begin_src emacs-lisp
-  (use-package which-key
-    :ensure t
-    :config (which-key-mode))
-  #+end_src
-
-* org bullets
+** Org Bullets
 
   Package to get nice bullets while in org-mode.
 
@@ -122,6 +103,45 @@
     :hook (org-mode . org-bullets-mode)
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  #+end_src
+
+* Misc Packages
+
+  beacon-mode flashes the cursor whenever you scroll. It makes things easy to locate the cursor when scrolling
+
+  #+begin_src emacs-lisp
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 1))
+  #+end_src
+
+** Undo Tree
+
+  #+begin_src emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :init
+    (global-undo-tree-mode))
+  #+end_src:  
+
+** try
+
+  Nice to have a package, if you do want to try packages before installation.
+
+  #+begin_src emacs-lisp
+  (use-package try
+    :ensure t)
+  #+end_src
+
+** which-key
+
+  A useful package to show the key-bindings.
+
+  #+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :config (which-key-mode))
   #+end_src
 
 * counsel/ivy/swiper
@@ -161,10 +181,12 @@
   ))
   #+end_src
 
+
+#+begin_comment
 * auto complete
 
   #+begin_src emacs-lisp
-  (use-package auto-complete
+ (use-package auto-complete
   :ensure t
   :init
   (progn
@@ -208,6 +230,7 @@
   (yas-global-mode 1))
   #+end_src
 
+#+end_comment
 * golang
   #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -229,25 +252,141 @@
    (add-hook 'go-mode-hook 'flycheck-mode))
    #+end_src
 
-* Undo Tree
+
+* Programming
+
+** lsp-mode
+
+   #+begin_src emacs-lisp
+   (defun efs/lsp-mode-setup ()
+     (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+     (lsp-headerline-breadcrumb-mode))
+
+   (use-package lsp-mode
+     :commands (lsp lsp-deferred)
+     :hook (lsp-mode . efs/lsp-mode-setup)
+     :init
+     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+     :config
+     (lsp-enable-which-key-integration t))
+   #+end_src
+
+** lsp-ui
+
+   #+begin_src emacs-lisp
+   (use-package lsp-ui
+     :hook (lsp-mode . lsp-ui-mode)
+     :custom
+     (lsp-ui-doc-position 'bottom))
+   #+end_src
+
+** dap-mode
+
+   #+begin_src emacs-lisp
+   (use-package dap-mode
+    ;; Uncomment the config below if you want all UI panes to be hidden by default!
+    ;; :custom
+    ;; (lsp-enable-dap-auto-configure nil)
+    ;; :config
+    ;; (dap-ui-mode 1)
+     :commands dap-debug
+     :config
+    ;; Set up Node debugging
+     (require 'dap-node)
+     (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+
+    ;; Bind `C-c l d` to `dap-hydra` for easy access
+     (general-define-key
+      :keymaps 'lsp-mode-map
+      :prefix lsp-keymap-prefix
+      "d" '(dap-hydra t :wk "debugger")))
+    #+end_src
+
+** Python
+
+   Make sure you have the pyls language server installed before trying lsp-mode!
+
+   #+begin_src emacs-lisp
+   pip install --user "python-language-server[all]"
+   #+end_src 
+
+   #+begin_src emacs-lisp
+   (use-package python-mode
+     :ensure t
+     :hook (python-mode . lsp-deferred)
+     :custom
+     ;; NOTE: Set these if Python 3 is called "python3" on your system!
+     (python-shell-interpreter "python3")
+     (dap-python-executable "python3")
+     (dap-python-debugger 'debugpy)
+     :config
+     (require 'dap-python))
+   #+end_src
+   
+   #+begin_src emacs-lisp
+   (use-package pyvenv
+     :after python-mode
+     :config
+     (pyvenv-mode 1))
+   #+end_src
+
+** Company Mode
+  
+   #+begin_src emacs-lisp
+   (use-package company
+     :after lsp-mode
+     :hook (lsp-mode . company-mode)
+     :bind (:map company-active-map
+           ("<tab>" . company-complete-selection))
+           (:map lsp-mode-map
+           ("<tab>" . company-indent-or-complete-common))
+     :custom
+           (company-minimum-prefix-length 1)
+           (company-idle-delay 0.0))
+
+   (use-package company-box
+     :hook (company-mode . company-box-mode))
+   #+end_src
+
+** Projectile
 
   #+begin_src emacs-lisp
-  (use-package undo-tree
-  :ensure t
-  :init
-  (global-undo-tree-mode))
-  #+end_src:  
+  (use-package projectile
+    :diminish projectile-mode
+    :config (projectile-mode)
+    :custom ((projectile-completion-system 'ivy))
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :init
+    ;; NOTE: Set this to the folder where you keep your Git repos!
+    (when (file-directory-p "~/Projects/Code")
+    (setq projectile-project-search-path '("~/Projects/Code")))
+    (setq projectile-switch-project-action #'projectile-dired))
 
-* Misc packages
-
-  beacon-mode flashes the cursor whenever you scroll. It makes things easy to locate the cursor when scrolling
-
-  #+begin_src emacs-lisp
-  (use-package beacon
-   :ensure t
-   :config
-   (beacon-mode 1))
+  (use-package counsel-projectile
+    :after projectile
+    :config (counsel-projectile-mode))
   #+end_src
+
+** Magit
+
+  Its name should be Magic
+  
+  #+begin_src emacs-lisp
+  (use-package magit
+    :commands magit-status
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+    ;; NOTE: Make sure to configure a GitHub token before using this package!
+    ;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
+    ;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
+  (use-package forge
+    :after magit)
+  #+end_src
+
+
+
 
   
 
