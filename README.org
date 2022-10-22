@@ -1,3 +1,9 @@
 #+tile: My Emacs Config
 
-This is my Emacs config which I use almost every day and night. Currently this is still WIP.
+This is my Emacs config which I use almost every day and night. In this config I am using a literate programming and org-babel to 
+organize my Emacs configuration.
+
+* To use this config
+
+You need to have Emacs 27+ installed on your machine and jusst clone this repo into your `~/.emacs.d`.
+
