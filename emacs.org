@@ -77,6 +77,15 @@
     :ensure t
     :init (doom-modeline-mode 1)
     :custom ((doom-modeline-height 15)))
+  ;;(use-package sml/setup
+  ;;   :ensure t)
+  ;;(setq sml/theme 'respectful)
+  ;;(setq sml/shorten-directory t)
+  ;;(setq sml/shorten-modes t)
+  ;;(use-package nyan-mode
+  ;;  :ensure t)
+  ;;(setq nyan-wavy-trail nil)
+  ;;(setq nyan-animate-nyancat t)
   #+end_src
 
   #+RESULTS:
@@ -89,7 +98,9 @@
   ;;:config (load-theme 'zenburn t))
   (use-package doom-themes
     :init (load-theme 'doom-palenight t))
-  #+end_src 
+  ;;(use-package doom-themes
+  ;;  :init (load-theme 'leuven t))
+  #+end_src
 
   #+RESULTS:
 
