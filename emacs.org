@@ -218,9 +218,16 @@
 ** Ace Window
    #+begin_src emacs-lisp
    (use-package ace-window
-     :ensure t)
-   #+end_src
-** 
+     :ensure t
+     :init
+      (progn
+       (setq aw-scope 'global) ;; was frame
+       (global-set-key (kbd "C-x O") 'other-frame)
+       (global-set-key [remap other-window] 'ace-window)
+       (custom-set-faces
+       '(aw-leading-char-face
+       ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
+   #+end_src 
 * counsel/ivy/swiper
   #+begin_src emacs-lisp
   (use-package ivy
@@ -490,6 +497,32 @@
    #+end_src
 
    #+RESULTS:
+** Clojure
+   #+begin_src emacs-lisp
+    (use-package cider
+      :ensure t
+      :config
+        (add-hook 'cider-repl-mode-hook #'company-mode)
+        (add-hook 'cider-mode-hook #'company-mode)
+        (add-hook 'cider-mode-hook #'eldoc-mode)
+
+        (setq cider-repl-use-pretty-printing t)
+        (setq cider-repl-display-help-banner nil)
+    
+
+      :bind (("M-r" . cider-namespace-refresh)
+             ("C-c r" . cider-repl-reset)
+             ("C-c ." . cider-reset-test-run-tests)))
+
+   (use-package clj-refactor
+     :ensure t
+     :config
+     (add-hook 'clojure-mode-hook (lambda ()
+                                   (clj-refactor-mode 1)
+                                   ))
+     (cljr-add-keybindings-with-prefix "C-c C-m")
+     (setq cljr-warn-on-eval nil)
+      :bind ("C-c '" . hydra-cljr-help-menu/body))
 * File Management
 
 ** Dired
