@@ -1,3 +1,4 @@
+
 #+title: My Emacs Config
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
@@ -215,6 +216,12 @@
   #+RESULTS:
   : t
 
+** Ace Window
+   #+begin_src emacs-lisp
+   (use-package ace-window
+     :ensure t)
+   #+end_src
+** 
 * counsel/ivy/swiper
   #+begin_src emacs-lisp
   (setq ido-enable-flex-matching t)
@@ -253,7 +260,7 @@
   #+end_src
 
 * Programming
-
+  
 ** lsp-mode
 
    #+begin_src emacs-lisp
@@ -279,6 +286,16 @@
      (lsp-ui-doc-position 'bottom))
    #+end_src
 
+** lsp-treemacs
+   #+begin_src emacs-lisp
+   (use-package lsp-treemacs
+     :after lsp)
+   #+end_src
+** lsp-ivy
+   #+begin_src emacs-lisp
+   (use-package lsp-ivy
+     :after lsp)
+   #+end_src
 ** dap-mode
 
    #+begin_src emacs-lisp
@@ -349,17 +366,11 @@
 
   #+begin_src emacs-lisp
   (use-package projectile
-    :diminish projectile-mode
-    :config (projectile-mode)
-    :custom ((projectile-completion-system 'ivy))
-    :bind-keymap
-    ("C-c p" . projectile-command-map)
-    :init
-    ;; NOTE: Set this to the folder where you keep your Git repos!
-    (when (file-directory-p "~/Code")
-    (setq projectile-project-search-path '("~/Code")))
-    (setq projectile-switch-project-action #'projectile-dired))
-
+    :ensure t
+    :config
+    (projectile-global-mode)
+    (setq projectile-completion-system 'ivy))
+  
   (use-package counsel-projectile
     :after projectile
     :config (counsel-projectile-mode))
@@ -452,7 +463,6 @@
    (setq electric-pair-preserve-balance nil)
    (global-electric-pair-mode t)
    #+end_src
-
 
 ** Vterm
  
