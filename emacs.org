@@ -243,7 +243,7 @@
    #+end_src
  
  
-* counsel/ivy/swiper
+* Counsel/Ivy/Swiper
   #+begin_src emacs-lisp
   (use-package ivy
     :diminish
@@ -293,6 +293,7 @@
   ))
   #+end_src
 
+
 * Programming
   
 ** lsp-mode
@@ -330,7 +331,7 @@
    (use-package lsp-ivy
      :after lsp)
    #+end_src
-** dap-mode
+** Dap-Mode
 
    #+begin_src emacs-lisp
    (use-package dap-mode
