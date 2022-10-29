@@ -43,25 +43,36 @@
   Make Emacs UI elegant.
 
   #+begin_src emacs-lisp
-  (setq inhibit-startup-message t)
-  (set-buffer-modified-p t)
-  (tool-bar-mode -1)
-  (tooltip-mode -1)
+  (setq inhibit-startup-message 1)
+  (set-buffer-modified-p 1)
+  (tool-bar-mode 0)
+  (tooltip-mode 0)
   (fset 'yes-or-no-p 'y-or-n-p)
   (menu-bar-mode 0)
-  (column-number-mode 1)
-  (global-display-line-numbers-mode t)
-  (global-hl-line-mode 1)
+  (column-number-mode 0)
   (show-paren-mode 1)
-  (setq require-final-newline t)
-  (setq display-time-24hr-format t)
+  (setq require-final-newline 1)
+  (setq display-time-24hr-format 1)
   (display-time-mode +1)
-  (setq redisplay-dont-pause t
+  (setq redisplay-dont-pause 1
       scroll-margin 1
       scroll-step 1
       scroll-conservatively 10000
       scroll-preserve-screen-position 1)
   #+end_src
+
+** Display Line Number
+   #+begin_src emacs-lisp
+   ;; Disable line numbers for some modes
+   (dolist (mode '(org-mode-hook
+                  term-mode-hook
+                  shell-mode-hook
+                  treemacs-mode-hook
+                  eshell-mode-hook
+                  vterm-mode-hook
+                  compilation-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+    #+end_src
 
 ** Modeline
   
@@ -89,8 +100,6 @@
   ;;(setq nyan-animate-nyancat t)
   #+end_src
 
-  #+RESULTS:
-
 ** Theme[s]
 
   #+begin_src emacs-lisp
@@ -102,8 +111,6 @@
   ;;(use-package doom-themes
   ;;  :init (load-theme 'leuven t))
   #+end_src
-
-  #+RESULTS:
 
 ** Fonts
    
