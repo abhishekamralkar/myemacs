@@ -1,5 +1,26 @@
-#+title: My Emacs Config
+#+title: Emacs Config
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+
+* About Me
+  
+  #+begin_src emacs-lisp
+  (setq user-full-name "Abhishek Anand Amralkar"
+        user-mail-address "abhishekamralkar@gmail.com")
+  #+end_src
+
+* Tangle It
+ 
+  #+begin_src emacs-lisp
+  (defun org-babel-tangle-config() 
+    (when (string-equal (buffer-file-name)
+                        (expand-file-name "~/.emacs.d/emacs.org"))
+      (let ((org-config-babel-evaluate nil))
+        (org-babel-tangle))))
+
+   (add-hook 'org-mode-hook
+              (lambda ()
+                 (add-hook 'after-save-hook #'org-babel-tangle-config)))
+  #+end_src
 
 * Packages
   
