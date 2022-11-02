@@ -157,7 +157,6 @@
   #+end_src
 
 * Misc Packages
-
 ** Beacon Mode
    beacon-mode flashes the cursor whenever you scroll. It makes things easy to locate the cursor when scrolling
 
@@ -202,48 +201,6 @@
    (use-package general
      :ensure t)
    #+end_src
-** No Litter
-   #+begin_src emacs-lisp
-   (use-package no-littering)
-
-   ;; no-littering doesn't set this by default so we must place
-   ;; auto save files in the same path as it uses for sessions
-   (setq auto-save-file-name-transforms
-      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-   #+end_src
-
-** Ligature
-   #+begin_src emacs-lisp
-   (use-package ligature
-  :load-path "path-to-ligature-repo"
-  :config
-  ;; Enable the "www" ligature in every possible major mode
-  (ligature-set-ligatures 't '("www"))
-  ;; Enable traditional ligature support in eww-mode, if the
-  ;; `variable-pitch' face supports it
-  (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
-  ;; Enable all Cascadia Code ligatures in programming modes
-  (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-                                       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-                                       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-                                       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-                                       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-                                       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-                                       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-                                       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-                                       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-                                       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-                                       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-                                       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-                                       "\\\\" "://"))
-  ;; Enables ligature checks globally in all buffers. You can also do it
-  ;; per mode with `ligature-mode'.
-  (global-ligature-mode t))
-  #+end_src 
-
-  #+RESULTS:
-  : t
-
 ** Ace Window
    #+begin_src emacs-lisp
    (use-package ace-window
@@ -269,7 +226,6 @@
      :config
      (exec-path-from-shell-initialize))
    #+end_src
- 
  
 * Counsel/Ivy/Swiper
   #+begin_src emacs-lisp
@@ -321,9 +277,7 @@
   ))
   #+end_src
 
-
-* Programming
-  
+* Programming  
 ** lsp-mode
 
    #+begin_src emacs-lisp
@@ -564,7 +518,7 @@
    #+begin_src emacs-lisp
    (electric-pair-mode 1)
    (setq electric-pair-preserve-balance nil)
-   (global-electric-pair-mode t)
+   ;;(global-electric-pair-mode t)
    #+end_src
 
 ** Vterm
@@ -707,30 +661,11 @@
     (use-package dired
       :ensure nil
       :commands (dired dired-jump)
-      :bind (("C-x C-j" . dired-jump))
-      :custom ((dired-listing-switches "-agho --group-directories-first"))
-      :config
-      (evil-collection-define-key 'normal 'dired-mode-map
-        "h" 'dired-single-up-directory
-        "l" 'dired-single-buffer))
+      :bind (("C-x C-j" . dired-jump)))
 
     (use-package dired-single
       :commands (dired dired-jump))
 
     (use-package all-the-icons-dired
       :hook (dired-mode . all-the-icons-dired-mode))
-
-    (use-package dired-open
-      :commands (dired dired-jump)
-      :config
-    ;; Doesn't work as expected!
-    ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
-      (setq dired-open-extensions '(("png" . "feh")
-                                  ("mkv" . "mpv"))))
-
-    (use-package dired-hide-dotfiles
-      :hook (dired-mode . dired-hide-dotfiles-mode)
-      :config
-      (evil-collection-define-key 'normal 'dired-mode-map
-        "H" 'dired-hide-dotfiles-mode))
     #+end_src
