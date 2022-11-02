@@ -270,13 +270,6 @@
   :ensure t
   :after magit)
 
-;;(use-package lsp-mode
- ;; :ensure t
- ;; :config
- ;; (add-hook 'before-save-hook 'gofmt-before-save)
- ;; (add-hook 'before-save-hook #'lsp-format-buffer t t)
- ;; (add-hook 'before-save-hook #'lsp-organize-imports t t))
-
 (use-package go-mode 
   :ensure t
   :config
@@ -287,17 +280,47 @@
   (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
   (add-hook 'go-mode-hook #'lsp-deferred))
 
+(use-package go-eldoc
+  :ensure t
+  :config
+  (go-eldoc-setup))
+
 (use-package exec-path-from-shell
   :ensure t)
 
+(use-package go-guru
+  :ensure t
+  :config
+  ;; Search entire workspace
+  (customize-set-variable 'go-guru-scope "...")
+  (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+
+(use-package company-go
+  :ensure t
+  :config
+  (add-hook 'go-mode-hook (lambda ()
+                         (set (make-local-variable 'company-backends)
+                              '(company-go))
+                         (company-mode))))
+
+(use-package gotest
+  :ensure t
+  :bind (:map go-mode-map
+           ("C-c C-t p" . go-test-current-project)
+           ("C-c C-t f" . go-test-current-file)
+           ("C-c C-t ." . go-test-current-test)
+           ("C-c r" . go-run))
+  :config
+  (setq go-test-verbose t))
+
 (defun set-exec-path-from-shell-PATH ()
 (let ((path-from-shell (replace-regexp-in-string
-                        "[ \t\n]*$"
-                        ""
-                        (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-  (setenv "PATH" path-from-shell)
-  (setq eshell-path-env path-from-shell) ; for eshell users
-  (setq exec-path (split-string path-from-shell path-separator))))
+                       "[ \t\n]*$"
+                       ""
+                       (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+ (setenv "PATH" path-from-shell)
+ (setq eshell-path-env path-from-shell) ; for eshell users
+ (setq exec-path (split-string path-from-shell path-separator))))
 
 (when window-system (set-exec-path-from-shell-PATH))
 (setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
@@ -398,3 +421,16 @@
 
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(kubernetes dockerfile-mode docker json-mode gotest company-go which-key vterm use-package try rainbow-delimiters racer pyvenv python-mode org-bullets no-littering lsp-ui lsp-ivy ivy-rich go-guru go-eldoc git-timemachine git-gutter general fzf forge flycheck-rust exec-path-from-shell doom-themes doom-modeline dired-single dired-open dired-hide-dotfiles dap-mode counsel-projectile company-box cmake-mode clj-refactor cargo beacon auto-package-update all-the-icons-dired)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))
