@@ -48,12 +48,29 @@
 (show-paren-mode 1)
 (setq require-final-newline 1)
 (setq display-time-24hr-format 1)
+(setq battery-mode-line-format "[%b%p%% %t]")
 (display-time-mode +1)
 (setq redisplay-dont-pause 1
     scroll-margin 1
     scroll-step 1
     scroll-conservatively 10000
     scroll-preserve-screen-position 1)
+;; Keep all backup and auto-save files in one directory
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+
+;; UTF-8 please
+(setq locale-coding-system 'utf-8) ; pretty
+(set-terminal-coding-system 'utf-8) ; pretty
+(set-keyboard-coding-system 'utf-8) ; pretty
+(set-selection-coding-system 'utf-8) ; please
+(prefer-coding-system 'utf-8) ; with sugar on top
+
+;; Turn off the blinking cursor
+(blink-cursor-mode -1)
+
+(setq-default indent-tabs-mode nil)
+(setq-default indicate-empty-lines t)
 
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
@@ -73,23 +90,24 @@
   :ensure t
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
-;;(use-package sml/setup
-;;   :ensure t)
-;;(setq sml/theme 'respectful)
-;;(setq sml/shorten-directory t)
-;;(setq sml/shorten-modes t)
-;;(use-package nyan-mode
-;;  :ensure t)
-;;(setq nyan-wavy-trail nil)
-;;(setq nyan-animate-nyancat t)
 
 ;;(use-package zenburn-theme
 ;;:ensure t
 ;;:config (load-theme 'zenburn t))
-(use-package doom-themes
-  :init (load-theme 'doom-palenight t))
+;;(use-package doom-themes
+;;  :init (load-theme 'doom-molokai t))
 ;;(use-package doom-themes
 ;;  :init (load-theme 'leuven t))
+(use-package cyberpunk-theme
+:if (window-system)
+:ensure t
+:init
+(progn
+  (load-theme 'cyberpunk t)
+  (set-face-attribute `mode-line nil
+                      :box nil)
+  (set-face-attribute `mode-line-inactive nil
+                      :box nil)))
 
 (font-family-list)
 (add-to-list 'default-frame-alist
@@ -270,6 +288,13 @@
   :ensure t
   :after magit)
 
+(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
+(setq exec-path (append exec-path '("/usr/bin/gopls")))
+
+(defun lsp-go-install-save-hooks ()
+   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+   (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
 (use-package go-mode 
   :ensure t
   :config
@@ -313,17 +338,17 @@
   :config
   (setq go-test-verbose t))
 
-(defun set-exec-path-from-shell-PATH ()
-(let ((path-from-shell (replace-regexp-in-string
-                       "[ \t\n]*$"
-                       ""
-                       (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
- (setenv "PATH" path-from-shell)
- (setq eshell-path-env path-from-shell) ; for eshell users
- (setq exec-path (split-string path-from-shell path-separator))))
+;;(defun set-exec-path-from-shell-PATH ()
+;;(let ((path-from-shell (replace-regexp-in-string
+;;                       "[ \t\n]*$"
+;;                       ""
+;;                       (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+;; (setenv "PATH" path-from-shell)
+;; (setq eshell-path-env path-from-shell) ; for eshell users
+;; (setq exec-path (split-string path-from-shell path-separator))))
 
-(when window-system (set-exec-path-from-shell-PATH))
-(setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
+;;(when window-system (set-exec-path-from-shell-PATH))
+;;(setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -426,8 +451,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(go-guru-scope "...")
+ '(ispell-dictionary nil)
+ '(json-mode-hook '(lambda nil (setq tab-width 2)) t)
  '(package-selected-packages
-   '(kubernetes dockerfile-mode docker json-mode gotest company-go which-key vterm use-package try rainbow-delimiters racer pyvenv python-mode org-bullets no-littering lsp-ui lsp-ivy ivy-rich go-guru go-eldoc git-timemachine git-gutter general fzf forge flycheck-rust exec-path-from-shell doom-themes doom-modeline dired-single dired-open dired-hide-dotfiles dap-mode counsel-projectile company-box cmake-mode clj-refactor cargo beacon auto-package-update all-the-icons-dired)))
+   '(cyberpunk-theme which-key vterm use-package try rainbow-delimiters racer pyvenv python-mode org-bullets no-littering lsp-ui lsp-ivy kubernetes json-mode ivy-rich gotest go-guru go-eldoc git-timemachine git-gutter general fzf forge flycheck-rust exec-path-from-shell doom-themes doom-modeline dockerfile-mode docker dired-single dired-open dired-hide-dotfiles dap-mode counsel-projectile company-go company-box cmake-mode clj-refactor cargo beacon auto-package-update all-the-icons-dired)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

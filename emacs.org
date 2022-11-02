@@ -1,8 +1,8 @@
 #+title: Emacs Config
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
-* About Me
-  
+* About Me  
+
   #+begin_src emacs-lisp
   (setq user-full-name "Abhishek Anand Amralkar"
         user-mail-address "abhishekamralkar@gmail.com")
@@ -62,6 +62,7 @@
 * Emacs Interface Tweaks
   
   Make Emacs UI elegant.
+** UI Tweaks
 
   #+begin_src emacs-lisp
   (setq inhibit-startup-message 1)
@@ -74,15 +75,33 @@
   (show-paren-mode 1)
   (setq require-final-newline 1)
   (setq display-time-24hr-format 1)
+  (setq battery-mode-line-format "[%b%p%% %t]")
   (display-time-mode +1)
   (setq redisplay-dont-pause 1
       scroll-margin 1
       scroll-step 1
       scroll-conservatively 10000
       scroll-preserve-screen-position 1)
+  ;; Keep all backup and auto-save files in one directory
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+
+  ;; UTF-8 please
+  (setq locale-coding-system 'utf-8) ; pretty
+  (set-terminal-coding-system 'utf-8) ; pretty
+  (set-keyboard-coding-system 'utf-8) ; pretty
+  (set-selection-coding-system 'utf-8) ; please
+  (prefer-coding-system 'utf-8) ; with sugar on top
+
+  ;; Turn off the blinking cursor
+  (blink-cursor-mode -1)
+
+  (setq-default indent-tabs-mode nil)
+  (setq-default indicate-empty-lines t)
   #+end_src
 
 ** Display Line Number
+
    #+begin_src emacs-lisp
    ;; Disable line numbers for some modes
    (dolist (mode '(org-mode-hook
@@ -110,15 +129,6 @@
     :ensure t
     :init (doom-modeline-mode 1)
     :custom ((doom-modeline-height 15)))
-  ;;(use-package sml/setup
-  ;;   :ensure t)
-  ;;(setq sml/theme 'respectful)
-  ;;(setq sml/shorten-directory t)
-  ;;(setq sml/shorten-modes t)
-  ;;(use-package nyan-mode
-  ;;  :ensure t)
-  ;;(setq nyan-wavy-trail nil)
-  ;;(setq nyan-animate-nyancat t)
   #+end_src
 
 ** Theme[s]
@@ -127,11 +137,23 @@
   ;;(use-package zenburn-theme
   ;;:ensure t
   ;;:config (load-theme 'zenburn t))
-  (use-package doom-themes
-    :init (load-theme 'doom-palenight t))
+  ;;(use-package doom-themes
+  ;;  :init (load-theme 'doom-molokai t))
   ;;(use-package doom-themes
   ;;  :init (load-theme 'leuven t))
+  (use-package cyberpunk-theme
+  :if (window-system)
+  :ensure t
+  :init
+  (progn
+    (load-theme 'cyberpunk t)
+    (set-face-attribute `mode-line nil
+                        :box nil)
+    (set-face-attribute `mode-line-inactive nil
+                        :box nil)))
   #+end_src
+
+  #+RESULTS:
 
 ** Fonts
    
@@ -414,6 +436,13 @@
    #+end_src
 
    #+begin_src emacs-lisp
+   (setq exec-path (append exec-path '("/usr/local/go/bin/go")))
+   (setq exec-path (append exec-path '("/usr/bin/gopls")))
+
+   (defun lsp-go-install-save-hooks ()
+      (add-hook 'before-save-hook #'lsp-format-buffer t t)
+      (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
    (use-package go-mode 
      :ensure t
      :config
@@ -475,17 +504,17 @@
    #+end_src
  
    #+begin_src emacs-lisp
-   (defun set-exec-path-from-shell-PATH ()
-   (let ((path-from-shell (replace-regexp-in-string
-                          "[ \t\n]*$"
-                          ""
-                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq eshell-path-env path-from-shell) ; for eshell users
-    (setq exec-path (split-string path-from-shell path-separator))))
+   ;;(defun set-exec-path-from-shell-PATH ()
+   ;;(let ((path-from-shell (replace-regexp-in-string
+   ;;                       "[ \t\n]*$"
+   ;;                       ""
+   ;;                       (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+   ;; (setenv "PATH" path-from-shell)
+   ;; (setq eshell-path-env path-from-shell) ; for eshell users
+   ;; (setq exec-path (split-string path-from-shell path-separator))))
  
-   (when window-system (set-exec-path-from-shell-PATH))
-   (setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
+   ;;(when window-system (set-exec-path-from-shell-PATH))
+   ;;(setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
    #+end_src
 
 ** Rainbow Delimiter
@@ -583,8 +612,7 @@
      (add-hook 'rust-mode-hook 'flycheck-mode))
    #+end_src
 
-
-* Infrastricture
+* Infrastructure
 ** JSON-Mode
    #+begin_src emacs-lisp
    (use-package json-mode
