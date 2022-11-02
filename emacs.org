@@ -540,6 +540,8 @@
      (add-hook 'rust-mode-hook 'flycheck-mode))
    #+end_src
 
+
+* Infrastricture
 ** JSON-Mode
    #+begin_src emacs-lisp
    (use-package json-mode
@@ -553,6 +555,25 @@
    #+begin_src 
    (use-package yaml-mode
      :ensure t)
+   #+end_src
+
+** Docker
+   #+begin_src emacs-lisp
+   (use-package docker
+     :ensure t
+     :bind (("C-c d c" . docker-containers)
+            ("C-c d i" . docker-images)))
+   #+end_src
+** Dockerfile
+   #+begin_src emacs-lisp
+   (use-package dockerfile-mode
+     :ensure t)
+   #+end_src
+** Kubernetes
+   #+begin_src emacs-lisp
+   (use-package kubernetes
+     :ensure t
+     :commands (kubernetes-overview))
    #+end_src
 
 * File Management

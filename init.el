@@ -376,6 +376,18 @@
                           #'(lambda ()
                               (setq tab-width 2))))
 
+(use-package docker
+  :ensure t
+  :bind (("C-c d c" . docker-containers)
+         ("C-c d i" . docker-images)))
+
+(use-package dockerfile-mode
+  :ensure t)
+
+(use-package kubernetes
+  :ensure t
+  :commands (kubernetes-overview))
+
 (use-package dired
   :ensure nil
   :commands (dired dired-jump)
