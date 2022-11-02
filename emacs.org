@@ -87,11 +87,11 @@
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
   ;; UTF-8 please
-  (setq locale-coding-system 'utf-8) ; pretty
-  (set-terminal-coding-system 'utf-8) ; pretty
-  (set-keyboard-coding-system 'utf-8) ; pretty
-  (set-selection-coding-system 'utf-8) ; please
-  (prefer-coding-system 'utf-8) ; with sugar on top
+  (setq locale-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
 
   ;; Turn off the blinking cursor
   (blink-cursor-mode -1)
@@ -137,23 +137,11 @@
   ;;(use-package zenburn-theme
   ;;:ensure t
   ;;:config (load-theme 'zenburn t))
-  ;;(use-package doom-themes
-  ;;  :init (load-theme 'doom-molokai t))
+  (use-package doom-themes
+    :init (load-theme 'doom-material-dark t))
   ;;(use-package doom-themes
   ;;  :init (load-theme 'leuven t))
-  (use-package cyberpunk-theme
-  :if (window-system)
-  :ensure t
-  :init
-  (progn
-    (load-theme 'cyberpunk t)
-    (set-face-attribute `mode-line nil
-                        :box nil)
-    (set-face-attribute `mode-line-inactive nil
-                        :box nil)))
   #+end_src
-
-  #+RESULTS:
 
 ** Fonts
    
@@ -166,7 +154,6 @@
            ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
            ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
   #+end_src
-
 ** Org Bullets
 
   Package to get nice bullets while in org-mode.
@@ -223,7 +210,9 @@
    (use-package general
      :ensure t)
    #+end_src
+
 ** Ace Window
+
    #+begin_src emacs-lisp
    (use-package ace-window
      :ensure t
@@ -236,12 +225,15 @@
        '(aw-leading-char-face
        ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
    #+end_src 
+
 ** FZF
+
    #+begin_src emacs-lisp
    (use-package fzf :ensure t)
    #+end_src
  
 ** PATH
+
    #+begin_src emacs-lisp
    (use-package exec-path-from-shell
      :ensure t
@@ -250,6 +242,7 @@
    #+end_src
  
 * Counsel/Ivy/Swiper
+
   #+begin_src emacs-lisp
   (use-package ivy
     :diminish
@@ -326,15 +319,19 @@
    #+end_src
 
 ** lsp-treemacs
+
    #+begin_src emacs-lisp
    (use-package lsp-treemacs
      :after lsp)
    #+end_src
+
 ** lsp-ivy
+
    #+begin_src emacs-lisp
    (use-package lsp-ivy
      :after lsp)
    #+end_src
+
 ** Dap-Mode
 
    #+begin_src emacs-lisp
@@ -361,7 +358,10 @@
 
    Make sure you have the pyls language server installed before trying lsp-mode!
 
+   #+begin_src sh
    pip3 install --user "python-language-server[all]"
+   #+end_src>
+   
 
    #+begin_src emacs-lisp
    (use-package python-mode
@@ -427,6 +427,7 @@
       :ensure t
       :after magit)
   #+end_src
+
 ** golang
  
    #+begin_src sh
@@ -503,20 +504,6 @@
      (setq go-test-verbose t))
    #+end_src
  
-   #+begin_src emacs-lisp
-   ;;(defun set-exec-path-from-shell-PATH ()
-   ;;(let ((path-from-shell (replace-regexp-in-string
-   ;;                       "[ \t\n]*$"
-   ;;                       ""
-   ;;                       (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-   ;; (setenv "PATH" path-from-shell)
-   ;; (setq eshell-path-env path-from-shell) ; for eshell users
-   ;; (setq exec-path (split-string path-from-shell path-separator))))
- 
-   ;;(when window-system (set-exec-path-from-shell-PATH))
-   ;;(setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
-   #+end_src
-
 ** Rainbow Delimiter
 
   #+begin_src emacs-lisp
@@ -534,6 +521,7 @@
    #+end_src
 
 ** Yasnippet
+
    #+begin_src emacs-lisp
    (use-package yasnippet
      :ensure t
@@ -562,8 +550,8 @@
      (setq vterm-max-scrollback 10000))
    #+end_src
 
-   #+RESULTS:
 ** Clojure
+
    #+begin_src emacs-lisp
     (use-package clojure-mode
       :defer t
@@ -584,6 +572,7 @@
     #+end_src
 
 ** Rust
+
    #+begin_src emacs-lisp
    (use-package racer
      :ensure t
@@ -613,7 +602,9 @@
    #+end_src
 
 * Infrastructure
+
 ** JSON-Mode
+
    #+begin_src emacs-lisp
    (use-package json-mode
      :ensure t
@@ -622,25 +613,32 @@
                              #'(lambda ()
                                  (setq tab-width 2))))
    #+end_src
+
 ** YAML-Mode
+
    #+begin_src 
    (use-package yaml-mode
      :ensure t)
    #+end_src
 
 ** Docker
+
    #+begin_src emacs-lisp
    (use-package docker
      :ensure t
      :bind (("C-c d c" . docker-containers)
             ("C-c d i" . docker-images)))
    #+end_src
+
 ** Dockerfile
+
    #+begin_src emacs-lisp
    (use-package dockerfile-mode
      :ensure t)
    #+end_src
+
 ** Kubernetes
+
    #+begin_src emacs-lisp
    (use-package kubernetes
      :ensure t
@@ -653,63 +651,6 @@
 
     Dired is a built-in file manager for Emacs that does some pretty amazing things!  Here are some key bindings you should try out:
     
-*** Key Bindings
-
-**** Navigation
-
-     *Emacs* / *Evil*
-     - =n= / =j= - next line
-     - =p= / =k= - previous line
-     - =j= / =J= - jump to file in buffer
-     - =RET= - select file or directory
-     - =^= - go to parent directory
-     - =S-RET= / =g O= - Open file in "other" window
-     - =M-RET= - Show file in other window without focusing (previewing files)
-     - =g o= (=dired-view-file=) - Open file but in a "preview" mode, close with =q=
-     - =g= / =g r= Refresh the buffer with =revert-buffer= after changing configuration (and after filesystem changes!
-
-**** Marking files
-
-      - =m= - Marks a file
-      - =u= - Unmarks a file
-      - =U= - Unmarks all files in buffer
-      - =* t= / =t= - Inverts marked files in buffer
-      - =% m= - Mark files in buffer using regular expression
-      - =*= - Lots of other auto-marking functions
-      - =k= / =K= - "Kill" marked items (refresh buffer with =g= / =g r= to get them back)
-
-**** Copying and Renaming files
-
-     - =C= - Copy marked files (or if no files are marked, the current file)
-     - Copying single and multiple files
-     - =U= - Unmark all files in buffer
-     - =R= - Rename marked files, renaming multiple is a move!
-     - =% R= - Rename based on regular expression: =^test= , =old-\&=
-
-    *Power command*: =C-x C-q= (=dired-toggle-read-only=) - Makes all file names in the buffer editable directly to rename them!  Press =Z Z= to confirm renaming or =Z Q= to abort.
-
-**** Deleting files
-
-     - =D= - Delete marked file 
-     - =d= - Mark file for deletion
-     - =x= - Execute deletion for marks
-     - =delete-by-moving-to-trash= - Move to trash instead of deleting permanently
-
-**** Creating and extracting archives
-
-     - =Z= - Compress or uncompress a file or folder to (=.tar.gz=)
-     - =c= - Compress selection to a specific file
-     - =dired-compress-files-alist= - Bind compression commands to file extension
-
-**** Other common operations
-
-     - =T= - Touch (change timestamp)
-     - =M= - Change file mode
-     - =O= - Change file owner
-     - =G= - Change file group
-     - =S= - Create a symbolic link to this file
-     - =L= - Load an Emacs Lisp file into Emacs
-
 *** Configuration
 
     #+begin_src emacs-lisp

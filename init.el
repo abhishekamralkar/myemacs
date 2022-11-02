@@ -60,11 +60,11 @@
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
 ;; UTF-8 please
-(setq locale-coding-system 'utf-8) ; pretty
-(set-terminal-coding-system 'utf-8) ; pretty
-(set-keyboard-coding-system 'utf-8) ; pretty
-(set-selection-coding-system 'utf-8) ; please
-(prefer-coding-system 'utf-8) ; with sugar on top
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
 ;; Turn off the blinking cursor
 (blink-cursor-mode -1)
@@ -94,20 +94,10 @@
 ;;(use-package zenburn-theme
 ;;:ensure t
 ;;:config (load-theme 'zenburn t))
-;;(use-package doom-themes
-;;  :init (load-theme 'doom-molokai t))
+(use-package doom-themes
+  :init (load-theme 'doom-material-dark t))
 ;;(use-package doom-themes
 ;;  :init (load-theme 'leuven t))
-(use-package cyberpunk-theme
-:if (window-system)
-:ensure t
-:init
-(progn
-  (load-theme 'cyberpunk t)
-  (set-face-attribute `mode-line nil
-                      :box nil)
-  (set-face-attribute `mode-line-inactive nil
-                      :box nil)))
 
 (font-family-list)
 (add-to-list 'default-frame-alist
@@ -241,17 +231,6 @@
     :prefix lsp-keymap-prefix
     "d" '(dap-hydra t :wk "debugger")))
 
-(use-package python-mode
-  :ensure t
-  :hook (python-mode . lsp-deferred)
-  :custom
-  ;; NOTE: Set these if Python 3 is called "python3" on your system!
-  (python-shell-interpreter "python3")
-  (dap-python-executable "python3")
-  (dap-python-debugger 'debugpy)
-  :config
-  (require 'dap-python))
-
 (use-package pyvenv
   :after python-mode
   :config
@@ -337,18 +316,6 @@
            ("C-c r" . go-run))
   :config
   (setq go-test-verbose t))
-
-;;(defun set-exec-path-from-shell-PATH ()
-;;(let ((path-from-shell (replace-regexp-in-string
-;;                       "[ \t\n]*$"
-;;                       ""
-;;                       (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-;; (setenv "PATH" path-from-shell)
-;; (setq eshell-path-env path-from-shell) ; for eshell users
-;; (setq exec-path (split-string path-from-shell path-separator))))
-
-;;(when window-system (set-exec-path-from-shell-PATH))
-;;(setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -446,19 +413,3 @@
 
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(go-guru-scope "...")
- '(ispell-dictionary nil)
- '(json-mode-hook '(lambda nil (setq tab-width 2)) t)
- '(package-selected-packages
-   '(cyberpunk-theme which-key vterm use-package try rainbow-delimiters racer pyvenv python-mode org-bullets no-littering lsp-ui lsp-ivy kubernetes json-mode ivy-rich gotest go-guru go-eldoc git-timemachine git-gutter general fzf forge flycheck-rust exec-path-from-shell doom-themes doom-modeline dockerfile-mode docker dired-single dired-open dired-hide-dotfiles dap-mode counsel-projectile company-go company-box cmake-mode clj-refactor cargo beacon auto-package-update all-the-icons-dired)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))

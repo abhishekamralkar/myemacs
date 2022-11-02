@@ -1,9 +1,23 @@
-#+tile: My Emacs Config
+#+tile: Emacs Config
 
 This is my Emacs config which I use almost every day and night. In this config I am using a literate programming and org-babel to 
 organize my Emacs configuration.
 
+This Emacs config support below programming languages
+
+*** Python
+*** Golang
+*** Rust
+*** Clojure
+
+* Emacs Version
+
+Its good to keep Emacs up-to-date, in order to use this Emacs config, you need to have Emacs 27 and above
+
 * To use this config
 
-You need to have Emacs 27+ installed on your machine and jusst clone this repo into your `~/.emacs.d`.
+#+begin_src sh
+git clone git@github.com:abhishekamralkar/emacs-config-org-babel.git ~/.emacs.d
+#+end_src>
+
 
