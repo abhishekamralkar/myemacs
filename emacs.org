@@ -392,7 +392,7 @@
     :after projectile
     :config (counsel-projectile-mode))
   #+end_src
-
+  
 ** Magit
 
   Its name should be Magic
@@ -493,20 +493,12 @@
    #+RESULTS:
 ** Clojure
    #+begin_src emacs-lisp
-    (use-package cider
-      :ensure t
-      :config
-        (add-hook 'cider-repl-mode-hook #'company-mode)
-        (add-hook 'cider-mode-hook #'company-mode)
-        (add-hook 'cider-mode-hook #'eldoc-mode)
+    (use-package clojure-mode
+      :defer t
+      :ensure t)
 
-        (setq cider-repl-use-pretty-printing t)
-        (setq cider-repl-display-help-banner nil)
-    
-
-      :bind (("M-r" . cider-namespace-refresh)
-             ("C-c r" . cider-repl-reset)
-             ("C-c ." . cider-reset-test-run-tests)))
+   (use-package cider
+     :ensure t)
 
    (use-package clj-refactor
      :ensure t
@@ -546,6 +538,21 @@
      :config
      (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
      (add-hook 'rust-mode-hook 'flycheck-mode))
+   #+end_src
+
+** JSON-Mode
+   #+begin_src emacs-lisp
+   (use-package json-mode
+     :ensure t
+     :config
+     (customize-set-variable 'json-mode-hook
+                             #'(lambda ()
+                                 (setq tab-width 2))))
+   #+end_src
+** YAML-Mode
+   #+begin_src 
+   (use-package yaml-mode
+     :ensure t)
    #+end_src
 
 * File Management

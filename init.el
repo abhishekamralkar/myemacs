@@ -326,20 +326,12 @@
   ;;(setq vterm-shell "zsh")                       ;; Set this to customize the shell to launch
   (setq vterm-max-scrollback 10000))
 
+(use-package clojure-mode
+   :defer t
+   :ensure t)
+
 (use-package cider
-   :ensure t
-   :config
-     (add-hook 'cider-repl-mode-hook #'company-mode)
-     (add-hook 'cider-mode-hook #'company-mode)
-     (add-hook 'cider-mode-hook #'eldoc-mode)
-
-     (setq cider-repl-use-pretty-printing t)
-     (setq cider-repl-display-help-banner nil)
-
-
-   :bind (("M-r" . cider-namespace-refresh)
-          ("C-c r" . cider-repl-reset)
-          ("C-c ." . cider-reset-test-run-tests)))
+  :ensure t)
 
 (use-package clj-refactor
   :ensure t
@@ -376,6 +368,13 @@
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
   (add-hook 'rust-mode-hook 'flycheck-mode))
+
+(use-package json-mode
+  :ensure t
+  :config
+  (customize-set-variable 'json-mode-hook
+                          #'(lambda ()
+                              (setq tab-width 2))))
 
 (use-package dired
   :ensure nil
