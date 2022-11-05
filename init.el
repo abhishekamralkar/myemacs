@@ -44,17 +44,30 @@
 (tooltip-mode 0)
 (fset 'yes-or-no-p 'y-or-n-p)
 (menu-bar-mode 0)
-(column-number-mode 0)
 (show-paren-mode 1)
 (setq require-final-newline 1)
 (setq display-time-24hr-format 1)
-(setq battery-mode-line-format "[%b%p%% %t]")
 (display-time-mode +1)
-(setq redisplay-dont-pause 1
-    scroll-margin 1
-    scroll-step 1
-    scroll-conservatively 10000
+;; warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
+;; disable the annoying bell ring
+(setq ring-bell-function 'ignore)
+;; disable startup screen
+(setq inhibit-startup-screen t)
+
+;; nice scrolling
+(setq scroll-margin 0
+    scroll-conservatively 100000
     scroll-preserve-screen-position 1)
+
+(setq frame-title-format
+    '((:eval (if (buffer-file-name)
+                 (abbreviate-file-name (buffer-file-name))
+               "%b"))))
+
+ (line-number-mode t)
+ (column-number-mode t)
+ (size-indication-mode t)
 ;; Keep all backup and auto-save files in one directory
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
