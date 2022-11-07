@@ -5,10 +5,10 @@ organize my Emacs configuration.
 
 This Emacs config support below programming languages
 
-*** Python
-*** Golang
-*** Rust
-*** Clojure
+** Python
+** Golang
+** Rust
+** Clojure
 
 * Emacs Version
 
