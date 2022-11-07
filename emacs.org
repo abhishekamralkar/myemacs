@@ -1,3 +1,4 @@
+
 #+title: Emacs Config
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
@@ -448,10 +449,18 @@
 
 ** golang
  
+   #+begin_src sh 
+   # GO Path
+   export GOROOT=/usr/local/go
+   export GOPATH=$HOME/Code/golang
+   export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+   #+end_src>
+   
    #+begin_src sh
-   go get -u golang.org/x/tools/godef
-   go get -u golang.org/x/tools/goimports
-   go get -u golang.org/x/tools/guru
+   go install github.com/nsf/gocode@latest
+   go install github.com/rogpeppe/godef@latest
+   go install golang.org/x/tools/cmd/goimports@latest
+   go install golang.org/x/tools/gopls@latest
    #+end_src
 
    #+begin_src emacs-lisp
