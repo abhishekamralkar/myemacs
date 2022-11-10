@@ -6,7 +6,6 @@
                       (expand-file-name "~/.emacs.d/emacs.org"))
     (let ((org-config-babel-evaluate nil))
       (org-babel-tangle))))
-
  (add-hook 'org-mode-hook
             (lambda ()
                (add-hook 'after-save-hook #'org-babel-tangle-config)))
@@ -105,8 +104,8 @@
   :custom ((doom-modeline-height 15)))
 
 ;;(use-package zenburn-theme
-;;:ensure t
-;;:config (load-theme 'zenburn t))
+;;  :ensure t
+;;  :config (load-theme 'zenburn t))
 (use-package doom-themes
   :init (load-theme 'doom-material-dark t))
 ;;(use-package doom-themes
@@ -415,6 +414,9 @@
 (use-package kubernetes
   :ensure t
   :commands (kubernetes-overview))
+
+(use-package terraform-mode
+   :ensure t)
 
 (use-package dired
   :ensure nil
