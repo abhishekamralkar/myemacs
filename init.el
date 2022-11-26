@@ -1,14 +1,9 @@
 (setq user-full-name "Abhishek Anand Amralkar"
       user-mail-address "abhishekamralkar@gmail.com")
 
-(defun org-babel-tangle-config() 
-  (when (string-equal (buffer-file-name)
-                      (expand-file-name "~/.emacs.d/emacs.org"))
-    (let ((org-config-babel-evaluate nil))
-      (org-babel-tangle))))
- (add-hook 'org-mode-hook
-            (lambda ()
-               (add-hook 'after-save-hook #'org-babel-tangle-config)))
+(use-package org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode))
 
 (require 'package)
 
@@ -114,7 +109,7 @@
           ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
           ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
 
-(use-package ac-emoji-setup
+(use-package ac-emoji
   :ensure t)
 
 (set-fontset-font

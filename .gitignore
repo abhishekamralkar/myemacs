@@ -7,4 +7,7 @@ forge-database.sqlite
 projectile-bookmarks.eld
 recentf
 transient/
+.dap-breakpoints
+eshell/
+flycheck_init.el
 
