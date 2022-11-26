@@ -70,17 +70,14 @@
 ;; Keep all backup and auto-save files in one directory
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
-
 ;; UTF-8 please
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-
 ;; Turn off the blinking cursor
 (blink-cursor-mode -1)
-
 (setq-default indent-tabs-mode nil)
 (setq-default indicate-empty-lines t)
 
@@ -112,15 +109,24 @@
 ;;  :init (load-theme 'leuven t))
 
 (font-family-list)
-(add-to-list 'default-frame-alist
-      (cond
-         ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
-         ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
+ (add-to-list 'default-frame-alist
+       (cond
+          ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
+          ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
+
+(use-package ac-emoji-setup
+  :ensure t)
+
+(set-fontset-font
+t 'symbol
+(font-spec :family "Symbola") nil 'prepend)
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(winner-mode t)
 
 (use-package beacon
   :ensure t
@@ -273,7 +279,8 @@
   :config (counsel-projectile-mode))
 
 (use-package magit
-  :ensure t)
+  :ensure t
+  :bind ("C-x g" . magit))
 
 (use-package forge
   :ensure t
