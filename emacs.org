@@ -1,3 +1,10 @@
+#+STARTUP: overview
+#+TITLE: AAA Emacs
+#+CREATOR: Abhishek Anand Amralkar
+#+LANGUAGE: en
+#+OPTIONS: num:nil
+#+ATTR_HTML: :style margin-left: auto; margin-right: auto;
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 * Installation
 
 git clone https://github.com/abhishekamralkar/aaaemacs ~/.emacs.d
@@ -35,6 +42,16 @@ The use-package macro allows you to isolate package configuration in your .emacs
 (require 'org-tempo)
 #+end_src
 
+#+RESULTS:
+: org-tempo
+
+* Auto Tangle
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook
+          (lambda () (add-hook 'after-save-hook #'org-babel-tangle
+                          :append :local)))
+#+end_src
+
 * Theme
 
 #+begin_src emacs-lisp 
@@ -68,3 +85,147 @@ The use-package macro allows you to isolate package configuration in your .emacs
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t)
 #+end_src
+
+** Disable menus and scrollbars
+If you like using any of those, change -1 to 1.
+
+#+begin_src emacs-lisp 
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+#+end_src
+
+#+RESULTS:
+
+** No Bells
+
+#+begin_src 
+(setq ring-bell-function 'ignore)   
+#+end_src
+
+** Set UTF-8 encoding
+
+#+begin_src emacs-lisp
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)   
+#+end_src
+
+** Highligh current line
+
+this is really awesome 
+
+#+begin_src emacs-lisp
+(when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
+#+end_src
+
+** Pretty Symbols
+
+#+begin_src emacs-lisp
+(when window-system
+      (use-package pretty-mode
+      :ensure t
+      :config
+      (global-pretty-mode t)))   
+#+end_src
+
+** No backups please
+
+#+begin_src emacs-lisp
+(setq make-backup-files nil)
+(setq auto-save-default nil)   
+#+end_src
+
+** y for yes and n for no
+
+#+begin_src emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)   
+#+end_src
+
+** Async
+
+Lets us use asynchronous processes wherever possible, pretty useful.
+
+#+begin_src emacs-lisp
+(use-package async
+  :ensure t
+  :init (dired-async-mode 1))
+#+end_src
+
+* Projectile
+
+Projectile is a project interaction library for Emacs. Its goal is to provide a nice set of features operating on a project level without introducing external dependencies (when feasible).
+
+#+begin_src emacs-lisp
+(use-package projectile
+  :ensure t
+  :init
+    (projectile-mode 1))
+#+end_src
+
+* Dashboard
+
+#+begin_src emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+    (dashboard-setup-startup-hook))
+  #+end_src
+* Modeline
+
+With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome.
+
+#+begin_src emacs-lisp
+(use-package spaceline
+  :ensure t
+  :config
+  (require 'spaceline-config)
+    (setq spaceline-buffer-encoding-abbrev-p nil)
+    (setq spaceline-line-column-p nil)
+    (setq spaceline-line-p nil)
+    (setq powerline-default-separator (quote arrow))
+    (spaceline-spacemacs-theme))  
+#+end_src
+
+** No Separator
+
+#+begin_src emacs-lisp
+(setq powerline-default-separator nil)   
+#+end_src
+
+** Cursor Position
+
+Show the current line and column for your cursor.
+
+#+begin_src emacs-lisp
+(setq line-number-mode t)
+(setq column-number-mode t)
+#+end_src
+
+** Clock
+
+Good to have time in your editor
+
+#+begin_src emacs-lisp
+(setq display-time-24hr-format t)
+(setq display-time-format "%H:%M - %d %B %Y")
+(display-time-mode 1)
+#+end_src
+
+** Battery
+
+Good to have
+
+#+begin_src emacs-lisp
+(use-package fancy-battery
+  :ensure t
+  :config
+    (setq fancy-battery-show-percentage t)
+    (setq battery-update-interval 15)
+    (if window-system
+      (fancy-battery-mode)
+      (display-battery-mode)))
+#+end_src
+
