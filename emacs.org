@@ -4,5 +4,67 @@ git clone https://github.com/abhishekamralkar/aaaemacs ~/.emacs.d
 
 To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning this configuration. 
 
+* About ME
 
+#+begin_src emacs-lisp
+(setq user-full-name "Abhishek Anand Amralkar"
+      user-mail-address "abhishekamralkar@gmail.com")
+#+end_src
 
+* Use-Package
+
+The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy. 
+
+#+begin_src emacs-lisp
+(require 'package)
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("org"   . "https://orgmode.org/elpa/")
+                         ("elpa"  . "https://elpa.gnu.org/packages/")))
+
+(package-initialize)
+(unless package-archive-contents
+(package-refresh-contents))
+
+;; Initialize use-package on non-Linux platforms
+(unless (package-installed-p 'use-package)
+(package-install 'use-package))
+
+(require 'use-package)
+(setq use-package-always-ensure t)
+(require 'org-tempo)
+#+end_src
+
+* Theme
+
+#+begin_src emacs-lisp 
+(use-package zerodark-theme
+  :ensure t
+  :init
+    (load-theme 'zerodark t))
+#+end_src
+
+* Fonts
+
+#+begin_src emacs-lisp
+(font-family-list)
+(add-to-list 'default-frame-alist
+     (cond
+         ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
+         ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
+
+(use-package ac-emoji
+  :ensure t)
+
+(set-fontset-font
+  t 'symbol
+(font-spec :family "Symbola") nil 'prepend)
+#+end_src
+
+* UI Look and Feel 
+
+** No Startup screen
+
+#+begin_src emacs-lisp
+(setq inhibit-startup-message t)
+#+end_src
