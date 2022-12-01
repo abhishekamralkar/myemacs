@@ -70,6 +70,9 @@
   :ensure t
   :init (dired-async-mode 1))
 
+(use-package command-log-mode
+  :commands command-log-mode)
+
 (use-package projectile
   :ensure t
   :init
@@ -107,3 +110,111 @@
     (if window-system
       (fancy-battery-mode)
       (display-battery-mode)))
+
+(use-package ivy
+  :ensure t)
+(setq scroll-conservatively 100)
+
+(use-package which-key
+  :ensure t
+  :config
+    (which-key-mode))
+
+(use-package swiper
+  :ensure t
+  :bind ("C-s" . 'swiper))
+
+(setq electric-pair-pairs '(
+                           (?\{ . ?\})
+                           (?\( . ?\))
+                           (?\[ . ?\])
+                           (?\" . ?\")
+                           ))   
+(electric-pair-mode t)
+
+(use-package beacon
+  :ensure t
+  :config
+    (beacon-mode 1))
+
+(show-paren-mode 1)
+
+(use-package rainbow-delimiters
+  :ensure t
+  :init
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package yasnippet
+  :ensure t
+  :config
+    (use-package yasnippet-snippets
+      :ensure t)
+    (yas-reload-all))
+
+(use-package flycheck
+  :ensure t)
+
+(defun lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+(use-package lsp-treemacs
+  :after lsp)
+
+(use-package lsp-ivy
+  :after lsp)
+
+(defun config-reload ()
+  "Reloads ~/.emacs.d/emacs.org at runtime"
+  (interactive)
+  (org-babel-load-file (expand-file-name "~/.emacs.d/emacs.org")))
+(global-set-key (kbd "C-c r") 'config-reload)
+
+(add-hook 'python-mode-hook 'yas-minor-mode)
+(add-hook 'python-mode-hook 'flycheck-mode)
+
+(with-eval-after-load 'company
+    (add-hook 'python-mode-hook 'company-mode))
+
+(use-package company-jedi
+  :ensure t
+  :config
+    (require 'company)
+    (add-to-list 'company-backends 'company-jedi))
+
+(defun python-mode-company-init ()
+  (setq-local company-backends '((company-jedi
+                                  company-etags
+                                  company-dabbrev-code))))
+
+(use-package company-jedi
+  :ensure t
+  :config
+    (require 'company)
+    (add-hook 'python-mode-hook 'python-mode-company-init))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(slime company-jedi lsp-ivy lsp-treemacs lsp-ui lsp-mode zerodark-theme yasnippet-snippets which-key use-package swiper spaceline rainbow-delimiters projectile pretty-mode flycheck fancy-battery dashboard command-log-mode beacon async ac-emoji)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

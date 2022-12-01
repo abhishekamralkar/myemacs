@@ -154,6 +154,18 @@ Lets us use asynchronous processes wherever possible, pretty useful.
   :init (dired-async-mode 1))
 #+end_src
 
+
+** Command Log Mode
+
+Displays the key bindging
+
+#+begin_src emacs-lisp
+(use-package command-log-mode
+  :commands command-log-mode)
+#+end_src
+
+#+RESULTS:
+
 * Projectile
 
 Projectile is a project interaction library for Emacs. Its goal is to provide a nice set of features operating on a project level without introducing external dependencies (when feasible).
@@ -229,3 +241,238 @@ Good to have
       (display-battery-mode)))
 #+end_src
 
+* Ivy
+
+Ivy is an interactive interface for completion in Emacs. Emacs uses completion mechanism in a variety of contexts: code, menus, commands, variables, functions, etc. Completion entails listing, sorting, filtering, previewing, and applying actions on selected items. When active, ivy-mode completes the selection process by narrowing available choices while previewing in the minibuffer. Selecting the final candidate is either through simple keyboard character inputs or through powerful regular expressions.
+
+#+begin_src emacs-lisp
+(use-package ivy
+  :ensure t)
+(setq scroll-conservatively 100)
+#+end_src
+
+* Which Key
+
+which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup. For example, after enabling the minor mode if you enter C-x and wait for the default of 1 second the minibuffer will expand with all of the available key bindings that follow C-x (or as many as space allows given your settings).
+
+#+begin_src emacs-lisp
+(use-package which-key
+  :ensure t
+  :config
+    (which-key-mode))
+#+end_src
+
+
+* Swiper
+
+Swiper is an alternative to isearch that uses Ivy to show an overview of all matches.
+
+#+begin_src emacs-lisp
+(use-package swiper
+  :ensure t
+  :bind ("C-s" . 'swiper))
+#+end_src
+
+* Programming and Development Tools
+
+** Electric
+
+Electric Pair mode, a global minor mode, provides a way to easily insert matching delimiters: parentheses, braces, brackets, etc. Whenever you insert an opening delimiter, the matching closing delimiter is automatically inserted as well, leaving point between the two. 
+
+#+begin_src emacs-lisp
+(setq electric-pair-pairs '(
+                           (?\{ . ?\})
+                           (?\( . ?\))
+                           (?\[ . ?\])
+                           (?\" . ?\")
+                           ))   
+(electric-pair-mode t)
+#+end_src
+
+** Beacon
+
+Beacon- Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
+
+#+begin_src emacs-lisp
+(use-package beacon
+  :ensure t
+  :config
+    (beacon-mode 1))
+#+end_src
+
+** Show parens
+
+Highlights matching parens when the cursor is just behind one of them.
+
+#+begin_src emacs-lisp
+(show-paren-mode 1)
+#+end_src
+
+** Rainbow Delimeter
+
+Colors parentheses and other delimiters 
+
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+  :ensure t
+  :init
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+end_src
+
+** Yasnippet
+
+Code template
+
+#+begin_src emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :config
+    (use-package yasnippet-snippets
+      :ensure t)
+    (yas-reload-all))
+#+end_src
+
+** Flycheck
+
+flycheck
+
+#+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t)
+#+end_src
+
+** lsp-mode
+
+   #+begin_src emacs-lisp
+   (defun lsp-mode-setup ()
+     (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+     (lsp-headerline-breadcrumb-mode))
+
+   (use-package lsp-mode
+     :commands (lsp lsp-deferred)
+     :hook (lsp-mode . lsp-mode-setup)
+     :init
+     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+     :config
+     (lsp-enable-which-key-integration t))
+   #+end_src
+
+** lsp-ui
+
+   #+begin_src emacs-lisp
+   (use-package lsp-ui
+     :hook (lsp-mode . lsp-ui-mode)
+     :custom
+     (lsp-ui-doc-position 'bottom))
+   #+end_src
+
+** lsp-treemacs
+
+   #+begin_src emacs-lisp
+   (use-package lsp-treemacs
+     :after lsp)
+   #+end_src
+
+** lsp-ivy
+
+   #+begin_src emacs-lisp
+   (use-package lsp-ivy
+     :after lsp)
+   #+end_src
+
+** Edit Config
+
+Edit emacs config
+
+#+begin_src emacs-lisp
+(defun config-edit ()
+  (interactive)
+  (find-file "~/.emacs.d/emacs.org"))
+(global-set-key (kbd "C-c e") 'config-edit)
+#+end_src>
+
+** Config Reload
+
+Reload config
+
+#+begin_src emacs-lisp
+(defun config-reload ()
+  "Reloads ~/.emacs.d/emacs.org at runtime"
+  (interactive)
+  (org-babel-load-file (expand-file-name "~/.emacs.d/emacs.org")))
+(global-set-key (kbd "C-c r") 'config-reload)
+#+end_src
+
+** Python
+
+Python editor
+
+#+begin_src emacs-lisp
+(add-hook 'python-mode-hook 'yas-minor-mode)
+(add-hook 'python-mode-hook 'flycheck-mode)
+
+(with-eval-after-load 'company
+    (add-hook 'python-mode-hook 'company-mode))
+
+(use-package company-jedi
+  :ensure t
+  :config
+    (require 'company)
+    (add-to-list 'company-backends 'company-jedi))
+
+(defun python-mode-company-init ()
+  (setq-local company-backends '((company-jedi
+                                  company-etags
+                                  company-dabbrev-code))))
+
+(use-package company-jedi
+  :ensure t
+  :config
+    (require 'company)
+    (add-hook 'python-mode-hook 'python-mode-company-init))
+#+end_src
+
+** Emacs Lisp
+
+Emacs Lisp editor
+
+#+begin_src emacs-lisp
+(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
+
+(use-package slime
+  :ensure t
+  :config
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (setq slime-contribs '(slime-fancy)))
+
+(use-package slime-company
+  :ensure t
+  :init
+    (require 'company)
+    (slime-setup '(slime-fancy slime-company)))
+#+end_src
+
+
+** Bash
+
+Scripting
+
+#+begin_src emacs-lisp
+(add-hook 'shell-mode-hook 'yas-minor-mode)
+(add-hook 'shell-mode-hook 'flycheck-mode)
+(add-hook 'shell-mode-hook 'company-mode)
+
+(defun shell-mode-company-init ()
+  (setq-local company-backends '((company-shell
+                                  company-shell-env
+                                  company-etags
+                                  company-dabbrev-code))))
+
+(use-package company-shell
+  :ensure t
+  :config
+    (require 'company)
+    (add-hook 'shell-mode-hook 'shell-mode-company-init))
+#+end_src
