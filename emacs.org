@@ -1,3 +1,4 @@
+
 #+title: Emacs Config
 #+author: Abhishek Anand Amralkar
 #+date: 26/Nov/2022
@@ -181,7 +182,11 @@
 ** Winner Mode
    
    #+begin_src emacs-lisp
-   (winner-mode t)
+   (use-package winner
+     :config
+     (winner-mode t)
+     :bind (("C-c <left>" . winner-undo)
+            ("C-c <right>" . winner-redo)))
    #+end_src
 
 * Misc Packages
@@ -260,6 +265,12 @@
      (exec-path-from-shell-initialize))
    #+end_src
  
+** Transpose
+   #+begin_src 
+   (use-package transpose-frame
+     :ensure t
+     :bind ("C-c t" . transpose-frame))
+   #+end_src
 * Counsel/Ivy/Swiper
 
   #+begin_src emacs-lisp
@@ -648,7 +659,6 @@
    ;;(use-package prog-mode
    ;;  :hook ((prog-mode . show-paren-mode)))
    ;;#+end_src
-
 
 * Infrastructure
 
