@@ -83,6 +83,21 @@
   :config
     (dashboard-setup-startup-hook))
 
+;; Set the title
+(setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
+
+;; Content is not centered by default. To center, set
+(setq dashboard-center-content t)
+
+;; To disable shortcut "jump" indicators for each section, set
+(setq dashboard-show-shortcuts nil)
+
+(setq dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 5)
+                        (registers . 5)))
+
 (use-package spaceline
   :ensure t
   :config
@@ -187,6 +202,14 @@
       :ensure t)
     (yas-reload-all))
 
+(use-package company
+  :ensure t
+  :config
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 3))
+
+(add-hook 'after-init-hook 'global-company-mode)
+
 (use-package flycheck
   :ensure t)
 
@@ -243,6 +266,11 @@
    :after python-mode
    :config
      (pyvenv-mode 1))
+
+(use-package company-jedi
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-jedi))
 
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)

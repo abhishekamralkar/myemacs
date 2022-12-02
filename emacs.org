@@ -185,6 +185,24 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   :config
     (dashboard-setup-startup-hook))
   #+end_src
+
+#+begin_src emacs-lisp 
+;; Set the title
+(setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
+
+;; Content is not centered by default. To center, set
+(setq dashboard-center-content t)
+
+;; To disable shortcut "jump" indicators for each section, set
+(setq dashboard-show-shortcuts nil)
+
+(setq dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 5)
+                        (registers . 5)))
+#+end_src
+
 * Modeline
 
 With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome.
@@ -371,6 +389,21 @@ Code template
     (yas-reload-all))
 #+end_src
 
+** Company
+
+Company Mode
+#+begin_src emacs-lisp
+(use-package company
+  :ensure t
+  :config
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 3))
+#+end_src
+
+#+begin_src emacs-lisp
+(add-hook 'after-init-hook 'global-company-mode)
+#+end_src
+
 ** Flycheck
 
 flycheck
@@ -451,12 +484,6 @@ Reload config
 (global-set-key (kbd "C-c r") 'config-reload)
 #+end_src
 
-** Python
-
-Python editor
-
-Make sure you have the pyls language server installed before trying lsp-mode!
-
 ** Dap-Mode
 
 #+begin_src emacs-lisp
@@ -501,6 +528,13 @@ pip3 install --user "python-language-server[all]"
    :after python-mode
    :config
      (pyvenv-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package company-jedi
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-jedi))
 #+end_src
 
 ** Emacs Lisp
