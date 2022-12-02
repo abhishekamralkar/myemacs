@@ -55,11 +55,38 @@ The use-package macro allows you to isolate package configuration in your .emacs
 * Theme
 
 #+begin_src emacs-lisp 
-(use-package zerodark-theme
-  :ensure t
-  :init
-    (load-theme 'zerodark t))
+;;(use-package zerodark-theme
+;;  :ensure t
+;;  :init
+;;    (load-theme 'zerodark t))
 #+end_src
+
+#+begin_src emacs-lisp
+;;(zerodark-setup-modeline-format)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-monokai-pro t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
+#+end_src
+
+#+RESULTS:
+: t
 
 * Fonts
 
@@ -68,7 +95,7 @@ The use-package macro allows you to isolate package configuration in your .emacs
 (add-to-list 'default-frame-alist
      (cond
          ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
-         ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
+         ((string-equal system-type "gnu/linux") '(font . "Fira Code-13"))))
 
 (use-package ac-emoji
   :ensure t)
@@ -77,6 +104,8 @@ The use-package macro allows you to isolate package configuration in your .emacs
   t 'symbol
 (font-spec :family "Symbola") nil 'prepend)
 #+end_src
+
+#+RESULTS:
 
 * UI Look and Feel 
 
@@ -205,21 +234,35 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 
 * Modeline
 
-With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome.
+With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best.
+This package is able to display icons if all-the-icons package and required fonts are installed. Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
 #+begin_src emacs-lisp
-(use-package spaceline
+;;(use-package spaceline
+;;  :ensure t
+;;  :config
+;;  (require 'spaceline-config)
+;;    (setq spaceline-buffer-encoding-abbrev-p nil)
+;;    (setq spaceline-line-column-p nil)
+;;    (setq spaceline-line-p nil)
+;;    (setq powerline-default-separator (quote arrow))
+;;    (spaceline-spacemacs-theme))
+(use-package doom-modeline
   :ensure t
-  :config
-  (require 'spaceline-config)
-    (setq spaceline-buffer-encoding-abbrev-p nil)
-    (setq spaceline-line-column-p nil)
-    (setq spaceline-line-p nil)
-    (setq powerline-default-separator (quote arrow))
-    (spaceline-spacemacs-theme))  
+  :init (doom-modeline-mode 1))
 #+end_src
 
+#+RESULTS:
+
+#+begin_src emacs-lisp
+(use-package all-the-icons
+  :ensure t)
+#+end_src
+
+#+RESULTS:
+
 ** No Separator
+
 
 #+begin_src emacs-lisp
 (setq powerline-default-separator nil)   

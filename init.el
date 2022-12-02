@@ -23,16 +23,36 @@
           (lambda () (add-hook 'after-save-hook #'org-babel-tangle
                           :append :local)))
 
-(use-package zerodark-theme
+;;(use-package zerodark-theme
+;;  :ensure t
+;;  :init
+;;    (load-theme 'zerodark t))
+
+;;(zerodark-setup-modeline-format)
+
+(use-package doom-themes
   :ensure t
-  :init
-    (load-theme 'zerodark t))
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-monokai-pro t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 (font-family-list)
 (add-to-list 'default-frame-alist
      (cond
          ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
-         ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
+         ((string-equal system-type "gnu/linux") '(font . "Fira Code-13"))))
 
 (use-package ac-emoji
   :ensure t)
@@ -98,15 +118,21 @@
                         (agenda . 5)
                         (registers . 5)))
 
-(use-package spaceline
+;;(use-package spaceline
+;;  :ensure t
+;;  :config
+;;  (require 'spaceline-config)
+;;    (setq spaceline-buffer-encoding-abbrev-p nil)
+;;    (setq spaceline-line-column-p nil)
+;;    (setq spaceline-line-p nil)
+;;    (setq powerline-default-separator (quote arrow))
+;;    (spaceline-spacemacs-theme))
+(use-package doom-modeline
   :ensure t
-  :config
-  (require 'spaceline-config)
-    (setq spaceline-buffer-encoding-abbrev-p nil)
-    (setq spaceline-line-column-p nil)
-    (setq spaceline-line-p nil)
-    (setq powerline-default-separator (quote arrow))
-    (spaceline-spacemacs-theme))
+  :init (doom-modeline-mode 1))
+
+(use-package all-the-icons
+  :ensure t)
 
 (setq powerline-default-separator nil)
 
