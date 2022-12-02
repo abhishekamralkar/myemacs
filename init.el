@@ -344,6 +344,49 @@
   (when window-system (set-exec-path-from-shell-PATH))
   (setenv "GOPATH" "/home/aaa/golang/src/github.com/abhishekamralkar/")
 
+(use-package clojure-mode
+   :defer t
+   :ensure t)
+
+(use-package cider
+  :ensure t)
+
+(use-package clj-refactor
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook (lambda ()
+                                (clj-refactor-mode 1)
+                                ))
+  (cljr-add-keybindings-with-prefix "C-c C-m")
+  (setq cljr-warn-on-eval nil)
+   :bind ("C-c '" . hydra-cljr-help-menu/body))
+
+(use-package racer
+  :ensure t
+  :config
+  (add-hook 'racer-mode-hook #'company-mode)
+  (setq company-tooltip-align-annotations t)
+  (setq racer-rust-src-path "~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
+
+(use-package rust-mode
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (setq rust-format-on-save t))
+
+(use-package cargo
+  :ensure t
+  :config
+  (setq compilation-scroll-output t)
+  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+
+(use-package flycheck-rust
+  :ensure t
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+  (add-hook 'rust-mode-hook 'flycheck-mode))
+
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :custom
@@ -378,3 +421,25 @@
   (diminish 'yas-minor-mode)
   (diminish 'flycheck-mode)
   (diminish 'helm-mode))
+
+(use-package json-mode
+  :ensure t
+  :config
+  (customize-set-variable 'json-mode-hook
+                          #'(lambda ()
+                              (setq tab-width 2))))
+
+(use-package docker
+  :ensure t
+  :bind (("C-c d c" . docker-containers)
+         ("C-c d i" . docker-images)))
+
+(use-package dockerfile-mode
+  :ensure t)
+
+(use-package kubernetes
+  :ensure t
+  :commands (kubernetes-overview))
+
+(use-package terraform-mode
+   :ensure t)

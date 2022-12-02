@@ -663,6 +663,56 @@ go get -u github.com/nsf/gocode
   (setenv "GOPATH" "/home/aaa/golang/src/github.com/abhishekamralkar/")
 #+end_src
 
+** Clojure
+
+   #+begin_src emacs-lisp
+    (use-package clojure-mode
+      :defer t
+      :ensure t)
+
+   (use-package cider
+     :ensure t)
+
+   (use-package clj-refactor
+     :ensure t
+     :config
+     (add-hook 'clojure-mode-hook (lambda ()
+                                   (clj-refactor-mode 1)
+                                   ))
+     (cljr-add-keybindings-with-prefix "C-c C-m")
+     (setq cljr-warn-on-eval nil)
+      :bind ("C-c '" . hydra-cljr-help-menu/body))
+    #+end_src
+
+** Rust
+
+   #+begin_src emacs-lisp
+   (use-package racer
+     :ensure t
+     :config
+     (add-hook 'racer-mode-hook #'company-mode)
+     (setq company-tooltip-align-annotations t)
+     (setq racer-rust-src-path "~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
+
+   (use-package rust-mode
+     :ensure t
+     :config
+     (add-hook 'rust-mode-hook #'racer-mode)
+     (add-hook 'racer-mode-hook #'eldoc-mode)
+     (setq rust-format-on-save t))
+
+   (use-package cargo
+     :ensure t
+     :config
+     (setq compilation-scroll-output t)
+     (add-hook 'rust-mode-hook 'cargo-minor-mode))
+
+   (use-package flycheck-rust
+     :ensure t
+     :config
+     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+     (add-hook 'rust-mode-hook 'flycheck-mode))
+   #+end_src
 * Org Mode Tweaks
 
 ** Org Bullets
@@ -721,3 +771,53 @@ Wrap a line
   (diminish 'flycheck-mode)
   (diminish 'helm-mode))  
 #+end_src
+* Infrastructure
+
+** JSON-Mode
+
+   #+begin_src emacs-lisp
+   (use-package json-mode
+     :ensure t
+     :config
+     (customize-set-variable 'json-mode-hook
+                             #'(lambda ()
+                                 (setq tab-width 2))))
+   #+end_src
+
+** YAML-Mode
+
+   #+begin_src 
+   (use-package yaml-mode
+     :ensure t)
+   #+end_src
+
+** Docker
+
+   #+begin_src emacs-lisp
+   (use-package docker
+     :ensure t
+     :bind (("C-c d c" . docker-containers)
+            ("C-c d i" . docker-images)))
+   #+end_src
+
+** Dockerfile
+
+   #+begin_src emacs-lisp
+   (use-package dockerfile-mode
+     :ensure t)
+   #+end_src
+
+** Kubernetes
+
+   #+begin_src emacs-lisp
+   (use-package kubernetes
+     :ensure t
+     :commands (kubernetes-overview))
+   #+end_src
+
+** Terraform
+
+   #+begin_src emacs-lisp 
+   (use-package terraform-mode
+      :ensure t)
+   #+end_src
