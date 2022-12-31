@@ -23,18 +23,36 @@
           (lambda () (add-hook 'after-save-hook #'org-babel-tangle
                           :append :local)))
 
-(use-package zerodark-theme
-  :ensure t
-  :init
-    (load-theme 'zerodark t))
+;;(use-package zerodark-theme
+;;  :ensure t
+;;  :init
+;;    (load-theme 'zerodark t))
 
 ;;(zerodark-setup-modeline-format)
+
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-palenight t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 (font-family-list)
 (add-to-list 'default-frame-alist
      (cond
          ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
-         ((string-equal system-type "gnu/linux") '(font . "Fira Code-12"))))
+         ((string-equal system-type "gnu/linux") '(font . "Fira Code-13"))))
 
 (use-package ac-emoji
   :ensure t)
@@ -111,7 +129,7 @@
 ;;    (spaceline-spacemacs-theme))
 (use-package doom-modeline
   :ensure t
-  :hook (after-init . doom-modeline-mode))
+  :init (doom-modeline-mode 1))
 
 (use-package all-the-icons
   :ensure t)
@@ -477,20 +495,9 @@
   :ensure t
   :commands (kubernetes-overview))
 
+(use-package k8s-mode
+  :ensure t
+  :hook (k8s-mode . yas-minor-mode))
+
 (use-package terraform-mode
    :ensure t)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(go-guru-scope "...")
- '(json-mode-hook '(lambda nil (setq tab-width 2)) t)
- '(package-selected-packages
-   '(k8s-mode doom-themes doom-modeline jedi zerodark-theme yasnippet-snippets which-key use-package terraform-mode swiper spaceline slime-company rainbow-delimiters racer pyvenv projectile pretty-mode org-bullets lsp-ui lsp-ivy kubernetes json-mode helm gotest go-guru go-eldoc general forge flycheck-rust fancy-battery exec-path-from-shell dockerfile-mode docker diminish dashboard dap-mode company-shell company-jedi company-go command-log-mode clj-refactor cargo beacon ac-emoji)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

@@ -1,5 +1,5 @@
 #+STARTUP: overview
-#+TITLE: AAA Emacs
+#+TITLE: MyEmacs
 #+CREATOR: Abhishek Anand Amralkar
 #+LANGUAGE: en
 #+OPTIONS: num:nil
@@ -11,13 +11,12 @@ git clone https://github.com/abhishekamralkar/aaaemacs ~/.emacs.d
 
 To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning this configuration. 
 
-* About ME
+* About Me
 
 #+begin_src emacs-lisp
 (setq user-full-name "Abhishek Anand Amralkar"
       user-mail-address "abhishekamralkar@gmail.com")
-#+end_src
-
+#+en
 * Use-Package
 
 The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy. 
@@ -897,6 +896,9 @@ Wrap a line
     :ensure t
     :hook (k8s-mode . yas-minor-mode))
 #+end_src
+
+#+RESULTS:
+| yas-minor-mode |
 
 ** Terraform
 
