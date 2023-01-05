@@ -51,8 +51,8 @@
 (font-family-list)
 (add-to-list 'default-frame-alist
      (cond
-         ((string-equal system-type "darwin")    '(font . "Fira Code-14"))
-         ((string-equal system-type "gnu/linux") '(font . "Fira Code-13"))))
+         ((string-equal system-type "darwin")    '(font . "Fira Code-12"))
+         ((string-equal system-type "gnu/linux") '(font . "Fira Code-10"))))
 
 (use-package ac-emoji
   :ensure t)
