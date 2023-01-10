@@ -171,7 +171,6 @@ Lets us use asynchronous processes wherever possible, pretty useful.
   :init (dired-async-mode 1))
 #+end_src
 
-
 ** Command Log Mode
 
 Displays the key bindging
@@ -180,8 +179,6 @@ Displays the key bindging
 (use-package command-log-mode
   :commands command-log-mode)
 #+end_src
-
-#+RESULTS:
 
 * Projectile
 
@@ -226,15 +223,6 @@ With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awe
 This package is able to display icons if all-the-icons package and required fonts are installed. Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
 #+begin_src emacs-lisp
-;;(use-package spaceline
-;;  :ensure t
-;;  :config
-;;  (require 'spaceline-config)
-;;    (setq spaceline-buffer-encoding-abbrev-p nil)
-;;    (setq spaceline-line-column-p nil)
-;;    (setq spaceline-line-p nil)
-;;    (setq powerline-default-separator (quote arrow))
-;;    (spaceline-spacemacs-theme))
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
@@ -568,7 +556,34 @@ pip3 install --user "python-language-server[all]"
   (add-to-list 'company-backends 'company-jedi))
 #+end_src
 
+#+begin_src emacs-lisp
+(defun pythontemplate()
+   "Insert template for python"
+   (interactive)
+   (insert "#!/usr/bin/env python"
+            "\n"
+            "\n"
+            "\n"
+            "if __name__ == '__main__'"
+            "\n")
+    (forward-line -4))
+#+end_src
+
+#+begin_src emacs-lisp
+(add-hook 'python-mode-hook
+          (lambda ()
+            (electric-indent-local-mode -1)
+            (if (= (buffer-size) 0)
+                (pythontemplate))
+            (message "python hook")))
+#+end_src
+
+#+RESULTS:
+| (lambda nil (electric-indent-local-mode -1) (if (= (buffer-size) 0) (pythontemplate)) (message python hook)) | (lambda nil (electric-indent-local-mode -1) (font-lock-add-keywords nil bad-whitespace) (if (= (buffer-size) 0) (pythontemplate)) (message python hook)) | doom-modeline-env-setup-python |
+
 ** Emacs Lisp
+
+
 
 Emacs Lisp editor
 

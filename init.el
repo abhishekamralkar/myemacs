@@ -111,15 +111,6 @@
                         (agenda . 5)
                         (registers . 5)))
 
-;;(use-package spaceline
-;;  :ensure t
-;;  :config
-;;  (require 'spaceline-config)
-;;    (setq spaceline-buffer-encoding-abbrev-p nil)
-;;    (setq spaceline-line-column-p nil)
-;;    (setq spaceline-line-p nil)
-;;    (setq powerline-default-separator (quote arrow))
-;;    (spaceline-spacemacs-theme))
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
@@ -290,6 +281,24 @@
   :ensure t
   :config
   (add-to-list 'company-backends 'company-jedi))
+
+(defun pythontemplate()
+   "Insert template for python"
+   (interactive)
+   (insert "#!/usr/bin/env python"
+            "\n"
+            "\n"
+            "\n"
+            "if __name__ == '__main__'"
+            "\n")
+    (forward-line -4))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (electric-indent-local-mode -1)
+            (if (= (buffer-size) 0)
+                (pythontemplate))
+            (message "python hook")))
 
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
