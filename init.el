@@ -23,13 +23,6 @@
           (lambda () (add-hook 'after-save-hook #'org-babel-tangle
                           :append :local)))
 
-;;(use-package zerodark-theme
-;;  :ensure t
-;;  :init
-;;    (load-theme 'zerodark t))
-
-;;(zerodark-setup-modeline-format)
-
 (use-package doom-themes
   :ensure t
   :config

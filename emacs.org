@@ -42,9 +42,10 @@ The use-package macro allows you to isolate package configuration in your .emacs
 (require 'org-tempo)
 #+end_src
 
-
-
 * Auto Tangle
+
+Hook to generate the .el file from .org file on save
+
 #+begin_src emacs-lisp
 (add-hook 'org-mode-hook
           (lambda () (add-hook 'after-save-hook #'org-babel-tangle
@@ -53,16 +54,7 @@ The use-package macro allows you to isolate package configuration in your .emacs
 
 * Theme
 
-#+begin_src emacs-lisp 
-;;(use-package zerodark-theme
-;;  :ensure t
-;;  :init
-;;    (load-theme 'zerodark t))
-#+end_src
-
-#+begin_src emacs-lisp
-;;(zerodark-setup-modeline-format)
-#+end_src
+Using Doom Emacs theme 
 
 #+begin_src emacs-lisp
 (use-package doom-themes
@@ -84,10 +76,9 @@ The use-package macro allows you to isolate package configuration in your .emacs
   (doom-themes-org-config))
 #+end_src
 
-#+RESULTS:
-: t
-
 * Fonts
+
+Fira-Code no doubt one of the best fonts with better presicions
 
 #+begin_src emacs-lisp
 (font-family-list)
@@ -103,8 +94,6 @@ The use-package macro allows you to isolate package configuration in your .emacs
   t 'symbol
 (font-spec :family "Symbola") nil 'prepend)
 #+end_src
-
-#+RESULTS:
 
 * UI Look and Feel 
 
