@@ -564,9 +564,7 @@ pip3 install --user "python-language-server[all]"
             "\n"
             "\n"
             "\n"
-            "if __name__ == '__main__'"
-            "\n")
-    (forward-line -4))
+            "\n"))
 #+end_src
 
 #+begin_src emacs-lisp

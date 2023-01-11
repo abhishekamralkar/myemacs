@@ -289,9 +289,7 @@
             "\n"
             "\n"
             "\n"
-            "if __name__ == '__main__'"
-            "\n")
-    (forward-line -4))
+            "\n"))
 
 (add-hook 'python-mode-hook
           (lambda ()
