@@ -561,9 +561,6 @@ pip3 install --user "python-language-server[all]"
    "Insert template for python"
    (interactive)
    (insert "#!/usr/bin/env python"
-            "\n"
-            "\n"
-            "\n"
             "\n"))
 #+end_src
 

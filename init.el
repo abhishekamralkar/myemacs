@@ -286,9 +286,6 @@
    "Insert template for python"
    (interactive)
    (insert "#!/usr/bin/env python"
-            "\n"
-            "\n"
-            "\n"
             "\n"))
 
 (add-hook 'python-mode-hook
