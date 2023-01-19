@@ -11,3 +11,4 @@ transient/
 eshell/
 flycheck_init.el
 ac-comphist.dat
+.extension/
