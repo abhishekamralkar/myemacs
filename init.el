@@ -198,11 +198,29 @@
       :ensure t)
     (yas-reload-all))
 
+;; (use-package company
+;;   :ensure t
+;;   :config
+;;   (setq company-idle-delay 0)
+;;   (setq company-minimum-prefix-length 3)
+;;   :bind
+;;   (:map company-active-map
+;; 	      ("C-n". company-select-next)
+;; 	      ("C-p". company-select-previous)
+;; 	      ("M-<". company-select-first)
+;; 	      ("M->". company-select-last)))
+
 (use-package company
-  :ensure t
-  :config
-  (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 3))
+  :ensure
+  :custom
+  (company-idle-delay 0.5) ;; how long to wait until popup
+  ;; (company-begin-commands nil) ;; uncomment to disable popup
+  :bind
+  (:map company-active-map
+	      ("C-n". company-select-next)
+	      ("C-p". company-select-previous)
+	      ("M-<". company-select-first)
+	      ("M->". company-select-last)))
 
 (add-hook 'after-init-hook 'global-company-mode)
 
@@ -215,6 +233,19 @@
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+  :custom
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
+  ;; enable / disable the hints as you prefer:
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil)
   :hook (lsp-mode . lsp-mode-setup)
   :init
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
@@ -224,7 +255,10 @@
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
-  (lsp-ui-doc-position 'bottom))
+  (lsp-ui-doc-position 'bottom)
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil))
 
 (use-package lsp-treemacs
   :after lsp)
@@ -279,8 +313,8 @@
   (company-minimum-prefix-length 1)
   (company-idle-delay 0.0))
 
-(use-package company-box
-  :hook (company-mode . company-box-mode))
+;;(use-package company-box
+;;  :hook (company-mode . company-box-mode))
 
 (defun pythontemplate()
    "Insert template for python"
@@ -412,31 +446,35 @@
   (setq cljr-warn-on-eval nil)
    :bind ("C-c '" . hydra-cljr-help-menu/body))
 
-(use-package racer
-  :ensure t
+(use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
   :config
-  (add-hook 'racer-mode-hook #'company-mode)
-  (setq company-tooltip-align-annotations t)
-  (setq racer-rust-src-path "~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
 
-(use-package rust-mode
-  :ensure t
-  :config
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (setq rust-format-on-save t))
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'aaa/rustic-mode-hook))
 
-(use-package cargo
-  :ensure t
-  :config
-  (setq compilation-scroll-output t)
-  (add-hook 'rust-mode-hook 'cargo-minor-mode))
-
-(use-package flycheck-rust
-  :ensure t
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-  (add-hook 'rust-mode-hook 'flycheck-mode))
+(defun aaa/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
@@ -498,3 +536,16 @@
 
 (use-package terraform-mode
    :ensure t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(rustic zerodark-theme yasnippet-snippets which-key use-package terraform-mode swiper spaceline slime-company rainbow-delimiters racer pyvenv projectile pretty-mode org-bullets lsp-ui lsp-ivy kubernetes k8s-mode json-mode jedi helm gotest go-guru go-eldoc general frame-local forge flycheck-rust fancy-battery exec-path-from-shell doom-themes doom-modeline dockerfile-mode docker diminish dashboard dap-mode company-shell company-jedi company-go command-log-mode clj-refactor cargo beacon ac-emoji)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
