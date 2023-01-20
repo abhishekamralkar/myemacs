@@ -24,7 +24,7 @@
                           :append :local)))
 
 (use-package doom-themes
-  :init (load-theme 'doom-palenight t))
+  :init (load-theme 'doom-dracula t))
 
 (font-family-list)
 (add-to-list 'default-frame-alist
@@ -42,8 +42,12 @@
 (setq inhibit-startup-message t)
 
 (tool-bar-mode -1)
+
 (menu-bar-mode -1)
+
 (scroll-bar-mode -1)
+
+(setq ring-bell-function 'ignore)
 
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -51,30 +55,10 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
-
-(when window-system
-      (use-package pretty-mode
-      :ensure t
-      :config
-      (global-pretty-mode t)))
-
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-(use-package async
-  :ensure t
-  :init (dired-async-mode 1))
-
-(use-package command-log-mode
-  :commands command-log-mode)
-
-(use-package projectile
-  :ensure t
-  :init
-    (projectile-mode 1))
 
 (use-package dashboard
   :ensure t
@@ -82,7 +66,7 @@
     (dashboard-setup-startup-hook))
 
 ;; Set the title
-(setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
+(setq dashboard-banner-logo-title "Welcome to AAA Emacs Dashboard")
 
 ;; Content is not centered by default. To center, set
 (setq dashboard-center-content t)
@@ -122,14 +106,21 @@
       (fancy-battery-mode)
       (display-battery-mode)))
 
-(use-package ivy
-  :ensure t)
-(setq scroll-conservatively 100)
-
 (use-package which-key
   :ensure t
   :config
     (which-key-mode))
+
+(use-package command-log-mode
+  :commands command-log-mode)
+
+(use-package async
+  :ensure t
+  :init (dired-async-mode 1))
+
+(use-package ivy
+  :ensure t)
+(setq scroll-conservatively 100)
 
 (use-package swiper
   :ensure t
@@ -166,10 +157,19 @@
   :init
   (helm-mode 1))
 
-(require 'helm-config)    
 (helm-autoresize-mode 1)
 (define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
 (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
+
+(defun config-edit ()
+  (interactive)
+  (find-file "~/.emacs.d/emacs.org"))
+(global-set-key (kbd "C-c e") 'config-edit)
+
+(defun config-edit ()
+  (interactive)
+  (find-file "~/.emacs.d/emacs.org"))
+(global-set-key (kbd "C-c e") 'config-edit)
 
 (setq electric-pair-pairs '(
                            (?\{ . ?\})
@@ -179,17 +179,38 @@
                            ))   
 (electric-pair-mode t)
 
-(use-package beacon
-  :ensure t
-  :config
-    (beacon-mode 1))
-
 (show-paren-mode 1)
 
 (use-package rainbow-delimiters
   :ensure t
   :init
     (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+;; (use-package company
+  ;;   :ensure
+  ;;   :custom
+  ;;   (company-idle-delay 0.5) ;; how long to wait until popup
+  ;;   ;; (company-begin-commands nil) ;; uncomment to disable popup
+  ;;   :bind
+  ;;   (:map company-active-map
+  ;; 		("C-n". company-select-next)
+  ;; 		("C-p". company-select-previous)
+  ;; 		("M-<". company-select-first)
+  ;; 		("M->". company-select-last)))
+
+(use-package company
+   :after lsp-mode
+   :hook (lsp-mode . company-mode)
+   :bind (:map company-active-map
+	  ("<tab>" . company-complete-selection))
+	  (:map lsp-mode-map
+	  ("<tab>" . company-indent-or-complete-common))
+   :custom
+   (company-minimum-prefix-length 1)
+   (company-idle-delay 0.0))
+
+(use-package flycheck
+  :ensure t)
 
 (use-package yasnippet
   :ensure t
@@ -198,34 +219,38 @@
       :ensure t)
     (yas-reload-all))
 
-;; (use-package company
-;;   :ensure t
-;;   :config
-;;   (setq company-idle-delay 0)
-;;   (setq company-minimum-prefix-length 3)
-;;   :bind
-;;   (:map company-active-map
-;; 	      ("C-n". company-select-next)
-;; 	      ("C-p". company-select-previous)
-;; 	      ("M-<". company-select-first)
-;; 	      ("M->". company-select-last)))
+(use-package magit
+  :ensure t
+  :bind ("C-x g" . magit))
+  
+(use-package forge
+  :ensure t
+  :after magit)
 
-(use-package company
-  :ensure
-  :custom
-  (company-idle-delay 0.5) ;; how long to wait until popup
-  ;; (company-begin-commands nil) ;; uncomment to disable popup
-  :bind
-  (:map company-active-map
-	      ("C-n". company-select-next)
-	      ("C-p". company-select-previous)
-	      ("M-<". company-select-first)
-	      ("M->". company-select-last)))
+(use-package projectile
+  :ensure t
+  :init
+    (projectile-mode 1))
 
-(add-hook 'after-init-hook 'global-company-mode)
+(use-package beacon
+  :ensure t
+  :config
+    (beacon-mode 1))
 
-(use-package flycheck
+(use-package general
   :ensure t)
+
+(use-package dap-mode
+   :commands dap-debug
+   :config
+     (require 'dap-node)
+     (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+
+    ;; Bind `C-c l d` to `dap-hydra` for easy access
+     (general-define-key
+       :keymaps 'lsp-mode-map
+       :prefix lsp-keymap-prefix
+       "d" '(dap-hydra t :wk "debugger")))
 
 (defun lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
@@ -266,55 +291,20 @@
 (use-package lsp-ivy
   :after lsp)
 
-(defun config-edit ()
-  (interactive)
-  (find-file "~/.emacs.d/emacs.org"))
-(global-set-key (kbd "C-c e") 'config-edit)
-
-(use-package general
-  :ensure t)
-
-(defun config-reload ()
-  "Reloads ~/.emacs.d/emacs.org at runtime"
-  (interactive)
-  (org-babel-load-file (expand-file-name "~/.emacs.d/emacs.org")))
-(global-set-key (kbd "C-c r") 'config-reload)
-
-(use-package dap-mode
-   :commands dap-debug
+(use-package python-mode
+   :ensure t
+   :hook (python-mode . lsp-deferred)
+   :custom
+       (python-shell-interpreter "python3")
+       (dap-python-executable "python3")
+       (dap-python-debugger 'debugpy)
    :config
-     (require 'dap-node)
-     (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-
-    ;; Bind `C-c l d` to `dap-hydra` for easy access
-     (general-define-key
-       :keymaps 'lsp-mode-map
-       :prefix lsp-keymap-prefix
-       "d" '(dap-hydra t :wk "debugger")))
+       (require 'dap-python))
 
 (use-package pyvenv
    :after python-mode
    :config
      (pyvenv-mode 1))
-
-;;(use-package company-jedi
-;;  :ensure t
-;;  :config
-;;  (add-to-list 'company-backends 'company-jedi))
-
-(use-package company
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-         ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
-
-;;(use-package company-box
-;;  :hook (company-mode . company-box-mode))
 
 (defun pythontemplate()
    "Insert template for python"
@@ -360,14 +350,6 @@
   :config
     (require 'company)
     (add-hook 'shell-mode-hook 'shell-mode-company-init))
-
-(use-package magit
-  :ensure t
-  :bind ("C-x g" . magit))
-  
-(use-package forge
-  :ensure t
-  :after magit)
 
 (setq exec-path (append exec-path '("/usr/local/go/bin/go")))
 (setq exec-path (append exec-path '("/home/aaa/Code/golang/bin/gopls")))
@@ -427,24 +409,7 @@
    (setq exec-path (split-string path-from-shell path-separator))))
  
   (when window-system (set-exec-path-from-shell-PATH))
-  (setenv "GOPATH" "/home/aaa/golang/src/github.com/abhishekamralkar/")
-
-(use-package clojure-mode
-   :defer t
-   :ensure t)
-
-(use-package cider
-  :ensure t)
-
-(use-package clj-refactor
-  :ensure t
-  :config
-  (add-hook 'clojure-mode-hook (lambda ()
-                                (clj-refactor-mode 1)
-                                ))
-  (cljr-add-keybindings-with-prefix "C-c C-m")
-  (setq cljr-warn-on-eval nil)
-   :bind ("C-c '" . hydra-cljr-help-menu/body))
+  (setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
 
 (use-package rustic
   :ensure
@@ -512,19 +477,19 @@
   (diminish 'helm-mode))
 
 (use-package json-mode
-  :ensure t
-  :config
-  (customize-set-variable 'json-mode-hook
-                          #'(lambda ()
-                              (setq tab-width 2))))
+   :ensure t
+   :config
+   (customize-set-variable 'json-mode-hook
+                             '(lambda ()
+                                 (setq tab-width 2))))
 
 (use-package docker
-  :ensure t
-  :bind (("C-c d c" . docker-containers)
-         ("C-c d i" . docker-images)))
+     :ensure t
+     :bind (("C-c d c" . docker-containers)
+            ("C-c d i" . docker-images)))
 
 (use-package dockerfile-mode
-  :ensure t)
+    :ensure t)
 
 (use-package kubernetes
   :ensure t
@@ -535,17 +500,4 @@
   :hook (k8s-mode . yas-minor-mode))
 
 (use-package terraform-mode
-   :ensure t)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(rustic zerodark-theme yasnippet-snippets which-key use-package terraform-mode swiper spaceline slime-company rainbow-delimiters racer pyvenv projectile pretty-mode org-bullets lsp-ui lsp-ivy kubernetes k8s-mode json-mode jedi helm gotest go-guru go-eldoc general frame-local forge flycheck-rust fancy-battery exec-path-from-shell doom-themes doom-modeline dockerfile-mode docker diminish dashboard dap-mode company-shell company-jedi company-go command-log-mode clj-refactor cargo beacon ac-emoji)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+    :ensure t)
