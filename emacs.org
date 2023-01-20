@@ -58,11 +58,18 @@ Hook to generate the .el file from .org file on save
 Using Doom Emacs theme 
 
 #+begin_src emacs-lisp
-(use-package doom-themes
-  :init (load-theme 'doom-dracula t))
+ (use-package doom-themes
+    :defer t
+    :init (load-theme 'doom-palenight t))
+;;(use-package gruvbox
+;;    :init (load-theme 'gruvbox-dark-hard t))
+;;(use-package spacemacs-theme
+;;  :defer t
+;;  :init (load-theme 'spacemacs-dark t))
 #+end_src
 
 #+RESULTS:
+: t
 
 * Fonts
 
