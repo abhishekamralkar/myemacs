@@ -138,7 +138,7 @@ Fira-Code no doubt one of the best fonts with better presicions
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
-** Dashboard
+** dashboard
 
 #+begin_src emacs-lisp
 (use-package dashboard
@@ -164,7 +164,7 @@ Fira-Code no doubt one of the best fonts with better presicions
                         (registers . 5)))
 #+end_src
 
-** Modeline
+** modeline
 
 With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons if all-the-icons package and required fonts are installed. Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
@@ -180,13 +180,13 @@ With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awe
   :ensure t)
 #+end_src
 
-** No Separator
+** no separator
 
 #+begin_src emacs-lisp
 (setq powerline-default-separator nil)   
 #+end_src
 
-** Cursor Position
+** cursor position
 
 Show the current line and column for your cursor.
 
@@ -195,7 +195,7 @@ Show the current line and column for your cursor.
 (setq column-number-mode t)   
 #+end_src
 
-** Clock
+** clock
 
 #+begin_src emacs-lisp
 (setq display-time-24hr-format t)
@@ -203,7 +203,7 @@ Show the current line and column for your cursor.
 (display-time-mode 1)
 #+end_src
 
-** Battery
+** battery
 
 #+begin_src emacs-lisp
 (use-package fancy-battery
@@ -244,7 +244,7 @@ which-key is a minor mode for Emacs that displays the key bindings following you
 
 * UI Configuration
 
-** Ivy
+** ivy
 
 Ivy is an interactive interface for completion in Emacs. Emacs uses completion mechanism in a variety of contexts: code, menus, commands, variables, functions, etc. Completion entails listing, sorting, filtering, previewing, and applying actions on selected items. When active, ivy-mode completes the selection process by narrowing available choices while previewing in the minibuffer. Selecting the final candidate is either through simple keyboard character inputs or through powerful regular expressions.
 
@@ -266,12 +266,39 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
 
 #+begin_src emacs-lisp
 (use-package helm
-:ensure t
-:bind
+  :ensure t
+  :bind
   ("C-x C-f" . 'helm-find-files)
   ("C-x C-b" . 'helm-buffers-list)
   ("M-x" . 'helm-M-x)
-:config)
+  :config
+  (defun daedreth/helm-hide-minibuffer ()
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'face
+                     (let ((bg-color (face-background 'default nil)))
+                       `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil))))
+  (add-hook 'helm-minibuffer-set-up-hook 'daedreth/helm-hide-minibuffer)
+  (setq helm-autoresize-max-height 0
+        helm-autoresize-min-height 40
+        helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t
+        helm-semantic-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-split-window-in-side-p nil
+        helm-move-to-line-cycle-in-source nil
+        helm-ff-search-library-in-sexp t
+        helm-scroll-amount 8 
+        helm-echo-input-in-header-line t)
+  :init
+  (helm-mode 1))
+
+(helm-autoresize-mode 1)
+(define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
+(define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 #+end_src
 
 * Config
@@ -283,7 +310,7 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
   (interactive)
   (find-file "~/.emacs.d/emacs.org"))
 (global-set-key (kbd "C-c e") 'config-edit)  
-#+end_src>
+#+end_src
 
 ** edit config
 
@@ -292,11 +319,11 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
   (interactive)
   (find-file "~/.emacs.d/emacs.org"))
 (global-set-key (kbd "C-c e") 'config-edit)   
-#+end_src>
+#+end_src
 
 * Developer Tools
 
-** Electric
+** electric
 
 Electric Pair mode, a global minor mode, provides a way to easily insert matching delimiters: parentheses, braces, brackets, etc. Whenever you insert an opening delimiter, the matching closing delimiter is automatically inserted as well, leaving point between the two.
 
@@ -585,14 +612,14 @@ pip install -U setuptools
 gopls not able to find module in your workspace 
 You can run `M-x lsp-describe-session` to see your workspace folder(s), then use `M-x lsp-workspace-folders-remove` and `M-x lsp-workspace-folders-add`
 
-#+begin_src emacs-lisp
+#+begin_src sh
 # GO Path
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/Code/golang
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-#+end_src>
+#+end_src
 
-#+begin_src emacs-lisp
+#+begin_src sh
 go install github.com/nsf/gocode@latest
 go install github.com/rogpeppe/godef@latest
 go install golang.org/x/tools/cmd/goimports@latest
@@ -679,27 +706,6 @@ go get -u github.com/nsf/gocode
   (setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
 #+end_src
 
-** clojure
-
-#+begin_src 
- (use-package clojure-mode
-   :defer t
-   :ensure t)
-
-(use-package cider
-  :ensure t)
-
-(use-package clj-refactor
-  :ensure t
-  :config
-  (add-hook 'clojure-mode-hook (lambda ()
-                                (clj-refactor-mode 1)
-                                ))
-  (cljr-add-keybindings-with-prefix "C-c C-m")
-  (setq cljr-warn-on-eval nil)
-   :bind ("C-c '" . hydra-cljr-help-menu/body))   
-#+end_src
-
 ** rust
 
 #+begin_src emacs-lisp
@@ -732,6 +738,27 @@ go get -u github.com/nsf/gocode
   (when buffer-file-name
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))   
+#+end_src
+
+** clojure
+
+ #+begin_src 
+(use-package clojure-mode
+   :defer t
+   :ensure t)
+
+(use-package cider
+  :ensure t)
+
+(use-package clj-refactor
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook (lambda ()
+                                (clj-refactor-mode 1)
+                                ))
+  (cljr-add-keybindings-with-prefix "C-c C-m")
+  (setq cljr-warn-on-eval nil)
+   :bind ("C-c '" . hydra-cljr-help-menu/body))   
 #+end_src
 
 * Org Mode Tweaks
@@ -795,7 +822,7 @@ Wrap a line
 
 * Infrastructure
 
-** JSON-Mode
+** json-mode
 
 #+begin_src emacs-lisp
 (use-package json-mode
@@ -806,14 +833,14 @@ Wrap a line
                                  (setq tab-width 2))))
 #+end_src
 
-** YAML-Mode
+** yaml-mode
 
 #+begin_src 
 (use-package yaml-mode
      :ensure t)
 #+end_src
 
-** Docker
+** docker
 
 #+begin_src emacs-lisp
 (use-package docker
@@ -822,14 +849,14 @@ Wrap a line
             ("C-c d i" . docker-images)))
 #+end_src
 
-** Dockerfile
+** dockerfile
 
 #+begin_src emacs-lisp
 (use-package dockerfile-mode
     :ensure t)
 #+end_src
 
-** Kubernetes
+** kubernetes
 
 #+begin_src emacs-lisp
    (use-package kubernetes
@@ -843,7 +870,7 @@ Wrap a line
     :hook (k8s-mode . yas-minor-mode))
 #+end_src
 
-** Terraform
+** terraform
 
 #+begin_src emacs-lisp 
 (use-package terraform-mode
