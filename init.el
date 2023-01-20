@@ -24,7 +24,13 @@
                           :append :local)))
 
 (use-package doom-themes
-  :init (load-theme 'doom-dracula t))
+    :defer t
+    :init (load-theme 'doom-palenight t))
+;;(use-package gruvbox
+;;    :init (load-theme 'gruvbox-dark-hard t))
+;;(use-package spacemacs-theme
+;;  :defer t
+;;  :init (load-theme 'spacemacs-dark t))
 
 (font-family-list)
 (add-to-list 'default-frame-alist
