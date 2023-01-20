@@ -24,7 +24,7 @@
                           :append :local)))
 
 (use-package doom-themes
-  :init (load-theme 'doom-palenight t))
+  :init (load-theme 'doom-dracula t))
 
 (font-family-list)
 (add-to-list 'default-frame-alist
@@ -127,7 +127,7 @@
   :bind ("C-s" . 'swiper))
 
 (use-package helm
-:straight t
+:ensure t
 :bind
   ("C-x C-f" . 'helm-find-files)
   ("C-x C-b" . 'helm-buffers-list)
@@ -200,6 +200,21 @@
   :config
     (beacon-mode 1))
 
+(use-package general
+  :ensure t)
+
+(use-package dap-mode
+   :commands dap-debug
+   :config
+     (require 'dap-node)
+     (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+
+    ;; Bind `C-c l d` to `dap-hydra` for easy access
+     (general-define-key
+       :keymaps 'lsp-mode-map
+       :prefix lsp-keymap-prefix
+       "d" '(dap-hydra t :wk "debugger")))
+
 (defun lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode))
@@ -238,3 +253,238 @@
 
 (use-package lsp-ivy
   :after lsp)
+
+(use-package python-mode
+   :ensure t
+   :hook (python-mode . lsp-deferred)
+   :custom
+       (python-shell-interpreter "python3")
+       (dap-python-executable "python3")
+       (dap-python-debugger 'debugpy)
+   :config
+       (require 'dap-python))
+
+(use-package pyvenv
+   :after python-mode
+   :config
+     (pyvenv-mode 1))
+
+(defun pythontemplate()
+   "Insert template for python"
+   (interactive)
+   (insert "#!/usr/bin/env python"
+            "\n"))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (electric-indent-local-mode -1)
+            (if (= (buffer-size) 0)
+                (pythontemplate))
+            (message "python hook")))
+
+(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
+
+(use-package slime
+  :ensure t
+  :config
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (setq slime-contribs '(slime-fancy)))
+
+(use-package slime-company
+  :ensure t
+  :init
+    (require 'company)
+    (slime-setup '(slime-fancy slime-company)))
+
+(add-hook 'shell-mode-hook 'yas-minor-mode)
+(add-hook 'shell-mode-hook 'flycheck-mode)
+(add-hook 'shell-mode-hook 'company-mode)
+
+(defun shell-mode-company-init ()
+  (setq-local company-backends '((company-shell
+                                  company-shell-env
+                                  company-etags
+                                  company-dabbrev-code))))
+
+(use-package company-shell
+  :ensure t
+  :config
+    (require 'company)
+    (add-hook 'shell-mode-hook 'shell-mode-company-init))
+
+# GO Path
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/Code/golang
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+#+end_src>
+
+#+begin_src emacs-lisp
+go install github.com/nsf/gocode@latest
+go install github.com/rogpeppe/godef@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/gopls@latest
+
+# GO Path
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/Code/golang
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+#+end_src>
+
+#+begin_src emacs-lisp
+go install github.com/nsf/gocode@latest
+go install github.com/rogpeppe/godef@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/gopls@latest
+
+(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
+(setq exec-path (append exec-path '("/home/aaa/Code/golang/bin/gopls")))
+
+(defun lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+(use-package go-mode 
+   :ensure t
+   :config
+     (add-hook 'go-mode-hook #'lsp)
+     (require 'dap-dlv-go)
+     (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
+     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+     (add-hook 'go-mode-hook #'lsp-deferred))
+
+(use-package go-eldoc
+  :ensure t
+  :config
+     (go-eldoc-setup))
+
+(use-package exec-path-from-shell
+  :ensure t)
+
+(use-package go-guru
+  :ensure t
+  :config
+     (customize-set-variable 'go-guru-scope "...")
+     (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+
+(use-package company-go
+  :ensure t
+  :config
+     (add-hook 'go-mode-hook (lambda ()
+                            (set (make-local-variable 'company-backends)
+                                 '(company-go))
+                            (company-mode))))
+
+(use-package gotest
+  :ensure t
+  :bind (:map go-mode-map
+              ("C-c C-t p" . go-test-current-project)
+              ("C-c C-t f" . go-test-current-file)
+              ("C-c C-t ." . go-test-current-test)
+              ("C-c r" . go-run))
+  :config
+     (setq go-test-verbose t))
+
+(defun set-exec-path-from-shell-PATH ()
+     (let ((path-from-shell (replace-regexp-in-string
+                    "[ \t\n]*$"
+                       ""
+                       (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+   (setenv "PATH" path-from-shell)
+   (setq eshell-path-env path-from-shell) ; for eshell users
+   (setq exec-path (split-string path-from-shell path-separator))))
+ 
+  (when window-system (set-exec-path-from-shell-PATH))
+  (setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
+
+(use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'aaa/rustic-mode-hook))
+
+(defun aaa/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(setq org-ellipsis " ")
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-confirm-babel-evaluate nil)
+(setq org-export-with-smart-quotes t)
+(setq org-src-window-setup 'current-window)
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+(add-hook 'org-mode-hook
+	    '(lambda ()
+	       (visual-line-mode 1)))
+
+(use-package diminish
+  :ensure t
+  :init
+  (diminish 'which-key-mode)
+  (diminish 'linum-relative-mode)
+  (diminish 'hungry-delete-mode)
+  (diminish 'visual-line-mode)
+  (diminish 'subword-mode)
+  (diminish 'beacon-mode)
+  (diminish 'irony-mode)
+  (diminish 'page-break-lines-mode)
+  (diminish 'auto-revert-mode)
+  (diminish 'rainbow-delimiters-mode)
+  (diminish 'rainbow-mode)
+  (diminish 'yas-minor-mode)
+  (diminish 'flycheck-mode)
+  (diminish 'helm-mode))
+
+(use-package json-mode
+   :ensure t
+   :config
+   (customize-set-variable 'json-mode-hook
+                             #'(lambda ()
+                                 (setq tab-width 2))))
+
+(use-package docker
+     :ensure t
+     :bind (("C-c d c" . docker-containers)
+            ("C-c d i" . docker-images)))
+
+(use-package dockerfile-mode
+    :ensure t)
+
+(use-package kubernetes
+  :ensure t
+  :commands (kubernetes-overview))
+
+(use-package k8s-mode
+  :ensure t
+  :hook (k8s-mode . yas-minor-mode))
+
+(use-package terraform-mode
+    :ensure t)
