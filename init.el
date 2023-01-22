@@ -415,7 +415,7 @@
    (setq exec-path (split-string path-from-shell path-separator))))
  
   (when window-system (set-exec-path-from-shell-PATH))
-  (setenv "GOPATH" "~/golang/src/github.com/abhishekamralkar/")
+  (setenv "GOPATH" "/home/aaa/golang/src/github.com/abhishekamralkar/")
 
 (use-package rustic
   :ensure
