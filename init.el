@@ -320,7 +320,7 @@
 
 (add-hook 'python-mode-hook
           (lambda ()
-            (electric-indent-local-mode -1)
+            (electric-indent-local-mode 1)
             (if (= (buffer-size) 0)
                 (pythontemplate))
             (message "python hook")))

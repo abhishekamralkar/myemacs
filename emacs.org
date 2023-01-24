@@ -472,6 +472,7 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
        "d" '(dap-hydra t :wk "debugger")))   
 #+end_src
 
+
 * LSP
 
 ** lsp-mode
@@ -568,7 +569,7 @@ pip install -U setuptools
 #+begin_src emacs-lisp
 (add-hook 'python-mode-hook
           (lambda ()
-            (electric-indent-local-mode -1)
+            (electric-indent-local-mode 1)
             (if (= (buffer-size) 0)
                 (pythontemplate))
             (message "python hook")))
