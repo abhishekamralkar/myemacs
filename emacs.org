@@ -472,7 +472,6 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
        "d" '(dap-hydra t :wk "debugger")))   
 #+end_src
 
-
 * LSP
 
 ** lsp-mode
@@ -533,6 +532,8 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 * Programming Languages
 
 ** python
+
+Install python-lsp server.
 
 #+begin_src sh
 pip3 install --user "python-language-server[all]"   
@@ -617,8 +618,16 @@ pip install -U setuptools
 
 ** golang
 
-gopls not able to find module in your workspace 
-You can run `M-x lsp-describe-session` to see your workspace folder(s), then use `M-x lsp-workspace-folders-remove` and `M-x lsp-workspace-folders-add`
+If you see error gopls not able to find module in your workspace 
+
+#+begin_src sh 
+M-x lsp-describe-session
+
+M-x lsp-workspace-folders-remove
+
+M-x lsp-workspace-folders-add
+#+end_src
+
 
 #+begin_src sh
 # GO Path
@@ -626,6 +635,8 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/Code/golang
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 #+end_src
+
+Install go packages and gopls 
 
 #+begin_src sh
 go install github.com/nsf/gocode@latest
@@ -750,7 +761,8 @@ go get -u github.com/nsf/gocode
 
 ** clojure
 
- #+begin_src 
+
+#+begin_src emacs-lisp 
 (use-package clojure-mode
    :defer t
    :ensure t)

@@ -447,6 +447,23 @@
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
+(use-package clojure-mode
+   :defer t
+   :ensure t)
+
+(use-package cider
+  :ensure t)
+
+(use-package clj-refactor
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook (lambda ()
+                                (clj-refactor-mode 1)
+                                ))
+  (cljr-add-keybindings-with-prefix "C-c C-m")
+  (setq cljr-warn-on-eval nil)
+   :bind ("C-c '" . hydra-cljr-help-menu/body))
+
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :custom
