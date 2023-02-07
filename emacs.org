@@ -271,6 +271,7 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
 
 ** helm
 
+
 #+begin_src emacs-lisp
 (use-package helm
   :ensure t
@@ -306,6 +307,20 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
 (helm-autoresize-mode 1)
 (define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
 (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
+#+end_src
+
+** hydra
+
+#+begin_src emacs-lisp
+
+(use-package hydra
+  :defer t)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
 #+end_src
 
 * Config
@@ -643,6 +658,7 @@ go install github.com/nsf/gocode@latest
 go install github.com/rogpeppe/godef@latest
 go install golang.org/x/tools/cmd/goimports@latest
 go install golang.org/x/tools/gopls@latest
+go install -v golang.org/x/tools/cmd/godoc@latest
 #+end_src
 
 #+begin_src emacs-lisp

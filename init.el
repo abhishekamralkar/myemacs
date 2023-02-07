@@ -167,6 +167,15 @@
 (define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
 (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 
+(use-package hydra
+  :defer t)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
+
 (defun config-edit ()
   (interactive)
   (find-file "~/.emacs.d/emacs.org"))
