@@ -18,7 +18,6 @@ To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning 
 (setq user-full-name "Abhishek Anand Amralkar"
       user-mail-address "abhishekamralkar@gmail.com")
 #+end_src
-
 * Use-Package
 
 The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy. 
