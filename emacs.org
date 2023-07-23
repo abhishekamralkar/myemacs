@@ -57,14 +57,15 @@ Hook to generate the .el file from .org file on save
 Using Doom Emacs theme 
 
 #+begin_src emacs-lisp
- (use-package doom-themes
-    :defer t
-    :init (load-theme 'doom-palenight t))
-;;(use-package gruvbox
-;;    :init (load-theme 'gruvbox-dark-hard t))
-;;(use-package spacemacs-theme
-;;  :defer t
-;;  :init (load-theme 'spacemacs-dark t))
+   (use-package doom-themes
+      :defer t
+      ;;:init (load-theme 'doom-palenight t)
+      :init (load-theme 'doom-gruvbox t))
+  ;;(use-package gruvbox
+  ;;    :init (load-theme 'gruvbox-dark-hard t))
+  ;;(use-package spacemacs-theme
+  ;;  :defer t
+  ;;  :init (load-theme 'spacemacs-dark t))
 #+end_src
 
 #+RESULTS:
@@ -78,8 +79,8 @@ Fira-Code no doubt one of the best fonts with better presicions
 (font-family-list)
 (add-to-list 'default-frame-alist
      (cond
-         ((string-equal system-type "darwin")    '(font . "Fira Code-12"))
-         ((string-equal system-type "gnu/linux") '(font . "Fira Code-10"))))
+         ((string-equal system-type "darwin")    '(font . "IntelOne Mono-16"))
+         ((string-equal system-type "gnu/linux") '(font . "IntelOne Mono-14"))))
 
 (use-package ac-emoji
   :ensure t)
@@ -101,6 +102,7 @@ Fira-Code no doubt one of the best fonts with better presicions
 
 #+begin_src emacs-lisp 
 (tool-bar-mode -1)
+(setq image-types '(svg png gif tiff jpeg xpm xbm pbm))
 #+end_src
 
 ** No Menubar
@@ -341,6 +343,17 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
   (find-file "~/.emacs.d/emacs.org"))
 (global-set-key (kbd "C-c e") 'config-edit)   
 #+end_src
+
+* Key Bindings
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "M-<up>") 'beginning-of-buffer)
+(global-set-key (kbd "M-<down>") 'end-of-buffer)
+(global-set-key (kbd "C-c c") 'org-capture)
+#+end_src
+
+#+RESULTS:
+: end-of-buffer
 
 * Developer Tools
 
