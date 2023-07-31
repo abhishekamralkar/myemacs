@@ -23,23 +23,25 @@ To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning 
 The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy. 
 
 #+begin_src emacs-lisp
-(require 'package)
+  (require 'package)
 
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org"   . "https://orgmode.org/elpa/")
-                         ("elpa"  . "https://elpa.gnu.org/packages/")))
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org"   . "https://orgmode.org/elpa/")
+                           ("elpa"  . "https://elpa.gnu.org/packages/")))
 
-(package-initialize)
-(unless package-archive-contents
-(package-refresh-contents))
+  (package-initialize)
+  (unless package-archive-contents
+  (package-refresh-contents))
 
-;; Initialize use-package on non-Linux platforms
-(unless (package-installed-p 'use-package)
-(package-install 'use-package))
+  ;; Initialize use-package on non-Linux platforms
+  (unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 
-(require 'use-package)
-(setq use-package-always-ensure t)
-(require 'org-tempo)
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+  (require 'org-tempo)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 #+end_src
 
 * Auto Tangle
@@ -79,8 +81,8 @@ Fira-Code no doubt one of the best fonts with better presicions
 (font-family-list)
 (add-to-list 'default-frame-alist
      (cond
-         ((string-equal system-type "darwin")    '(font . "IntelOne Mono-16"))
-         ((string-equal system-type "gnu/linux") '(font . "IntelOne Mono-14"))))
+         ((string-equal system-type "darwin")    '(font . "JetBrains Mono-16"))
+         ((string-equal system-type "gnu/linux") '(font . "JetBrains Mono-16"))))
 
 (use-package ac-emoji
   :ensure t)
@@ -89,6 +91,8 @@ Fira-Code no doubt one of the best fonts with better presicions
   t 'symbol
 (font-spec :family "Symbola") nil 'prepend)
 #+end_src
+
+#+RESULTS:
 
 * Emacs UI
 
@@ -585,6 +589,14 @@ pip install -U setuptools
    :config
      (pyvenv-mode 1))
 #+end_src
+
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :ensure t)
+  (add-to-list 'exec-path "/home/aaa/.local/bin")
+#+end_src
+
+#+RESULTS:
 
 #+begin_src emacs-lisp
 (defun pythontemplate()
