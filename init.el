@@ -3,21 +3,23 @@
 
 (require 'package)
 
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org"   . "https://orgmode.org/elpa/")
-                         ("elpa"  . "https://elpa.gnu.org/packages/")))
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org"   . "https://orgmode.org/elpa/")
+                           ("elpa"  . "https://elpa.gnu.org/packages/")))
 
-(package-initialize)
-(unless package-archive-contents
-(package-refresh-contents))
+  (package-initialize)
+  (unless package-archive-contents
+  (package-refresh-contents))
 
-;; Initialize use-package on non-Linux platforms
-(unless (package-installed-p 'use-package)
-(package-install 'use-package))
+  ;; Initialize use-package on non-Linux platforms
+  (unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 
-(require 'use-package)
-(setq use-package-always-ensure t)
-(require 'org-tempo)
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+  (require 'org-tempo)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 (add-hook 'org-mode-hook
           (lambda () (add-hook 'after-save-hook #'org-babel-tangle
@@ -25,7 +27,8 @@
 
 (use-package doom-themes
     :defer t
-    :init (load-theme 'doom-palenight t))
+    ;;:init (load-theme 'doom-palenight t)
+    :init (load-theme 'doom-gruvbox t))
 ;;(use-package gruvbox
 ;;    :init (load-theme 'gruvbox-dark-hard t))
 ;;(use-package spacemacs-theme
@@ -35,8 +38,8 @@
 (font-family-list)
 (add-to-list 'default-frame-alist
      (cond
-         ((string-equal system-type "darwin")    '(font . "Fira Code-12"))
-         ((string-equal system-type "gnu/linux") '(font . "Fira Code-10"))))
+         ((string-equal system-type "darwin")    '(font . "JetBrains Mono-16"))
+         ((string-equal system-type "gnu/linux") '(font . "JetBrains Mono-16"))))
 
 (use-package ac-emoji
   :ensure t)
@@ -48,6 +51,7 @@
 (setq inhibit-startup-message t)
 
 (tool-bar-mode -1)
+(setq image-types '(svg png gif tiff jpeg xpm xbm pbm))
 
 (menu-bar-mode -1)
 
@@ -186,6 +190,10 @@
   (find-file "~/.emacs.d/emacs.org"))
 (global-set-key (kbd "C-c e") 'config-edit)
 
+(global-set-key (kbd "M-<up>") 'beginning-of-buffer)
+(global-set-key (kbd "M-<down>") 'end-of-buffer)
+(global-set-key (kbd "C-c c") 'org-capture)
+
 (setq electric-pair-pairs '(
                            (?\{ . ?\})
                            (?\( . ?\))
@@ -320,6 +328,10 @@
    :after python-mode
    :config
      (pyvenv-mode 1))
+
+(use-package exec-path-from-shell
+  :ensure t)
+(add-to-list 'exec-path "/home/aaa/.local/bin")
 
 (defun pythontemplate()
    "Insert template for python"
