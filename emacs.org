@@ -568,7 +568,8 @@ Install python-lsp server.
 
 #+begin_src sh
 pip3 install --user "python-language-server[all]"   
-pip install -U setuptools
+pip3 install -U setuptools
+pip3 install python-lsp-server
 #+end_src
 
 #+begin_src emacs-lisp
