@@ -15,9 +15,10 @@ To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning 
 * About Me
 
 #+begin_src emacs-lisp
-(setq user-full-name "Abhishek Anand Amralkar"
-      user-mail-address "abhishekamralkar@gmail.com")
+  (setq user-full-name "Abhishek Anand Amralkar"
+        user-mail-address "abhishekamralkar@gmail.com")
 #+end_src
+
 * Use-Package
 
 The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy. 
@@ -26,8 +27,8 @@ The use-package macro allows you to isolate package configuration in your .emacs
   (require 'package)
 
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("org"   . "https://orgmode.org/elpa/")
-                           ("elpa"  . "https://elpa.gnu.org/packages/")))
+                             ("org"   . "https://orgmode.org/elpa/")
+                             ("elpa"  . "https://elpa.gnu.org/packages/")))
 
   (package-initialize)
   (unless package-archive-contents
@@ -40,8 +41,9 @@ The use-package macro allows you to isolate package configuration in your .emacs
   (require 'use-package)
   (setq use-package-always-ensure t)
   (require 'org-tempo)
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+  
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
 #+end_src
 
 * Auto Tangle
@@ -49,32 +51,21 @@ The use-package macro allows you to isolate package configuration in your .emacs
 Hook to generate the .el file from .org file on save
 
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook
-          (lambda () (add-hook 'after-save-hook #'org-babel-tangle
-                          :append :local)))
+  (add-hook 'org-mode-hook
+         (lambda () (add-hook 'after-save-hook #'org-babel-tangle
+                     :append :local)))
 #+end_src
-
-#+RESULTS:
-| (lambda nil (add-hook 'after-save-hook #'org-babel-tangle :append :local)) | org-tempo-setup | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
 
 * Theme
 
 Using Doom Emacs theme 
 
 #+begin_src emacs-lisp
-   (use-package doom-themes
+  (use-package doom-themes
       :defer t
       ;;:init (load-theme 'doom-palenight t)
       :init (load-theme 'doom-gruvbox t))
-  ;;(use-package gruvbox
-  ;;    :init (load-theme 'gruvbox-dark-hard t))
-  ;;(use-package spacemacs-theme
-  ;;  :defer t
-  ;;  :init (load-theme 'spacemacs-dark t))
 #+end_src
-
-#+RESULTS:
-: t
 
 * Fonts
 
@@ -95,71 +86,69 @@ Fira-Code no doubt one of the best fonts with better presicions
 (font-spec :family "Symbola") nil 'prepend)
 #+end_src
 
-#+RESULTS:
-
 * Emacs UI
 
 ** No Startup Screen
 
 #+begin_src emacs-lisp
-(setq inhibit-startup-message t)
+  (setq inhibit-startup-message t)
 #+end_src
 
 ** No Toolbar
 
-#+begin_src emacs-lisp 
-(tool-bar-mode -1)
-(setq image-types '(svg png gif tiff jpeg xpm xbm pbm))
+#+begin_src emacs-lisp
+  (tool-bar-mode -1)
+  (setq image-types '(svg png gif tiff jpeg xpm xbm pbm))
 #+end_src
 
 ** No Menubar
 
-#+begin_src emacs-lisp 
-(menu-bar-mode -1)
+#+begin_src emacs-lisp
+  (menu-bar-mode -1)
 #+end_src
 
 ** No Scrollbar
 
-#+begin_src emacs-lisp 
-(scroll-bar-mode -1)
+#+begin_src emacs-lisp
+  (scroll-bar-mode -1)
 #+end_src
 
 ** No Ringing Bells
 
 #+begin_src emacs-lisp
-(setq ring-bell-function 'ignore)  
+  (setq ring-bell-function 'ignore)  
 #+end_src
 
 ** UTF-8 Encoding
 
 #+begin_src emacs-lisp
-(setq locale-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)   
+  (setq locale-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)   
 #+end_src
 
 ** No backup please!
 
 #+begin_src emacs-lisp
-(setq make-backup-files nil)
-(setq auto-save-default nil)   
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)   
 #+end_src
 
 ** y for yes and n for no
 
-#+begin_src emacs-lisp 
-(defalias 'yes-or-no-p 'y-or-n-p)
+#+begin_src emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
 ** dashboard
 
 #+begin_src emacs-lisp
-(use-package dashboard
-  :ensure t
-  :config
-    (dashboard-setup-startup-hook))
+  (use-package dashboard
+    :ensure t
+    :config
+      (dashboard-setup-startup-hook))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -184,10 +173,10 @@ Fira-Code no doubt one of the best fonts with better presicions
 With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons if all-the-icons package and required fonts are installed. Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
 #+begin_src emacs-lisp
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1)
+    :custom ((doom-modeline-height 15)))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -202,7 +191,7 @@ With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awe
 ** no separator
 
 #+begin_src emacs-lisp
-(setq powerline-default-separator nil)   
+  (setq powerline-default-separator nil)   
 #+end_src
 
 ** cursor position
@@ -210,29 +199,29 @@ With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awe
 Show the current line and column for your cursor.
 
 #+begin_src emacs-lisp
-(setq line-number-mode t)
-(setq column-number-mode t)   
+  (setq line-number-mode t)
+  (setq column-number-mode t)   
 #+end_src
 
 ** clock
 
 #+begin_src emacs-lisp
-(setq display-time-24hr-format t)
-(setq display-time-format "%H:%M - %d %B %Y")
-(display-time-mode 1)
+  (setq display-time-24hr-format t)
+  (setq display-time-format "%H:%M - %d %B %Y")
+  (display-time-mode 1)
 #+end_src
 
 ** battery
 
 #+begin_src emacs-lisp
-(use-package fancy-battery
-  :ensure t
-  :config
-    (setq fancy-battery-show-percentage t)
-    (setq battery-update-interval 15)
-    (if window-system
-      (fancy-battery-mode)
-      (display-battery-mode)))   
+  (use-package fancy-battery
+    :ensure t
+    :config
+      (setq fancy-battery-show-percentage t)
+      (setq battery-update-interval 15)
+      (if window-system
+        (fancy-battery-mode)
+        (display-battery-mode)))   
 #+end_src 
 
 ** which-key
@@ -240,25 +229,25 @@ Show the current line and column for your cursor.
 which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup. For example, after enabling the minor mode if you enter C-x and wait for the default of 1 second the minibuffer will expand with all of the available key bindings that follow C-x (or as many as space allows given your settings).
 
 #+begin_src emacs-lisp
-(use-package which-key
-  :ensure t
-  :config
-    (which-key-mode))   
+  (use-package which-key
+    :ensure t
+    :config
+      (which-key-mode))   
 #+end_src
 
 ** command log mode
 
 #+begin_src emacs-lisp
-(use-package command-log-mode
-  :commands command-log-mode)   
+  (use-package command-log-mode
+    :commands command-log-mode)   
 #+end_src
 
 ** async
 
 #+begin_src emacs-lisp
-(use-package async
-  :ensure t
-  :init (dired-async-mode 1))   
+  (use-package async
+    :ensure t
+    :init (dired-async-mode 1))   
 #+end_src
 
 * UI Configuration
@@ -268,71 +257,71 @@ which-key is a minor mode for Emacs that displays the key bindings following you
 Ivy is an interactive interface for completion in Emacs. Emacs uses completion mechanism in a variety of contexts: code, menus, commands, variables, functions, etc. Completion entails listing, sorting, filtering, previewing, and applying actions on selected items. When active, ivy-mode completes the selection process by narrowing available choices while previewing in the minibuffer. Selecting the final candidate is either through simple keyboard character inputs or through powerful regular expressions.
 
 #+begin_src emacs-lisp
-(use-package ivy
-  :ensure t)
-(setq scroll-conservatively 100)   
+  (use-package ivy
+    :ensure t)
+  (setq scroll-conservatively 100)   
 #+end_src
 
 ** swiper
 
 #+begin_src emacs-lisp
-(use-package swiper
-  :ensure t
-  :bind ("C-s" . 'swiper))   
+  (use-package swiper
+    :ensure t
+    :bind ("C-s" . 'swiper))   
 #+end_src
 
 ** helm
 
 
 #+begin_src emacs-lisp
-(use-package helm
-  :ensure t
-  :bind
-  ("C-x C-f" . 'helm-find-files)
-  ("C-x C-b" . 'helm-buffers-list)
-  ("M-x" . 'helm-M-x)
-  :config
-  (defun daedreth/helm-hide-minibuffer ()
-    (when (with-helm-buffer helm-echo-input-in-header-line)
-      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-        (overlay-put ov 'window (selected-window))
-        (overlay-put ov 'face
-                     (let ((bg-color (face-background 'default nil)))
-                       `(:background ,bg-color :foreground ,bg-color)))
-        (setq-local cursor-type nil))))
-  (add-hook 'helm-minibuffer-set-up-hook 'daedreth/helm-hide-minibuffer)
-  (setq helm-autoresize-max-height 0
-        helm-autoresize-min-height 40
-        helm-M-x-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match t
-        helm-semantic-fuzzy-match t
-        helm-imenu-fuzzy-match t
-        helm-split-window-in-side-p nil
-        helm-move-to-line-cycle-in-source nil
-        helm-ff-search-library-in-sexp t
-        helm-scroll-amount 8 
-        helm-echo-input-in-header-line t)
-  :init
-  (helm-mode 1))
+  (use-package helm
+    :ensure t
+    :bind
+    ("C-x C-f" . 'helm-find-files)
+    ("C-x C-b" . 'helm-buffers-list)
+    ("M-x" . 'helm-M-x)
+    :config
+    (defun daedreth/helm-hide-minibuffer ()
+      (when (with-helm-buffer helm-echo-input-in-header-line)
+        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+          (overlay-put ov 'window (selected-window))
+          (overlay-put ov 'face
+                       (let ((bg-color (face-background 'default nil)))
+                         `(:background ,bg-color :foreground ,bg-color)))
+          (setq-local cursor-type nil))))
+    (add-hook 'helm-minibuffer-set-up-hook 'daedreth/helm-hide-minibuffer)
+    (setq helm-autoresize-max-height 0
+          helm-autoresize-min-height 40
+          helm-M-x-fuzzy-match t
+          helm-buffers-fuzzy-matching t
+          helm-recentf-fuzzy-match t
+          helm-semantic-fuzzy-match t
+          helm-imenu-fuzzy-match t
+          helm-split-window-in-side-p nil
+          helm-move-to-line-cycle-in-source nil
+          helm-ff-search-library-in-sexp t
+          helm-scroll-amount 8 
+          helm-echo-input-in-header-line t)
+    :init
+    (helm-mode 1))
 
-(helm-autoresize-mode 1)
-(define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
-(define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
+  (helm-autoresize-mode 1)
+  (define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
+  (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 #+end_src
 
 ** hydra
 
 #+begin_src emacs-lisp
 
-(use-package hydra
-  :defer t)
+  (use-package hydra
+    :defer t)
 
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("j" text-scale-increase "in")
-  ("k" text-scale-decrease "out")
-  ("f" nil "finished" :exit t))
+  (defhydra hydra-text-scale (:timeout 4)
+    "scale text"
+    ("j" text-scale-increase "in")
+    ("k" text-scale-decrease "out")
+    ("f" nil "finished" :exit t))
 #+end_src
 
 * Config
@@ -340,10 +329,10 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
 ** reload config
 
 #+begin_src emacs-lisp
-(defun config-reload ()
-  (interactive)
-  (find-file "~/.emacs.d/emacs.org"))
-(global-set-key (kbd "C-c r") 'config-reload)  
+  (defun config-reload ()
+    (interactive)
+    (find-file "~/.emacs.d/emacs.org"))
+  (global-set-key (kbd "C-c r") 'config-reload)  
 #+end_src
 
 ** edit config
@@ -366,13 +355,10 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
 * Key Bindings
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "M-<up>") 'beginning-of-buffer)
-(global-set-key (kbd "M-<down>") 'end-of-buffer)
-(global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "M-<up>") 'beginning-of-buffer)
+  (global-set-key (kbd "M-<down>") 'end-of-buffer)
+  (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
-
-#+RESULTS:
-: end-of-buffer
 
 * Developer Tools
 
@@ -381,13 +367,13 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
 Electric Pair mode, a global minor mode, provides a way to easily insert matching delimiters: parentheses, braces, brackets, etc. Whenever you insert an opening delimiter, the matching closing delimiter is automatically inserted as well, leaving point between the two.
 
 #+begin_src emacs-lisp
-(setq electric-pair-pairs '(
-                           (?\{ . ?\})
-                           (?\( . ?\))
-                           (?\[ . ?\])
-                           (?\" . ?\")
-                           ))   
-(electric-pair-mode t)
+  (setq electric-pair-pairs '(
+                             (?\{ . ?\})
+                             (?\( . ?\))
+                             (?\[ . ?\])
+                             (?\" . ?\")
+                             ))   
+  (electric-pair-mode t)
 #+end_src
 
 ** show parens
@@ -395,7 +381,7 @@ Electric Pair mode, a global minor mode, provides a way to easily insert matchin
 Highlights matching parens when the cursor is just behind one of them.
 
 #+begin_src emacs-lisp
-(show-paren-mode 1)
+  (show-paren-mode 1)
 #+end_src
 
 ** rainbow delimeter
@@ -403,10 +389,10 @@ Highlights matching parens when the cursor is just behind one of them.
 Colors parentheses and other delimiters
 
 #+begin_src emacs-lisp
-(use-package rainbow-delimiters
-  :ensure t
-  :init
-    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))   
+  (use-package rainbow-delimiters
+    :ensure t
+    :init
+      (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))   
 #+end_src
 
 ** company mode
@@ -414,36 +400,24 @@ Colors parentheses and other delimiters
 Code auto completion
 
 #+begin_src emacs-lisp
-  ;; (use-package company
-  ;;   :ensure
-  ;;   :custom
-  ;;   (company-idle-delay 0.5) ;; how long to wait until popup
-  ;;   ;; (company-begin-commands nil) ;; uncomment to disable popup
-  ;;   :bind
-  ;;   (:map company-active-map
-  ;; 		("C-n". company-select-next)
-  ;; 		("C-p". company-select-previous)
-  ;; 		("M-<". company-select-first)
-  ;; 		("M->". company-select-last)))
-
-(use-package company
-   :after lsp-mode
-   :hook (lsp-mode . company-mode)
-   :bind (:map company-active-map
-	  ("<tab>" . company-complete-selection))
-	  (:map lsp-mode-map
-	  ("<tab>" . company-indent-or-complete-common))
-   :custom
-   (company-minimum-prefix-length 1)
-   (company-idle-delay 0.0))
+  (use-package company
+     :after lsp-mode
+     :hook (lsp-mode . company-mode)
+     :bind (:map company-active-map
+            ("<tab>" . company-complete-selection))
+            (:map lsp-mode-map
+            ("<tab>" . company-indent-or-complete-common))
+     :custom
+     (company-minimum-prefix-length 1)
+     (company-idle-delay 0.0))
 
 #+end_src
 
 ** flycheck
 
 #+begin_src emacs-lisp
-(use-package flycheck
-  :ensure t)   
+  (use-package flycheck
+    :ensure t)   
 #+end_src
 
 ** yasnippet
@@ -451,12 +425,12 @@ Code auto completion
 Code template
 
 #+begin_src emacs-lisp
-(use-package yasnippet
-  :ensure t
-  :config
-    (use-package yasnippet-snippets
-      :ensure t)
-    (yas-reload-all))
+  (use-package yasnippet
+    :ensure t
+    :config
+      (use-package yasnippet-snippets
+        :ensure t)
+      (yas-reload-all))
 #+end_src
 
 ** magit
@@ -464,13 +438,13 @@ Code template
 GIT client for emacs
 
 #+begin_src emacs-lisp
-(use-package magit
-  :ensure t
-  :bind ("C-x g" . magit))
+  (use-package magit
+    :ensure t
+    :bind ("C-x g" . magit))
   
-(use-package forge
-  :ensure t
-  :after magit)
+  (use-package forge
+    :ensure t
+    :after magit)
 #+end_src
 
 ** projectile
@@ -478,10 +452,10 @@ GIT client for emacs
 Projectile is a project interaction library for Emacs. Its goal is to provide a nice set of features operating on a project level without introducing external dependencies (when feasible).
 
 #+begin_src emacs-lisp
-(use-package projectile
-  :ensure t
-  :init
-    (projectile-mode 1))
+  (use-package projectile
+    :ensure t
+    :init
+      (projectile-mode 1))
 #+end_src
 
 ** beacon
@@ -489,33 +463,33 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 Beacon- Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
 
 #+begin_src emacs-lisp
-(use-package beacon
-  :ensure t
-  :config
-    (beacon-mode 1))  
+  (use-package beacon
+    :ensure t
+    :config
+      (beacon-mode 1))  
 #+end_src
 
 ** general
 
 #+begin_src emacs-lisp
-(use-package general
-  :ensure t)
+  (use-package general
+    :ensure t)
 #+end_src
 
 ** dap-mode
 
 #+begin_src emacs-lisp
-(use-package dap-mode
-   :commands dap-debug
-   :config
-     (require 'dap-node)
-     (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+  (use-package dap-mode
+     :commands dap-debug
+     :config
+       (require 'dap-node)
+       (dap-node-setup) ;; Automatically installs Node debug adapter if needed
 
-    ;; Bind `C-c l d` to `dap-hydra` for easy access
-     (general-define-key
-       :keymaps 'lsp-mode-map
-       :prefix lsp-keymap-prefix
-       "d" '(dap-hydra t :wk "debugger")))   
+      ;; Bind `C-c l d` to `dap-hydra` for easy access
+       (general-define-key
+         :keymaps 'lsp-mode-map
+         :prefix lsp-keymap-prefix
+         "d" '(dap-hydra t :wk "debugger")))   
 #+end_src
 
 * LSP
@@ -523,56 +497,56 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 ** lsp-mode
 
 #+begin_src emacs-lisp
-(defun lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+  (defun lsp-mode-setup ()
+    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+    (lsp-headerline-breadcrumb-mode))
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :custom
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-eldoc-render-all t)
-  (lsp-idle-delay 0.6)
-  ;; enable / disable the hints as you prefer:
-  (lsp-rust-analyzer-server-display-inlay-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  (lsp-rust-analyzer-display-chaining-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  (lsp-rust-analyzer-display-closure-return-type-hints t)
-  (lsp-rust-analyzer-display-parameter-hints nil)
-  (lsp-rust-analyzer-display-reborrow-hints nil)
-  :hook (lsp-mode . lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))   
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :custom
+    ;; what to use when checking on-save. "check" is default, I prefer clippy
+    (lsp-rust-analyzer-cargo-watch-command "clippy")
+    (lsp-eldoc-render-all t)
+    (lsp-idle-delay 0.6)
+    ;; enable / disable the hints as you prefer:
+    (lsp-rust-analyzer-server-display-inlay-hints t)
+    (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+    (lsp-rust-analyzer-display-chaining-hints t)
+    (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+    (lsp-rust-analyzer-display-closure-return-type-hints t)
+    (lsp-rust-analyzer-display-parameter-hints nil)
+    (lsp-rust-analyzer-display-reborrow-hints nil)
+    :hook (lsp-mode . lsp-mode-setup)
+    :init
+    (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+    :config
+    (lsp-enable-which-key-integration t))   
 #+end_src
 
 ** lsp-ui
 
 #+begin_src emacs-lisp
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom)
-  (lsp-ui-peek-always-show t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil))   
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode)
+    :custom
+    (lsp-ui-doc-position 'bottom)
+    (lsp-ui-peek-always-show t)
+    (lsp-ui-sideline-show-hover t)
+    (lsp-ui-doc-enable nil))   
 #+end_src
 
 ** lsp-treemacs
 
 #+begin_src emacs-lisp
-(use-package lsp-treemacs
-  :after lsp)   
+  (use-package lsp-treemacs
+    :after lsp)   
 #+end_src
 
 ** lsp-ivy
 
 #+begin_src emacs-lisp
-(use-package lsp-ivy
-  :after lsp)   
+  (use-package lsp-ivy
+    :after lsp)   
 #+end_src
 
 * Programming Languages
@@ -582,28 +556,28 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 Install python-lsp server.
 
 #+begin_src sh
-pip3 install --user "python-language-server[all]"   
-pip3 install -U setuptools
-pip3 install python-lsp-server
+  pip3 install --user "python-language-server[all]"   
+  pip3 install -U setuptools
+  pip3 install python-lsp-server
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package python-mode
-   :ensure t
-   :hook (python-mode . lsp-deferred)
-   :custom
-       (python-shell-interpreter "python3")
-       (dap-python-executable "python3")
-       (dap-python-debugger 'debugpy)
-   :config
-       (require 'dap-python))   
+  (use-package python-mode
+     :ensure t
+     :hook (python-mode . lsp-deferred)
+     :custom
+         (python-shell-interpreter "python3")
+         (dap-python-executable "python3")
+         (dap-python-debugger 'debugpy)
+     :config
+         (require 'dap-python))   
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package pyvenv
-   :after python-mode
-   :config
-     (pyvenv-mode 1))
+  (use-package pyvenv
+     :after python-mode
+     :config
+       (pyvenv-mode 1))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -615,226 +589,226 @@ pip3 install python-lsp-server
 #+RESULTS:
 
 #+begin_src emacs-lisp
-(defun pythontemplate()
-   "Insert template for python"
-   (interactive)
-   (insert "#!/usr/bin/env python"
-            "\n"))
+  (defun pythontemplate()
+     "Insert template for python"
+     (interactive)
+     (insert "#!/usr/bin/env python"
+              "\n"))
 #+end_src
 
 #+begin_src emacs-lisp
-(add-hook 'python-mode-hook
-          (lambda ()
-            (electric-indent-local-mode 1)
-            (if (= (buffer-size) 0)
-                (pythontemplate))
-            (message "python hook")))
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (electric-indent-local-mode 1)
+              (if (= (buffer-size) 0)
+                  (pythontemplate))
+              (message "python hook")))
 #+end_src
 
 ** emacs lisp
 
 #+begin_src emacs-lisp
-(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-(add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
-(add-hook 'emacs-lisp-mode-hook 'company-mode)
+  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+  (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
+  (add-hook 'emacs-lisp-mode-hook 'company-mode)
 
-(use-package slime
-  :ensure t
-  :config
-  (setq inferior-lisp-program "/usr/bin/sbcl")
-  (setq slime-contribs '(slime-fancy)))
+  (use-package slime
+    :ensure t
+    :config
+    (setq inferior-lisp-program "/usr/bin/sbcl")
+    (setq slime-contribs '(slime-fancy)))
 
-(use-package slime-company
-  :ensure t
-  :init
-    (require 'company)
-    (slime-setup '(slime-fancy slime-company)))   
+  (use-package slime-company
+    :ensure t
+    :init
+      (require 'company)
+      (slime-setup '(slime-fancy slime-company)))   
 #+end_src
 
 ** bash
 
 #+begin_src emacs-lisp
-(add-hook 'shell-mode-hook 'yas-minor-mode)
-(add-hook 'shell-mode-hook 'flycheck-mode)
-(add-hook 'shell-mode-hook 'company-mode)
+  (add-hook 'shell-mode-hook 'yas-minor-mode)
+  (add-hook 'shell-mode-hook 'flycheck-mode)
+  (add-hook 'shell-mode-hook 'company-mode)
 
-(defun shell-mode-company-init ()
-  (setq-local company-backends '((company-shell
-                                  company-shell-env
-                                  company-etags
-                                  company-dabbrev-code))))
+  (defun shell-mode-company-init ()
+    (setq-local company-backends '((company-shell
+                                    company-shell-env
+                                    company-etags
+                                    company-dabbrev-code))))
 
-(use-package company-shell
-  :ensure t
-  :config
-    (require 'company)
-    (add-hook 'shell-mode-hook 'shell-mode-company-init))   
+  (use-package company-shell
+    :ensure t
+    :config
+      (require 'company)
+      (add-hook 'shell-mode-hook 'shell-mode-company-init))   
 #+end_src
 
 ** golang
 
 If you see error gopls not able to find module in your workspace 
 
-#+begin_src sh 
-M-x lsp-describe-session
+#+begin_src sh
+  M-x lsp-describe-session
 
-M-x lsp-workspace-folders-remove
+  M-x lsp-workspace-folders-remove
 
-M-x lsp-workspace-folders-add
+  M-x lsp-workspace-folders-add
 #+end_src
 
 
 #+begin_src sh
-# GO Path
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/Code/golang
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+  # GO Path
+  export GOROOT=/usr/local/go
+  export GOPATH=$HOME/Code/golang
+  export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 #+end_src
 
 Install go packages and gopls 
 
 #+begin_src sh
-go install github.com/nsf/gocode@latest
-go install github.com/rogpeppe/godef@latest
-go install golang.org/x/tools/cmd/goimports@latest
-go install golang.org/x/tools/gopls@latest
-go install -v golang.org/x/tools/cmd/godoc@latest
+  go install github.com/nsf/gocode@latest
+  go install github.com/rogpeppe/godef@latest
+  go install golang.org/x/tools/cmd/goimports@latest
+  go install golang.org/x/tools/gopls@latest
+  go install -v golang.org/x/tools/cmd/godoc@latest
 #+end_src
 
 #+begin_src emacs-lisp
-(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
-(setq exec-path (append exec-path '("/home/aaa/Code/golang/bin/gopls")))
+  (setq exec-path (append exec-path '("/usr/local/go/bin/go")))
+  (setq exec-path (append exec-path '("/home/aaa/Code/golang/bin/gopls")))
 
-(defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  (defun lsp-go-install-save-hooks ()
+      (add-hook 'before-save-hook #'lsp-format-buffer t t)
+      (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
-(use-package go-mode 
-   :ensure t
-   :config
-     (add-hook 'go-mode-hook #'lsp)
-     (require 'dap-dlv-go)
-     (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
-     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-     (add-hook 'go-mode-hook #'lsp-deferred))
+  (use-package go-mode 
+     :ensure t
+     :config
+       (add-hook 'go-mode-hook #'lsp)
+       (require 'dap-dlv-go)
+       (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
+       (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+       (add-hook 'go-mode-hook #'lsp-deferred))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package go-eldoc
-  :ensure t
-  :config
-     (go-eldoc-setup))
+  (use-package go-eldoc
+    :ensure t
+    :config
+       (go-eldoc-setup))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t)
+  (use-package exec-path-from-shell
+    :ensure t)
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package go-guru
-  :ensure t
-  :config
-     (customize-set-variable 'go-guru-scope "...")
-     (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+  (use-package go-guru
+    :ensure t
+    :config
+       (customize-set-variable 'go-guru-scope "...")
+       (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
 #+end_src
 
 autocomplete go
 
 #+begin_src sh
-go get -u github.com/nsf/gocode
+  go get -u github.com/nsf/gocode
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package company-go
-  :ensure t
-  :config
-     (add-hook 'go-mode-hook (lambda ()
-                            (set (make-local-variable 'company-backends)
-                                 '(company-go))
-                            (company-mode))))
+  (use-package company-go
+    :ensure t
+    :config
+       (add-hook 'go-mode-hook (lambda ()
+                              (set (make-local-variable 'company-backends)
+                                   '(company-go))
+                              (company-mode))))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package gotest
-  :ensure t
-  :bind (:map go-mode-map
-              ("C-c C-t p" . go-test-current-project)
-              ("C-c C-t f" . go-test-current-file)
-              ("C-c C-t ." . go-test-current-test)
-              ("C-c r" . go-run))
-  :config
-     (setq go-test-verbose t))
+  (use-package gotest
+    :ensure t
+    :bind (:map go-mode-map
+                ("C-c C-t p" . go-test-current-project)
+                ("C-c C-t f" . go-test-current-file)
+                ("C-c C-t ." . go-test-current-test)
+                ("C-c r" . go-run))
+    :config
+       (setq go-test-verbose t))
 #+end_src
 
 #+begin_src emacs-lisp
-(defun set-exec-path-from-shell-PATH ()
-     (let ((path-from-shell (replace-regexp-in-string
-                    "[ \t\n]*$"
-                       ""
-                       (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-   (setenv "PATH" path-from-shell)
-   (setq eshell-path-env path-from-shell) ; for eshell users
-   (setq exec-path (split-string path-from-shell path-separator))))
+  (defun set-exec-path-from-shell-PATH ()
+       (let ((path-from-shell (replace-regexp-in-string
+                      "[ \t\n]*$"
+                         ""
+                         (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+     (setenv "PATH" path-from-shell)
+     (setq eshell-path-env path-from-shell) ; for eshell users
+     (setq exec-path (split-string path-from-shell path-separator))))
  
-  (when window-system (set-exec-path-from-shell-PATH))
-  (setenv "GOPATH" "/home/aaa/golang/src/github.com/abhishekamralkar/")
+    (when window-system (set-exec-path-from-shell-PATH))
+    (setenv "GOPATH" "/home/aaa/golang/src/github.com/abhishekamralkar/")
 #+end_src
 
 ** rust
 
 #+begin_src emacs-lisp
-(use-package rustic
-  :ensure
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
-  :config
-  ;; uncomment for less flashiness
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-enable-symbol-highlighting nil)
-  ;; (setq lsp-signature-auto-activate nil)
+  (use-package rustic
+    :ensure
+    :bind (:map rustic-mode-map
+                ("M-j" . lsp-ui-imenu)
+                ("M-?" . lsp-find-references)
+                ("C-c C-c l" . flycheck-list-errors)
+                ("C-c C-c a" . lsp-execute-code-action)
+                ("C-c C-c r" . lsp-rename)
+                ("C-c C-c q" . lsp-workspace-restart)
+                ("C-c C-c Q" . lsp-workspace-shutdown)
+                ("C-c C-c s" . lsp-rust-analyzer-status))
+    :config
+    ;; uncomment for less flashiness
+    ;; (setq lsp-eldoc-hook nil)
+    ;; (setq lsp-enable-symbol-highlighting nil)
+    ;; (setq lsp-signature-auto-activate nil)
 
-  ;; comment to disable rustfmt on save
-  (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'aaa/rustic-mode-hook))
+    ;; comment to disable rustfmt on save
+    (setq rustic-format-on-save t)
+    (add-hook 'rustic-mode-hook 'aaa/rustic-mode-hook))
 
-(defun aaa/rustic-mode-hook ()
-  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
-  ;; save rust buffers that are not file visiting. Once
-  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
-  ;; no longer be necessary.
-  (when buffer-file-name
-    (setq-local buffer-save-without-query t))
-  (add-hook 'before-save-hook 'lsp-format-buffer nil t))   
+  (defun aaa/rustic-mode-hook ()
+    ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+    ;; save rust buffers that are not file visiting. Once
+    ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+    ;; no longer be necessary.
+    (when buffer-file-name
+      (setq-local buffer-save-without-query t))
+    (add-hook 'before-save-hook 'lsp-format-buffer nil t))   
 #+end_src
 
 ** clojure
 
 
-#+begin_src emacs-lisp 
-(use-package clojure-mode
-   :defer t
-   :ensure t)
+#+begin_src emacs-lisp
+  (use-package clojure-mode
+     :defer t
+     :ensure t)
 
-(use-package cider
-  :ensure t)
+  (use-package cider
+    :ensure t)
 
-(use-package clj-refactor
-  :ensure t
-  :config
-  (add-hook 'clojure-mode-hook (lambda ()
-                                (clj-refactor-mode 1)
-                                ))
-  (cljr-add-keybindings-with-prefix "C-c C-m")
-  (setq cljr-warn-on-eval nil)
-   :bind ("C-c '" . hydra-cljr-help-menu/body))   
+  (use-package clj-refactor
+    :ensure t
+    :config
+    (add-hook 'clojure-mode-hook (lambda ()
+                                  (clj-refactor-mode 1)
+                                  ))
+    (cljr-add-keybindings-with-prefix "C-c C-m")
+    (setq cljr-warn-on-eval nil)
+     :bind ("C-c '" . hydra-cljr-help-menu/body))   
 #+end_src
 
 * Org Mode Tweaks
@@ -844,10 +818,10 @@ go get -u github.com/nsf/gocode
 Nice bullets instead of  asterik
 
 #+begin_src emacs-lisp
-(use-package org-bullets
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  (use-package org-bullets
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
 
 ** Common Setting
@@ -855,13 +829,13 @@ Nice bullets instead of  asterik
 Some common setting
 
 #+begin_src emacs-lisp
-(setq org-ellipsis " ")
-(setq org-src-fontify-natively t)
-(setq org-src-tab-acts-natively t)
-(setq org-confirm-babel-evaluate nil)
-(setq org-export-with-smart-quotes t)
-(setq org-src-window-setup 'current-window)
-(add-hook 'org-mode-hook 'org-indent-mode)
+  (setq org-ellipsis " ")
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-confirm-babel-evaluate nil)
+  (setq org-export-with-smart-quotes t)
+  (setq org-src-window-setup 'current-window)
+  (add-hook 'org-mode-hook 'org-indent-mode)
 #+end_src
 
 ** Line Wrap
@@ -869,31 +843,31 @@ Some common setting
 Wrap a line
 
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook
-	    '(lambda ()
-	       (visual-line-mode 1)))
+  (add-hook 'org-mode-hook
+              '(lambda ()
+                 (visual-line-mode 1)))
 #+end_src
 
 * Diminish
 
 #+begin_src emacs-lisp
-(use-package diminish
-  :ensure t
-  :init
-  (diminish 'which-key-mode)
-  (diminish 'linum-relative-mode)
-  (diminish 'hungry-delete-mode)
-  (diminish 'visual-line-mode)
-  (diminish 'subword-mode)
-  (diminish 'beacon-mode)
-  (diminish 'irony-mode)
-  (diminish 'page-break-lines-mode)
-  (diminish 'auto-revert-mode)
-  (diminish 'rainbow-delimiters-mode)
-  (diminish 'rainbow-mode)
-  (diminish 'yas-minor-mode)
-  (diminish 'flycheck-mode)
-  (diminish 'helm-mode))  
+  (use-package diminish
+    :ensure t
+    :init
+    (diminish 'which-key-mode)
+    (diminish 'linum-relative-mode)
+    (diminish 'hungry-delete-mode)
+    (diminish 'visual-line-mode)
+    (diminish 'subword-mode)
+    (diminish 'beacon-mode)
+    (diminish 'irony-mode)
+    (diminish 'page-break-lines-mode)
+    (diminish 'auto-revert-mode)
+    (diminish 'rainbow-delimiters-mode)
+    (diminish 'rainbow-mode)
+    (diminish 'yas-minor-mode)
+    (diminish 'flycheck-mode)
+    (diminish 'helm-mode))  
 #+end_src
 
 * Infrastructure
@@ -901,35 +875,35 @@ Wrap a line
 ** json-mode
 
 #+begin_src emacs-lisp
-(use-package json-mode
-   :ensure t
-   :config
-   (customize-set-variable 'json-mode-hook
-                             '(lambda ()
-                                 (setq tab-width 2))))
+  (use-package json-mode
+     :ensure t
+     :config
+     (customize-set-variable 'json-mode-hook
+                               '(lambda ()
+                                   (setq tab-width 2))))
 #+end_src
 
 ** yaml-mode
 
-#+begin_src 
-(use-package yaml-mode
-     :ensure t)
+#+begin_src emacs-lisp 
+  (use-package yaml-mode
+       :ensure t)
 #+end_src
 
 ** docker
 
 #+begin_src emacs-lisp
-(use-package docker
-     :ensure t
-     :bind (("C-c d c" . docker-containers)
-            ("C-c d i" . docker-images)))
+  (use-package docker
+       :ensure t
+       :bind (("C-c d c" . docker-containers)
+              ("C-c d i" . docker-images)))
 #+end_src
 
 ** dockerfile
 
 #+begin_src emacs-lisp
-(use-package dockerfile-mode
-    :ensure t)
+  (use-package dockerfile-mode
+      :ensure t)
 #+end_src
 
 ** kubernetes
@@ -949,6 +923,6 @@ Wrap a line
 ** terraform
 
 #+begin_src emacs-lisp 
-(use-package terraform-mode
-    :ensure t)
+  (use-package terraform-mode
+      :ensure t)
 #+end_src
