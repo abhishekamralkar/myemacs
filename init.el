@@ -3,37 +3,33 @@
 
 (require 'package)
 
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
                            ("org"   . "https://orgmode.org/elpa/")
                            ("elpa"  . "https://elpa.gnu.org/packages/")))
 
-  (package-initialize)
-  (unless package-archive-contents
-  (package-refresh-contents))
+(package-initialize)
+(unless package-archive-contents
+(package-refresh-contents))
 
-  ;; Initialize use-package on non-Linux platforms
-  (unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+;; Initialize use-package on non-Linux platforms
+(unless (package-installed-p 'use-package)
+(package-install 'use-package))
 
-  (require 'use-package)
-  (setq use-package-always-ensure t)
-  (require 'org-tempo)
+(require 'use-package)
+(setq use-package-always-ensure t)
+(require 'org-tempo)
+
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
 (add-hook 'org-mode-hook
-          (lambda () (add-hook 'after-save-hook #'org-babel-tangle
-                          :append :local)))
+       (lambda () (add-hook 'after-save-hook #'org-babel-tangle
+                   :append :local)))
 
 (use-package doom-themes
     :defer t
     ;;:init (load-theme 'doom-palenight t)
     :init (load-theme 'doom-gruvbox t))
-;;(use-package gruvbox
-;;    :init (load-theme 'gruvbox-dark-hard t))
-;;(use-package spacemacs-theme
-;;  :defer t
-;;  :init (load-theme 'spacemacs-dark t))
 
 (font-family-list)
 (add-to-list 'default-frame-alist
@@ -183,10 +179,10 @@
   ("k" text-scale-decrease "out")
   ("f" nil "finished" :exit t))
 
-(defun config-edit ()
+(defun config-reload ()
   (interactive)
   (find-file "~/.emacs.d/emacs.org"))
-(global-set-key (kbd "C-c e") 'config-edit)
+(global-set-key (kbd "C-c r") 'config-reload)
 
 (defun config-edit ()
   (interactive)
@@ -212,25 +208,13 @@
   :init
     (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-;; (use-package company
-  ;;   :ensure
-  ;;   :custom
-  ;;   (company-idle-delay 0.5) ;; how long to wait until popup
-  ;;   ;; (company-begin-commands nil) ;; uncomment to disable popup
-  ;;   :bind
-  ;;   (:map company-active-map
-  ;; 		("C-n". company-select-next)
-  ;; 		("C-p". company-select-previous)
-  ;; 		("M-<". company-select-first)
-  ;; 		("M->". company-select-last)))
-
 (use-package company
    :after lsp-mode
    :hook (lsp-mode . company-mode)
    :bind (:map company-active-map
-	  ("<tab>" . company-complete-selection))
-	  (:map lsp-mode-map
-	  ("<tab>" . company-indent-or-complete-common))
+          ("<tab>" . company-complete-selection))
+          (:map lsp-mode-map
+          ("<tab>" . company-indent-or-complete-common))
    :custom
    (company-minimum-prefix-length 1)
    (company-idle-delay 0.0))
@@ -248,7 +232,7 @@
 (use-package magit
   :ensure t
   :bind ("C-x g" . magit))
-  
+
 (use-package forge
   :ensure t
   :after magit)
@@ -437,7 +421,7 @@
    (setenv "PATH" path-from-shell)
    (setq eshell-path-env path-from-shell) ; for eshell users
    (setq exec-path (split-string path-from-shell path-separator))))
- 
+
   (when window-system (set-exec-path-from-shell-PATH))
   (setenv "GOPATH" "/home/aaa/golang/src/github.com/abhishekamralkar/")
 
@@ -502,8 +486,8 @@
 (add-hook 'org-mode-hook 'org-indent-mode)
 
 (add-hook 'org-mode-hook
-	    '(lambda ()
-	       (visual-line-mode 1)))
+            '(lambda ()
+               (visual-line-mode 1)))
 
 (use-package diminish
   :ensure t
@@ -529,6 +513,9 @@
    (customize-set-variable 'json-mode-hook
                              '(lambda ()
                                  (setq tab-width 2))))
+
+(use-package yaml-mode
+     :ensure t)
 
 (use-package docker
      :ensure t
