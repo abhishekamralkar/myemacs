@@ -12,3 +12,7 @@ eshell/
 flycheck_init.el
 ac-comphist.dat
 .extension/
+eln-cache/
+tramp
+tree-sitter/
+
