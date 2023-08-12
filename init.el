@@ -98,6 +98,9 @@
 (use-package all-the-icons
   :ensure t)
 
+(use-package nerd-icons
+    :ensure t)
+
 (setq powerline-default-separator nil)
 
 (setq line-number-mode t)

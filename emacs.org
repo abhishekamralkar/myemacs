@@ -54,6 +54,9 @@ Hook to generate the .el file from .org file on save
                           :append :local)))
 #+end_src
 
+#+RESULTS:
+| (lambda nil (add-hook 'after-save-hook #'org-babel-tangle :append :local)) | org-tempo-setup | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
+
 * Theme
 
 Using Doom Emacs theme 
@@ -192,6 +195,10 @@ With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awe
   :ensure t)
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package nerd-icons
+    :ensure t)
+#+end_src
 ** no separator
 
 #+begin_src emacs-lisp
@@ -333,20 +340,28 @@ Ivy is an interactive interface for completion in Emacs. Emacs uses completion m
 ** reload config
 
 #+begin_src emacs-lisp
-(defun config-edit ()
+(defun config-reload ()
   (interactive)
   (find-file "~/.emacs.d/emacs.org"))
-(global-set-key (kbd "C-c e") 'config-edit)  
+(global-set-key (kbd "C-c r") 'config-reload)  
 #+end_src
 
 ** edit config
 
 #+begin_src emacs-lisp
-(defun config-edit ()
-  (interactive)
-  (find-file "~/.emacs.d/emacs.org"))
-(global-set-key (kbd "C-c e") 'config-edit)   
+  (defun config-edit ()
+    (interactive)
+    (find-file "~/.emacs.d/emacs.org"))
+  (global-set-key (kbd "C-c e") 'config-edit)
 #+end_src
+
+** custom
+
+#+begin_src emacs-lisp
+(setq lsp-enable-imenu nil)
+(add-to-list 'image-types '(svg png))
+(setq warning-minimum-level :emergency)
+#+end_src>
 
 * Key Bindings
 
