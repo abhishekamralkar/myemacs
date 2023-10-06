@@ -185,16 +185,71 @@
   :ensure t
   :config
   (beacon-mode 1))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(beacon projectile which-key use-package ivy-rich hydra helm doom-themes doom-modeline dashboard counsel auto-package-update all-the-icons ac-emoji)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+(show-paren-mode 1)
+
+(use-package rainbow-delimiters
+   :ensure t
+   :init
+   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package company
+    :after lsp-mode
+    :hook (lsp-mode . company-mode)
+    :bind (:map company-active-map
+            ("<tab>" . company-complete-selection))
+            (:map lsp-mode-map
+            ("<tab>" . company-indent-or-complete-common))
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0))
+
+(use-package flycheck
+   :ensure t)
+
+(use-package yasnippet
+   :ensure t
+   :config
+     (use-package yasnippet-snippets
+       :ensure t)
+     (yas-reload-all))
+
+(use-package magit
+   :ensure t
+   :bind ("C-x g" . magit))
+  
+(use-package forge
+   :ensure t
+   :after magit)
+
+(use-package projectile
+   :ensure t
+   :init
+     (projectile-mode 1))
+
+(use-package general
+   :ensure t)
+
+(use-package dap-mode
+   :commands dap-debug
+   :config
+     (require 'dap-node)
+     (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+
+    ;; Bind `C-c l d` to `dap-hydra` for easy access
+     (general-define-key
+       :keymaps 'lsp-mode-map
+       :prefix lsp-keymap-prefix
+       "d" '(dap-hydra t :wk "debugger")))
+
+(defun aaa/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . aaa/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))

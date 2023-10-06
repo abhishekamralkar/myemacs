@@ -96,19 +96,19 @@ Using JetBrains fonts
 (tool-bar-mode -1)
 #+end_src
 
-** No menubar
+** no menubar
 
 #+begin_src emacs-lisp
 (menu-bar-mode -1)
 #+end_src
 
-** No scrollbar
+** no scrollbar
 
 #+begin_src emacs-lisp
 (scroll-bar-mode -1)
 #+end_src
 
-** No ringing bells
+** no ringing bells
 
 #+begin_src emacs-lisp
 (setq ring-bell-function 'ignore)  
@@ -309,6 +309,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 
 * beacon
 
+
 Beacon- Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
 
 #+begin_src emacs-lisp
@@ -317,3 +318,215 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
   :config
   (beacon-mode 1))  
 #+end_src
+
+* Custom
+
+** reload
+
+#+begin_src emacs-lisp
+(defun config-reload ()
+  (interactive)
+  (find-file "~/.emacs.d/emacs.org"))
+(global-set-key (kbd "C-c r") 'config-reload)  
+#+end_src>
+
+** edit
+
+#+begin_src emacs-lisp
+(defun config-edit ()
+  (interactive)
+  (find-file "~/.emacs.d/emacs.org"))
+(global-set-key (kbd "C-c e") 'config-edit)
+#+end_src>
+
+** bindings
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "M-<up>") 'beginning-of-buffer)
+(global-set-key (kbd "M-<down>") 'end-of-buffer)
+(global-set-key (kbd "C-c c") 'org-capture)
+#+end_src>
+
+* Tools
+
+** electric
+
+Electric Pair mode, a global minor mode, provides a way to easily insert matching delimiters: parentheses, braces, brackets, etc. Whenever you insert an opening delimiter, the matching closing delimiter is automatically inserted as well, leaving point between the two.
+
+#+begin_src emacs-lisp
+(setq electric-pair-pairs '(
+                             (?\{ . ?\})
+                             (?\( . ?\))
+                             (?\[ . ?\])
+                             (?\" . ?\")
+                             ))   
+(electric-pair-mode t)
+#+end_src>
+
+** show parens
+
+Highlights matching parens when the cursor is just behind one of them.
+
+#+begin_src emacs-lisp
+(show-paren-mode 1)
+#+end_src
+
+** rainbow delimeter
+
+Colors parentheses and other delimiters
+
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+   :ensure t
+   :init
+   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))   
+#+end_src
+
+** company mode
+
+Code auto completion
+
+#+begin_src emacs-lisp
+(use-package company
+    :after lsp-mode
+    :hook (lsp-mode . company-mode)
+    :bind (:map company-active-map
+            ("<tab>" . company-complete-selection))
+            (:map lsp-mode-map
+            ("<tab>" . company-indent-or-complete-common))
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0))
+#+end_src
+
+** flycheck
+
+#+begin_src emacs-lisp
+(use-package flycheck
+   :ensure t)   
+#+end_src
+
+** yasnippet
+
+Code template
+
+#+begin_src emacs-lisp
+(use-package yasnippet
+   :ensure t
+   :config
+     (use-package yasnippet-snippets
+       :ensure t)
+     (yas-reload-all))
+#+end_src
+
+** magit
+
+GIT client for emacs
+
+#+begin_src emacs-lisp
+(use-package magit
+   :ensure t
+   :bind ("C-x g" . magit))
+  
+(use-package forge
+   :ensure t
+   :after magit)
+#+end_src
+
+** projectile
+
+Projectile is a project interaction library for Emacs. Its goal is to provide a nice set of features operating on a project level without introducing external dependencies (when feasible).
+
+#+begin_src emacs-lisp
+(use-package projectile
+   :ensure t
+   :init
+     (projectile-mode 1))
+#+end_src
+
+** general
+
+#+begin_src emacs-lisp
+(use-package general
+   :ensure t)
+#+end_src
+
+** dap-mode
+
+#+begin_src emacs-lisp
+  (use-package dap-mode
+     :commands dap-debug
+     :config
+       (require 'dap-node)
+       (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+
+      ;; Bind `C-c l d` to `dap-hydra` for easy access
+       (general-define-key
+         :keymaps 'lsp-mode-map
+         :prefix lsp-keymap-prefix
+         "d" '(dap-hydra t :wk "debugger")))   
+#+end_src
+
+* languages
+
+** lsp-mode
+
+#+begin_src emacs-lisp
+(defun aaa/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . aaa/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
+#+end_src
+
+
+** lsp-ui
+
+#+begin_src emacs-lisp
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+#+end_src>
+
+** lsp-treemacs
+
+#+begin_src emacs-lisp
+(use-package lsp-treemacs
+  :after lsp)
+#+end_src>
+
+** lsp-ivy
+
+#+begin_src emacs-lisp
+(use-package lsp-ivy
+  :after lsp)
+#+end_src>
+
+** dap-mode
+
+#+begin_src emacs-lisp
+(use-package dap-mode
+  ;; Uncomment the config below if you want all UI panes to be hidden by default!
+  ;; :custom
+  ;; (lsp-enable-dap-auto-configure nil)
+  ;; :config
+  ;; (dap-ui-mode 1)
+  :commands dap-debug
+  :config
+  ;; Set up Node debugging
+  (require 'dap-node)
+  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+
+  ;; Bind `C-c l d` to `dap-hydra` for easy access
+  (general-define-key
+    :keymaps 'lsp-mode-map
+    :prefix lsp-keymap-prefix
+    "d" '(dap-hydra t :wk "debugger")))
+#+end_src>
