@@ -472,27 +472,31 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 ** lsp-mode
 
 #+begin_src emacs-lisp
-(defun aaa/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
-
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook (lsp-mode . aaa/lsp-mode-setup)
+  :hook 
+  (lsp-mode . lsp-enable-which-key-integration)
+  :custom
+  (lsp-diagnostics-provider :capf)
+  (lsp-headerline-breadcrumb-enable t)
+  (lsp-headerline-breadcrumb-segments '(project file symbols))
+  (lsp-lens-enable nil)
+  (lsp-disabled-clients '((python-mode . pyls)))
   :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))
+  (setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
+  :config)
 #+end_src
-
 
 ** lsp-ui
 
 #+begin_src emacs-lisp
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
+  :after lsp-mode
   :custom
-  (lsp-ui-doc-position 'bottom))
+  (lsp-ui-doc-show-with-cursor nil)
+  :config
+  (setq lsp-ui-doc-position 'bottom))
 #+end_src>
 
 ** lsp-treemacs
@@ -509,24 +513,92 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   :after lsp)
 #+end_src>
 
-** dap-mode
+** python
+
+Install python-lsp server.
+
+#+begin_src sh
+  pip3 install --user "python-language-server[all]"   
+  pip3 install -U setuptools
+  pip3 install pyright or
+  snap install pyright --classic
+#+end_src
+
+*** pyright
 
 #+begin_src emacs-lisp
-(use-package dap-mode
-  ;; Uncomment the config below if you want all UI panes to be hidden by default!
-  ;; :custom
-  ;; (lsp-enable-dap-auto-configure nil)
-  ;; :config
-  ;; (dap-ui-mode 1)
-  :commands dap-debug
-  :config
-  ;; Set up Node debugging
-  (require 'dap-node)
-  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+(use-package lsp-pyright
+  :hook
+  (python-mode . (lambda ()
+                   (require 'lsp-pyright)
+                   (lsp-deferred))))
+#+end_src
 
-  ;; Bind `C-c l d` to `dap-hydra` for easy access
-  (general-define-key
-    :keymaps 'lsp-mode-map
-    :prefix lsp-keymap-prefix
-    "d" '(dap-hydra t :wk "debugger")))
-#+end_src>
+*** pyenv
+
+Strongly recommend to use python virtualenv to python work properly in emacs.
+
+Assuming venvs are installed here ~/.venvs
+
+Learn about setting python virtual env below
+
+https://blog.fredrikmeyer.net/2020/08/26/emacs-python-venv.html
+
+https://ddavis.io/posts/emacs-python-lsp
+
+You can use M-x pyvenv-activate to activate specific venv
+
+#+begin_src emacs-lisp
+(use-package pyvenv
+  :ensure t
+  :init
+  (setenv "WORKON_HOME" "~/.venvs/")
+  :config
+  ;; (pyvenv-mode t)
+
+  ;; Set correct Python interpreter
+  (setq pyvenv-post-activate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python")))))
+  (setq pyvenv-post-deactivate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter "python3")))))
+#+end_src
+
+*** formatting
+
+#+begin_src emacs-lisp
+(use-package blacken
+  :init
+  (setq-default blacken-fast-unsafe t)
+  (setq-default blacken-line-length 80))
+#+end_src
+
+*** python-mode
+
+#+begin_src emacs-lisp
+(use-package python-mode
+  :hook
+  (python-mode . pyvenv-mode)
+  (python-mode . flycheck-mode)
+  (python-mode . company-mode)
+  (python-mode . blacken-mode)
+  (python-mode . yas-minor-mode)
+  :custom
+  ;; NOTE: Set these if Python 3 is called "python3" on your system!
+  (python-shell-interpreter "python3")
+  :config)
+#+end_src
+
+* org-mode
+** org bullets
+
+Nice bullets instead of  asterik
+
+#+begin_src emacs-lisp
+(use-package org-bullets
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+end_src
+
