@@ -294,21 +294,31 @@
   (python-shell-interpreter "python3")
   :config)
 
+(use-package exec-path-from-shell
+  :ensure t)
+;;(when (memq window-system '(mac ns))
+;;  (exec-path-from-shell-initialize)
+;;  (exec-path-from-shell-copy-env "GOPATH"))
+
+;;(setenv "PATH" (concat (getenv "PATH") ":/usr/local/go/bin/go"))
+    ;;(setenv "PATH" (concat (getenv "PATH") ":/home/aaa/Code/golang/bin/gopls"))
 (setq exec-path (append exec-path '("/usr/local/go/bin/go")))
 (setq exec-path (append exec-path '("/home/aaa/Code/golang/bin/gopls")))
+(setq exec-path (append exec-path '("/usr/local/go/")))
+(setq exec-path (append exec-path '("/home/aaa/Code/golang/")))  
 
-(defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-	(add-hook 'before-save-hook #'lsp-organize-imports t t))
+    (defun lsp-go-install-save-hooks ()
+	(add-hook 'before-save-hook #'lsp-format-buffer t t)
+	    (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
-(use-package go-mode 
-:ensure t
-:config
-(add-hook 'go-mode-hook #'lsp)
-(require 'dap-dlv-go)
-(add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-(add-hook 'go-mode-hook #'lsp-deferred))
+    (use-package go-mode 
+    :ensure t
+    :config
+    (add-hook 'go-mode-hook #'lsp)
+    (require 'dap-dlv-go)
+    (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
+    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+    (add-hook 'go-mode-hook #'lsp-deferred))
 
 (use-package go-eldoc
 :ensure t
@@ -342,18 +352,155 @@
 :config
     (setq go-test-verbose t))
 
+(use-package clojure-mode
+   :defer t
+   :ensure t)
+
+(use-package cider
+  :ensure t)
+
+(use-package clj-refactor
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook (lambda ()
+                                (clj-refactor-mode 1)
+                                ))
+  (cljr-add-keybindings-with-prefix "C-c C-m")
+  (setq cljr-warn-on-eval nil)
+   :bind ("C-c '" . hydra-cljr-help-menu/body))
+
+(add-hook 'shell-mode-hook 'yas-minor-mode)
+(add-hook 'shell-mode-hook 'flycheck-mode)
+(add-hook 'shell-mode-hook 'company-mode)
+
+(defun shell-mode-company-init ()
+  (setq-local company-backends '((company-shell
+                                  company-shell-env
+                                  company-etags
+                                  company-dabbrev-code))))
+
+(use-package company-shell
+  :ensure t
+  :config
+    (require 'company)
+    (add-hook 'shell-mode-hook 'shell-mode-company-init))
+
+(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
+
+(use-package slime
+  :ensure t
+  :config
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (setq slime-contribs '(slime-fancy)))
+
+(use-package slime-company
+  :ensure t
+  :init
+    (require 'company)
+    (slime-setup '(slime-fancy slime-company)))
+
 (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(setq org-ellipsis " ")
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-confirm-babel-evaluate nil)
+(setq org-export-with-smart-quotes t)
+(setq org-src-window-setup 'current-window)
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+(add-hook 'org-mode-hook
+            '(lambda ()
+               (visual-line-mode 1)))
+
+(use-package diminish
+    :ensure t
+    :init
+    (diminish 'which-key-mode)
+    (diminish 'linum-relative-mode)
+    (diminish 'hungry-delete-mode)
+    (diminish 'visual-line-mode)
+    (diminish 'subword-mode)
+    (diminish 'beacon-mode)
+    (diminish 'irony-mode)
+    (diminish 'page-break-lines-mode)
+    (diminish 'auto-revert-mode)
+    (diminish 'rainbow-delimiters-mode)
+    (diminish 'rainbow-mode)
+    (diminish 'yas-minor-mode)
+    (diminish 'flycheck-mode)
+    (diminish 'helm-mode))
+
+(use-package json-mode
+   :ensure t
+   :config
+   (customize-set-variable 'json-mode-hook
+                             '(lambda ()
+                                 (setq tab-width 2))))
+
+(use-package yaml-mode
+     :ensure t)
+
+(use-package docker
+     :ensure t
+     :bind (("C-c d c" . docker-containers)
+            ("C-c d i" . docker-images)))
+
+(use-package dockerfile-mode
+    :ensure t)
+
+(use-package kubernetes
+  :ensure t
+  :commands (kubernetes-overview))
+
+(use-package k8s-mode
+  :ensure t
+  :hook (k8s-mode . yas-minor-mode))
+
+(use-package terraform-mode
+    :ensure t)
+
+(use-package dired
+  :ensure nil
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-single-up-directory
+    "l" 'dired-single-buffer))
+
+(use-package dired-single
+  :commands (dired dired-jump))
+
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(use-package dired-open
+  :commands (dired dired-jump)
+  :config
+  ;; Doesn't work as expected!
+  ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
+  (setq dired-open-extensions '(("png" . "feh")
+                                ("mkv" . "mpv"))))
+
+(use-package dired-hide-dotfiles
+  :hook (dired-mode . dired-hide-dotfiles-mode)
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "H" 'dired-hide-dotfiles-mode))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(gotest company-go go-guru go-eldoc go-mode yasnippet-snippets which-key use-package rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright ivy-rich helm general forge flycheck exec-path-from-shell doom-themes doom-modeline dashboard dap-mode counsel company blacken beacon auto-package-update all-the-icons ac-emoji))
- '(warning-suppress-types '((use-package))))
+   '(dired-hide-dotfiles dired-open all-the-icons-dired dired-single terraform-mode k8s-mode kubernetes dockerfile-mode docker yaml-mode json-mode diminish slime-company slime company-shell clj-refactor cider clojure-mode yasnippet-snippets which-key use-package rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright ivy-rich helm gotest go-guru go-eldoc general forge flycheck exec-path-from-shell doom-themes doom-modeline dashboard dap-mode counsel company-go blacken beacon auto-package-update all-the-icons ac-emoji)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
