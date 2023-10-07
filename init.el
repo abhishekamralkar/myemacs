@@ -294,7 +294,69 @@
   (python-shell-interpreter "python3")
   :config)
 
+(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
+(setq exec-path (append exec-path '("/home/aaa/Code/golang/bin/gopls")))
+
+(defun lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+	(add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+(use-package go-mode 
+:ensure t
+:config
+(add-hook 'go-mode-hook #'lsp)
+(require 'dap-dlv-go)
+(add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(add-hook 'go-mode-hook #'lsp-deferred))
+
+(use-package go-eldoc
+:ensure t
+:config
+(go-eldoc-setup))
+
+(use-package exec-path-from-shell
+:ensure t)
+
+(use-package go-guru
+:ensure t
+:config
+(customize-set-variable 'go-guru-scope "...")
+(add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+
+(use-package company-go
+:ensure t
+:config
+(add-hook 'go-mode-hook (lambda ()
+			   (set (make-local-variable 'company-backends)
+				     '(company-go))
+				(company-mode))))
+
+(use-package gotest
+:ensure t
+:bind (:map go-mode-map
+                ("C-c C-t p" . go-test-current-project)
+                ("C-c C-t f" . go-test-current-file)
+                ("C-c C-t ." . go-test-current-test)
+                ("C-c r" . go-run))
+:config
+    (setq go-test-verbose t))
+
 (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(gotest company-go go-guru go-eldoc go-mode yasnippet-snippets which-key use-package rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright ivy-rich helm general forge flycheck exec-path-from-shell doom-themes doom-modeline dashboard dap-mode counsel company blacken beacon auto-package-update all-the-icons ac-emoji))
+ '(warning-suppress-types '((use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

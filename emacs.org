@@ -354,13 +354,11 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 Electric Pair mode, a global minor mode, provides a way to easily insert matching delimiters: parentheses, braces, brackets, etc. Whenever you insert an opening delimiter, the matching closing delimiter is automatically inserted as well, leaving point between the two.
 
 #+begin_src emacs-lisp
-(setq electric-pair-pairs '(
-                             (?\{ . ?\})
-                             (?\( . ?\))
-                             (?\[ . ?\])
-                             (?\" . ?\")
-                             ))   
-(electric-pair-mode t)
+(electric-pair-mode 1)
+(setq electric-pair-pairs
+      '(
+        (?\" . ?\")
+        (?\{ . ?\})))
 #+end_src>
 
 ** show parens
@@ -588,6 +586,107 @@ You can use M-x pyvenv-activate to activate specific venv
   ;; NOTE: Set these if Python 3 is called "python3" on your system!
   (python-shell-interpreter "python3")
   :config)
+#+end_src
+
+** golang
+
+If you see error gopls not able to find module in your workspace 
+
+#+begin_src sh
+M-x lsp-describe-session
+M-x lsp-workspace-folders-remove
+M-x lsp-workspace-folders-add
+#+end_src
+
+#+begin_src sh
+# GO Path
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/Code/golang
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+#+end_src
+
+Install go packages and gopls 
+
+#+begin_src sh
+go install github.com/nsf/gocode@latest
+go install github.com/rogpeppe/godef@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/gopls@latest
+go install golang.org/x/tools/cmd/godoc@latest
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+  :ensure t)
+;;(when (memq window-system '(mac ns))
+;;  (exec-path-from-shell-initialize)
+;;  (exec-path-from-shell-copy-env "GOPATH"))
+#+end_src
+
+
+#+begin_src emacs-lisp
+    ;;(setenv "PATH" (concat (getenv "PATH") ":/usr/local/go/bin/go"))
+    ;;(setenv "PATH" (concat (getenv "PATH") ":/home/aaa/Code/golang/bin/gopls"))
+(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
+(setq exec-path (append exec-path '("/home/aaa/Code/golang/bin/gopls")))
+(setq exec-path (append exec-path '("/usr/local/go/")))
+(setq exec-path (append exec-path '("/home/aaa/Code/golang/")))  
+
+    (defun lsp-go-install-save-hooks ()
+	(add-hook 'before-save-hook #'lsp-format-buffer t t)
+	    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+    (use-package go-mode 
+    :ensure t
+    :config
+    (add-hook 'go-mode-hook #'lsp)
+    (require 'dap-dlv-go)
+    (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
+    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+    (add-hook 'go-mode-hook #'lsp-deferred))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package go-eldoc
+:ensure t
+:config
+(go-eldoc-setup))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+:ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package go-guru
+:ensure t
+:config
+(customize-set-variable 'go-guru-scope "...")
+(add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
+#+end_src
+
+
+#+begin_src emacs-lisp
+(use-package company-go
+:ensure t
+:config
+(add-hook 'go-mode-hook (lambda ()
+			   (set (make-local-variable 'company-backends)
+				     '(company-go))
+				(company-mode))))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package gotest
+:ensure t
+:bind (:map go-mode-map
+                ("C-c C-t p" . go-test-current-project)
+                ("C-c C-t f" . go-test-current-file)
+                ("C-c C-t ." . go-test-current-test)
+                ("C-c r" . go-run))
+:config
+    (setq go-test-verbose t))
 #+end_src
 
 * org-mode
