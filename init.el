@@ -3,8 +3,8 @@
 
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			  ("org"   . "https://orgmode.org/elpa/")
-			  ("elpa"  . "https://elpa.gnu.org/packages/")))
+                          ("org"   . "https://orgmode.org/elpa/")
+                          ("elpa"  . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents
@@ -14,9 +14,9 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
-	(require 'use-package)
-	(setq use-package-always-ensure t)
-	(require 'org-tempo)
+        (require 'use-package)
+        (setq use-package-always-ensure t)
+        (require 'org-tempo)
 
 (use-package auto-package-update
   :custom
@@ -233,14 +233,20 @@
 (use-package dap-mode
    :commands dap-debug
    :config
-     (require 'dap-node)
-     (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-
     ;; Bind `C-c l d` to `dap-hydra` for easy access
      (general-define-key
        :keymaps 'lsp-mode-map
        :prefix lsp-keymap-prefix
        "d" '(dap-hydra t :wk "debugger")))
+
+(use-package exec-path-from-shell
+    :ensure t
+    :if (memq window-system '(mac ns x))
+    :config
+    (setq exec-path-from-shell-variables '("PATH" "GOPATH"))
+    (exec-path-from-shell-initialize))
+
+(setenv "SHELL" "/usr/bin/zsh")
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -294,24 +300,7 @@
   (python-shell-interpreter "python3")
   :config)
 
-(use-package exec-path-from-shell
-  :ensure t)
-;;(when (memq window-system '(mac ns))
-;;  (exec-path-from-shell-initialize)
-;;  (exec-path-from-shell-copy-env "GOPATH"))
-
-;;(setenv "PATH" (concat (getenv "PATH") ":/usr/local/go/bin/go"))
-    ;;(setenv "PATH" (concat (getenv "PATH") ":/home/aaa/Code/golang/bin/gopls"))
-(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
-(setq exec-path (append exec-path '("/home/aaa/Code/golang/bin/gopls")))
-(setq exec-path (append exec-path '("/usr/local/go/")))
-(setq exec-path (append exec-path '("/home/aaa/Code/golang/")))  
-
-    (defun lsp-go-install-save-hooks ()
-	(add-hook 'before-save-hook #'lsp-format-buffer t t)
-	    (add-hook 'before-save-hook #'lsp-organize-imports t t))
-
-    (use-package go-mode 
+(use-package go-mode 
     :ensure t
     :config
     (add-hook 'go-mode-hook #'lsp)
@@ -469,11 +458,7 @@
   :ensure nil
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-agho --group-directories-first"))
-  :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-single-up-directory
-    "l" 'dired-single-buffer))
+  :custom ((dired-listing-switches "-agho --group-directories-first")))
 
 (use-package dired-single
   :commands (dired dired-jump))
@@ -490,20 +475,4 @@
                                 ("mkv" . "mpv"))))
 
 (use-package dired-hide-dotfiles
-  :hook (dired-mode . dired-hide-dotfiles-mode)
-  :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "H" 'dired-hide-dotfiles-mode))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(dired-hide-dotfiles dired-open all-the-icons-dired dired-single terraform-mode k8s-mode kubernetes dockerfile-mode docker yaml-mode json-mode diminish slime-company slime company-shell clj-refactor cider clojure-mode yasnippet-snippets which-key use-package rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright ivy-rich helm gotest go-guru go-eldoc general forge flycheck exec-path-from-shell doom-themes doom-modeline dashboard dap-mode counsel company-go blacken beacon auto-package-update all-the-icons ac-emoji)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+  :hook (dired-mode . dired-hide-dotfiles-mode))

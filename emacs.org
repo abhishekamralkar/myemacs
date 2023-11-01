@@ -24,22 +24,22 @@ To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning 
 The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy. 
 
 #+begin_src emacs-lisp
-  (require 'package)
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			    ("org"   . "https://orgmode.org/elpa/")
-			    ("elpa"  . "https://elpa.gnu.org/packages/")))
+   (require 'package)
+   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                             ("org"   . "https://orgmode.org/elpa/")
+                             ("elpa"  . "https://elpa.gnu.org/packages/")))
 
-  (package-initialize)
-  (unless package-archive-contents
-    (package-refresh-contents))
+   (package-initialize)
+   (unless package-archive-contents
+     (package-refresh-contents))
 
-  ;; Initialize use-package on non-Linux platforms
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
+   ;; Initialize use-package on non-Linux platforms
+   (unless (package-installed-p 'use-package)
+     (package-install 'use-package))
 
-	  (require 'use-package)
-	  (setq use-package-always-ensure t)
-	  (require 'org-tempo)
+           (require 'use-package)
+           (setq use-package-always-ensure t)
+           (require 'org-tempo)
 #+end_src
 
 * Automatic Package Updates
@@ -347,7 +347,7 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src>
 
-* Tools
+* tools
 
 ** electric
 
@@ -455,14 +455,24 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   (use-package dap-mode
      :commands dap-debug
      :config
-       (require 'dap-node)
-       (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-
       ;; Bind `C-c l d` to `dap-hydra` for easy access
        (general-define-key
          :keymaps 'lsp-mode-map
          :prefix lsp-keymap-prefix
          "d" '(dap-hydra t :wk "debugger")))   
+#+end_src
+
+** exec-path-from-shell
+
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+    :ensure t
+    :if (memq window-system '(mac ns x))
+    :config
+    (setq exec-path-from-shell-variables '("PATH" "GOPATH"))
+    (exec-path-from-shell-initialize))
+
+(setenv "SHELL" "/usr/bin/zsh")
 #+end_src
 
 * languages
@@ -615,28 +625,9 @@ go install golang.org/x/tools/gopls@latest
 go install golang.org/x/tools/cmd/godoc@latest
 #+end_src
 
-#+begin_src emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t)
-;;(when (memq window-system '(mac ns))
-;;  (exec-path-from-shell-initialize)
-;;  (exec-path-from-shell-copy-env "GOPATH"))
-#+end_src
-
 
 #+begin_src emacs-lisp
-    ;;(setenv "PATH" (concat (getenv "PATH") ":/usr/local/go/bin/go"))
-    ;;(setenv "PATH" (concat (getenv "PATH") ":/home/aaa/Code/golang/bin/gopls"))
-(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
-(setq exec-path (append exec-path '("/home/aaa/Code/golang/bin/gopls")))
-(setq exec-path (append exec-path '("/usr/local/go/")))
-(setq exec-path (append exec-path '("/home/aaa/Code/golang/")))  
-
-    (defun lsp-go-install-save-hooks ()
-	(add-hook 'before-save-hook #'lsp-format-buffer t t)
-	    (add-hook 'before-save-hook #'lsp-organize-imports t t))
-
-    (use-package go-mode 
+(use-package go-mode 
     :ensure t
     :config
     (add-hook 'go-mode-hook #'lsp)
@@ -870,11 +861,7 @@ Wrap a line
   :ensure nil
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-agho --group-directories-first"))
-  :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-single-up-directory
-    "l" 'dired-single-buffer))
+  :custom ((dired-listing-switches "-agho --group-directories-first")))
 
 (use-package dired-single
   :commands (dired dired-jump))
@@ -891,9 +878,6 @@ Wrap a line
                                 ("mkv" . "mpv"))))
 
 (use-package dired-hide-dotfiles
-  :hook (dired-mode . dired-hide-dotfiles-mode)
-  :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "H" 'dired-hide-dotfiles-mode))
+  :hook (dired-mode . dired-hide-dotfiles-mode))
 
 #+end_src
