@@ -304,6 +304,8 @@
 
 (use-package go-mode 
     :ensure t
+    :custom
+    (gofmt-command "goimports")
     :config
     (add-hook 'go-mode-hook #'lsp)
     (require 'dap-dlv-go)

@@ -353,17 +353,17 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 (setq warning-minimum-level :emergency)
 #+end_src
 * tools
-
 ** electric
 
 Electric Pair mode, a global minor mode, provides a way to easily insert matching delimiters: parentheses, braces, brackets, etc. Whenever you insert an opening delimiter, the matching closing delimiter is automatically inserted as well, leaving point between the two.
 
 #+begin_src emacs-lisp
 (electric-pair-mode 1)
-(setq electric-pair-pairs
-      '(
-        (?\" . ?\")
-        (?\{ . ?\})))
+;; make electric-pair-mode work on more brackets
+(setq electric-pair-pairs '(
+                            (?\" . ?\")
+                            (?\{ . ?\})
+                            ))
 #+end_src>
 
 ** show parens
@@ -590,17 +590,17 @@ You can use M-x pyvenv-activate to activate specific venv
 *** python-mode
 
 #+begin_src emacs-lisp
-(use-package python-mode
-  :hook
-  (python-mode . pyvenv-mode)
-  (python-mode . flycheck-mode)
-  (python-mode . company-mode)
-  (python-mode . blacken-mode)
-  (python-mode . yas-minor-mode)
-  :custom
-  ;; NOTE: Set these if Python 3 is called "python3" on your system!
-  (python-shell-interpreter "python3")
-  :config)
+    (use-package python-mode
+      :hook
+      (python-mode . pyvenv-mode)
+      (python-mode . flycheck-mode)
+      (python-mode . company-mode)
+      (python-mode . blacken-mode)
+      (python-mode . yas-minor-mode)
+      :custom
+      ;; NOTE: Set these if Python 3 is called "python3" on your system!
+      (python-shell-interpreter "python3")
+      :config)
 #+end_src
 
 ** golang
@@ -632,14 +632,16 @@ go install golang.org/x/tools/cmd/godoc@latest
 
 
 #+begin_src emacs-lisp
-(use-package go-mode 
-    :ensure t
-    :config
-    (add-hook 'go-mode-hook #'lsp)
-    (require 'dap-dlv-go)
-    (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
-    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-    (add-hook 'go-mode-hook #'lsp-deferred))
+  (use-package go-mode 
+      :ensure t
+      :custom
+      (gofmt-command "goimports")
+      :config
+      (add-hook 'go-mode-hook #'lsp)
+      (require 'dap-dlv-go)
+      (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
+      (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+      (add-hook 'go-mode-hook #'lsp-deferred))
 #+end_src
 
 #+begin_src emacs-lisp
