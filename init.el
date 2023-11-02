@@ -186,6 +186,8 @@
   :config
   (beacon-mode 1))
 
+(setq warning-minimum-level :emergency)
+
 (show-paren-mode 1)
 
 (use-package rainbow-delimiters

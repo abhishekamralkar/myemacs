@@ -6,20 +6,20 @@
 #+ATTR_HTML: :style margin-left: auto; margin-right: auto;
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
-* Installation
+* installation
 
 git clone https://github.com/abhishekamralkar/Myemacs-org-bable ~/.emacs.d
 
 To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning this configuration. 
 
-* About Me
+* about me
 
 #+begin_src emacs-lisp
 (setq user-full-name "Abhishek Anand Amralkar"
   user-mail-address "abhishekamralkar@gmail.com")
 #+end_src
 
-* Use-Package
+* use-package
 
 The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy. 
 
@@ -42,7 +42,7 @@ The use-package macro allows you to isolate package configuration in your .emacs
            (require 'org-tempo)
 #+end_src
 
-* Automatic Package Updates
+* automatic package updates
 
 With auto-package-update package we can keep emacs upto date
 
@@ -57,7 +57,7 @@ With auto-package-update package we can keep emacs upto date
   (auto-package-update-at-time "09:00"))
 #+end_src
 
-* Theme and Font
+* theme and font
 
 Using Doom Emacs theme 
 
@@ -82,7 +82,7 @@ Using JetBrains fonts
   :ensure t)
 #+end_src
 
-* Emacs UI Configuration
+* emacs configuration
 
 ** no startup screen
 
@@ -319,7 +319,7 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
   (beacon-mode 1))  
 #+end_src
 
-* Custom
+* custom
 
 ** reload
 
@@ -347,6 +347,11 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src>
 
+** suppress warning
+
+#+begin_src emacs-lisp
+(setq warning-minimum-level :emergency)
+#+end_src
 * tools
 
 ** electric
