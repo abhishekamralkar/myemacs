@@ -188,6 +188,8 @@
 
 (setq warning-minimum-level :emergency)
 
+(global-hl-line-mode 1)
+
 (show-paren-mode 1)
 
 (use-package rainbow-delimiters

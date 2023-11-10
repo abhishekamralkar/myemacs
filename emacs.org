@@ -70,11 +70,20 @@ Using Doom Emacs theme
 Using JetBrains fonts
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "JetBrains Mono NL" :height 140 :weight 'regular)
-;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "JetBrains Mono NL" :height 140 :weight 'regular)
-;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "JetBrains Mono NL" :height 140 :weight 'regular)
+  (if (eq system-type 'darwin)
+      (set-face-attribute 'default nil :font "JetBrains Mono NL" :height 180 :weight 'regular)
+               (set-face-attribute 'default nil :font "JetBrains Mono NL" :height 160 :weight 'regular))
+
+  (if (eq system-type 'darwin)
+         ;; Set the fixed pitch face
+      (set-face-attribute 'fixed-pitch nil :font "JetBrains Mono NL" :height 180 :weight 'regular)
+               (set-face-attribute 'fixed-pitch nil :font "JetBrains Mono NL" :height 160 :weight 'regular))
+
+  (if (eq system-type 'darwin)
+      ;; Set the variable pitch face
+      (set-face-attribute 'variable-pitch nil :font "JetBrains Mono NL" :height 180 :weight 'regular)
+    
+    (set-face-attribute 'variable-pitch nil :font "JetBrains Mono NL" :height 160 :weight 'regular))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -351,6 +360,12 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 
 #+begin_src emacs-lisp
 (setq warning-minimum-level :emergency)
+#+end_src
+
+** line-mode
+
+#+begin_src emacs-lisp
+(global-hl-line-mode 1)
 #+end_src
 * tools
 ** electric
