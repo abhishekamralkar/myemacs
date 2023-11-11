@@ -1,6 +1,6 @@
 #+STARTUP: overview
-#+TITLE: MyEmacs
-#+CREATOR: Abhishek Anand Amralkar
+#+TITLE: myemacs
+#+CREATOR: abhishek anand amralkar
 #+LANGUAGE: en
 #+OPTIONS: num:nil
 #+ATTR_HTML: :style margin-left: auto; margin-right: auto;
