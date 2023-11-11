@@ -5,8 +5,9 @@
 #+OPTIONS: num:nil
 #+ATTR_HTML: :style margin-left: auto; margin-right: auto;
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+#+auto_tangle: t
 
-* Namaste!
+* namaste!
 
 This is my Emacs configuration that is written in Org Mode. README.org generates init.el which Emacs loads up.
 
@@ -27,6 +28,15 @@ This is my Emacs configuration that is written in Org Mode. README.org generates
   (add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
 #+end_src
 
+* tangle
+
+#+begin_src emacs-lisp
+  (use-package org-auto-tangle
+    :load-path "site-lisp/org-auto-tangle/"
+    :defer t
+    :hook (org-mode . org-auto-tangle-mode))
+#+end_src
+
 * installation
 
 git clone https://github.com/abhishekamralkar/myemacs ~/.emacs.d
@@ -45,22 +55,25 @@ To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning 
 The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy. 
 
 #+begin_src emacs-lisp
-   (require 'package)
-   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                             ("org"   . "https://orgmode.org/elpa/")
-                             ("elpa"  . "https://elpa.gnu.org/packages/")))
+  (require 'package)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			    ("org"   . "https://orgmode.org/elpa/")
+			    ("elpa"  . "https://elpa.gnu.org/packages/")))
 
-   (package-initialize)
-   (unless package-archive-contents
-     (package-refresh-contents))
+  (package-initialize)
+  (unless package-archive-contents 
+    (package-refresh-contents))
 
-   ;; Initialize use-package on non-Linux platforms
-   (unless (package-installed-p 'use-package)
-     (package-install 'use-package))
+  ;; Initialize use-package on non-Linux platforms
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
 
-           (require 'use-package)
-           (setq use-package-always-ensure t)
-           (require 'org-tempo)
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python"))  
 #+end_src
 
 * automatic package updates
@@ -134,8 +147,6 @@ Using JetBrains fonts
                                       "..." "+++" "+>" "++" "[||]" "[<" "[|" "{|" "??" "?." "?=" "?:" "##"
                                       "###" "####" "#[" "#{" "#=" "#!" "#:" "#_(" "#_" "#?" "#(" ";;" "_|_"
                                       "__" "~~" "~~>" "~>" "~-" "~@" "$>" "^=" "]#"))
-  ;; Enables ligature checks globally in all buffers. You can also do it
-  ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 #+end_src
 
@@ -951,5 +962,3 @@ Wrap a line
   :hook (dired-mode . dired-hide-dotfiles-mode))
 
 #+end_src
-
-* myemacs

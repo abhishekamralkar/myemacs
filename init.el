@@ -9,25 +9,33 @@
 
 (add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
 
+(use-package org-auto-tangle
+  :load-path "site-lisp/org-auto-tangle/"
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode))
+
 (setq user-full-name "Abhishek Anand Amralkar"
   user-mail-address "abhishekamralkar@gmail.com")
 
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                          ("org"   . "https://orgmode.org/elpa/")
-                          ("elpa"  . "https://elpa.gnu.org/packages/")))
+			  ("org"   . "https://orgmode.org/elpa/")
+			  ("elpa"  . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
-(unless package-archive-contents
+(unless package-archive-contents 
   (package-refresh-contents))
 
 ;; Initialize use-package on non-Linux platforms
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
-        (require 'use-package)
-        (setq use-package-always-ensure t)
-        (require 'org-tempo)
+(require 'use-package)
+(setq use-package-always-ensure t)
+(require 'org-tempo)
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
 
 (use-package auto-package-update
   :custom
@@ -47,7 +55,7 @@
 (defvar myemacs/l-default-font-size 160)
 (defvar myemacs/l-default-variable-font-size 160)
 (defvar myemacs/frame-transparency '(90 . 90))
-(defvar myemacs/fonts "JetBrains Mono NL")
+(defvar myemacs/fonts "JetBrains Mono")
 (defvar myemacs/weight 'regular)
 
   (if (eq system-type 'darwin)
@@ -68,7 +76,7 @@
   :ensure t)
 
 (use-package ligature
-  :load-path "ligatures/ligatures.el"
+  :load-path "~/.emacs.d/ligatures/"
   :config
   (ligature-set-ligatures 'prog-mode '("-|" "-~" "---" "-<<" "-<" "--" "->" "->>" "-->" "///" "/=" "/=="
                                       "/>" "//" "/*" "*>" "***" "*/" "<-" "<<-" "<=>" "<=" "<|" "<||"
@@ -81,8 +89,6 @@
                                       "..." "+++" "+>" "++" "[||]" "[<" "[|" "{|" "??" "?." "?=" "?:" "##"
                                       "###" "####" "#[" "#{" "#=" "#!" "#:" "#_(" "#_" "#?" "#(" ";;" "_|_"
                                       "__" "~~" "~~>" "~>" "~-" "~@" "$>" "^=" "]#"))
-  ;; Enables ligature checks globally in all buffers. You can also do it
-  ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
 (setq inhibit-startup-message t)
