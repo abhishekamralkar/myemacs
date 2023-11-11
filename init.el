@@ -1,3 +1,14 @@
+(setq gc-cons-threshold (* 50 1000 1000))
+
+(defun myemacs/display-startup-time ()
+  (message "Emacs loaded in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                     (time-subtract after-init-time before-init-time)))
+           gcs-done))
+
+(add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
+
 (setq user-full-name "Abhishek Anand Amralkar"
   user-mail-address "abhishekamralkar@gmail.com")
 
@@ -31,11 +42,27 @@
   :defer t
   :init (load-theme 'doom-palenight t))
 
-(set-face-attribute 'default nil :font "JetBrains Mono NL" :height 140 :weight 'regular)
-;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "JetBrains Mono NL" :height 140 :weight 'regular)
-;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "JetBrains Mono NL" :height 140 :weight 'regular)
+(defvar myemacs/d-default-font-size 180)
+(defvar myemacs/d-default-variable-font-size 180)
+(defvar myemacs/l-default-font-size 160)
+(defvar myemacs/l-default-variable-font-size 160)
+(defvar myemacs/frame-transparency '(90 . 90))
+(defvar myemacs/fonts "JetBrains Mono NL")
+(defvar myemacs/weight 'regular)
+
+  (if (eq system-type 'darwin)
+      (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/m-default-font-size :weight myemacs/weight)
+               (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
+
+  (if (eq system-type 'darwin)
+         ;; Set the fixed pitch face
+      (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/m-default-font-size :weight myemacs/weight)
+               (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
+
+  (if (eq system-type 'darwin)
+      ;; Set the variable pitch face
+      (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/m-default-font-size :weight myemacs/weight)
+    (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
 
 (use-package ac-emoji
   :ensure t)
