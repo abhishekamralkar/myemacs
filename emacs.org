@@ -10,6 +10,8 @@
 
 This is my Emacs configuration that is written in Org Mode. README.org generates init.el which Emacs loads up.
 
+[[images/myemacs.png][myemacs]]
+
 * speed up
 
 #+begin_src emacs-lisp
@@ -929,3 +931,5 @@ Wrap a line
   :hook (dired-mode . dired-hide-dotfiles-mode))
 
 #+end_src
+
+* myemacs
