@@ -10,7 +10,7 @@
 
 This is my Emacs configuration that is written in Org Mode. README.org generates init.el which Emacs loads up.
 
-[[./images/myemacs.png]]
+[[./images/emacs.png]]
 
 * speed up
 
