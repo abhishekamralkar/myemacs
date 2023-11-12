@@ -113,17 +113,17 @@ Using JetBrains fonts
   (defvar myemacs/weight 'regular)
 
     (if (eq system-type 'darwin)
-        (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/m-default-font-size :weight myemacs/weight)
+        (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
                  (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
 
     (if (eq system-type 'darwin)
            ;; Set the fixed pitch face
-        (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/m-default-font-size :weight myemacs/weight)
+        (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
                  (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
 
     (if (eq system-type 'darwin)
         ;; Set the variable pitch face
-        (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/m-default-font-size :weight myemacs/weight)
+        (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
       (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
 #+end_src
 
@@ -274,6 +274,31 @@ available key bindings that follow C-x (or as many as space allows given your se
   :config
   (which-key-mode))   
 #+end_src
+
+** dired-sidebar
+
+#+begin_src emacs-lisp
+(use-package dired-sidebar
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-theme 'vscode)
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+#+end_src
+
+#+RESULTS:
+: dired-sidebar-toggle-sidebar
 
 * ivy and counsel
 
