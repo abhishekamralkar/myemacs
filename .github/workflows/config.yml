@@ -1,4 +1,4 @@
-ame: Auto Tag my Application
+name: Auto Tag my Application
 on:
   push:
     branches:
