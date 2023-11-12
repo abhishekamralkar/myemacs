@@ -38,3 +38,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
+    - name: Auto-generate CHANGELOG
+      uses: BobAnkh/auto-generate-changelog@v1.2.5
+    - name: Tag/Release on Push Action
+      uses: rymndhng/release-on-push-action@v0.28.0
+
+
