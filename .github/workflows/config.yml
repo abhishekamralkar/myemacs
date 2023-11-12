@@ -1,8 +1,8 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: GitHub Actions
+run-name: ${{ github.actor }} running GitHub Actions 🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -16,6 +16,4 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Changelog from Conventional Commits
-        uses: requarks/changelog-action@v1.9.0
             
