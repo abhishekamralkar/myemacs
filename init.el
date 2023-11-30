@@ -59,17 +59,17 @@
 (defvar myemacs/weight 'regular)
 
   (if (eq system-type 'darwin)
-      (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/m-default-font-size :weight myemacs/weight)
+      (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
                (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
 
   (if (eq system-type 'darwin)
          ;; Set the fixed pitch face
-      (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/m-default-font-size :weight myemacs/weight)
+      (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
                (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
 
   (if (eq system-type 'darwin)
       ;; Set the variable pitch face
-      (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/m-default-font-size :weight myemacs/weight)
+      (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
     (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
 
 (use-package ac-emoji
@@ -258,6 +258,13 @@
 (setq warning-minimum-level :emergency)
 
 (global-hl-line-mode 1)
+
+(setq auto-save-visited-file-name t)
+
+(global-auto-revert-mode 1)
+;; Also auto refresh dired, but be quiet about it
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 
 (show-paren-mode 1)
 
