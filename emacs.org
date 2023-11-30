@@ -1005,3 +1005,12 @@ Wrap a line
   :hook (dired-mode . dired-hide-dotfiles-mode))
 
 #+end_src
+
+
+* Thanks To
+
+My Emacs config is heavily borrowed from daviwil emacs-from-scratch
+
+#+begin_src sh
+https://github.com/daviwil/emacs-from-scratch
+#+end_src>
