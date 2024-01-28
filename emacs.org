@@ -111,8 +111,8 @@ Using JetBrains fonts
   (defvar myemacs/l-default-font-size 160)
   (defvar myemacs/l-default-variable-font-size 160)
   (defvar myemacs/frame-transparency '(90 . 90))
-  (defvar myemacs/fonts "JetBrains Mono")
-  (defvar myemacs/weight 'regular)
+  (defvar myemacs/fonts "Iosevka Regular")
+  (defvar myemacs/weight 'Regular)
 
     (if (eq system-type 'darwin)
         (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
