@@ -9,11 +9,6 @@
 
 (add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
 
-(use-package org-auto-tangle
-  :load-path "site-lisp/org-auto-tangle/"
-  :defer t
-  :hook (org-mode . org-auto-tangle-mode))
-
 (setq user-full-name "Abhishek Anand Amralkar"
   user-mail-address "abhishekamralkar@gmail.com")
 
@@ -55,7 +50,7 @@
 (defvar myemacs/l-default-font-size 160)
 (defvar myemacs/l-default-variable-font-size 160)
 (defvar myemacs/frame-transparency '(90 . 90))
-(defvar myemacs/fonts "Iosevka Regular")
+(defvar myemacs/fonts "Iosevka")
 (defvar myemacs/weight 'Regular)
 
   (if (eq system-type 'darwin)

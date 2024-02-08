@@ -16,7 +16,6 @@ This is my Emacs configuration that is written in Org Mode. README.org generates
 [[./images/emacs.png]]
 
 * speed up
-
 #+begin_src emacs-lisp
   (setq gc-cons-threshold (* 50 1000 1000))
 
@@ -29,16 +28,6 @@ This is my Emacs configuration that is written in Org Mode. README.org generates
 
   (add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
 #+end_src
-
-* tangle
-
-#+begin_src emacs-lisp
-  (use-package org-auto-tangle
-    :load-path "site-lisp/org-auto-tangle/"
-    :defer t
-    :hook (org-mode . org-auto-tangle-mode))
-#+end_src
-
 * installation
 
 git clone https://github.com/abhishekamralkar/myemacs ~/.emacs.d
@@ -111,7 +100,7 @@ Using JetBrains fonts
   (defvar myemacs/l-default-font-size 160)
   (defvar myemacs/l-default-variable-font-size 160)
   (defvar myemacs/frame-transparency '(90 . 90))
-  (defvar myemacs/fonts "Iosevka Regular")
+  (defvar myemacs/fonts "Iosevka")
   (defvar myemacs/weight 'Regular)
 
     (if (eq system-type 'darwin)
