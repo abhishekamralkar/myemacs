@@ -43,7 +43,7 @@
 
 (use-package doom-themes
   :defer t
-  :init (load-theme 'doom-palenight t))
+  :init (load-theme 'doom-dracula t))
 
 (defvar myemacs/d-default-font-size 180)
 (defvar myemacs/d-default-variable-font-size 180)
@@ -269,15 +269,18 @@
    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package company
-    :after lsp-mode
-    :hook (lsp-mode . company-mode)
-    :bind (:map company-active-map
-            ("<tab>" . company-complete-selection))
-            (:map lsp-mode-map
-            ("<tab>" . company-indent-or-complete-common))
-    :custom
-    (company-minimum-prefix-length 1)
-    (company-idle-delay 0.0))
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package company-go
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-go))
+
+(add-hook 'go-mode-hook (lambda ()
+                          (set (make-local-variable 'company-backends) '(company-go))
+                          (company-mode)))
 
 (use-package flycheck
    :ensure t)
@@ -305,28 +308,11 @@
 (use-package general
    :ensure t)
 
-(use-package dap-mode
-   :commands dap-debug
-   :config
-    ;; Bind `C-c l d` to `dap-hydra` for easy access
-     (general-define-key
-       :keymaps 'lsp-mode-map
-       :prefix lsp-keymap-prefix
-       "d" '(dap-hydra t :wk "debugger")))
-
-(use-package exec-path-from-shell
-    :ensure t
-    :if (memq window-system '(mac ns x))
-    :config
-    (setq exec-path-from-shell-variables '("PATH" "GOPATH"))
-    (exec-path-from-shell-initialize))
-
-(setenv "SHELL" "/usr/bin/zsh")
-
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook 
   (lsp-mode . lsp-enable-which-key-integration)
+  (lsp-mode . lsp-deferred)
   :custom
   (lsp-diagnostics-provider :capf)
   (lsp-headerline-breadcrumb-enable t)
@@ -375,16 +361,29 @@
   (python-shell-interpreter "python3")
   :config)
 
-(use-package go-mode 
-    :ensure t
-    :custom
-    (gofmt-command "goimports")
-    :config
-    (add-hook 'go-mode-hook #'lsp)
-    (require 'dap-dlv-go)
-    (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
-    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-    (add-hook 'go-mode-hook #'lsp-deferred))
+(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
+
+
+(use-package eglot
+      :ensure t
+      :config
+      (add-to-list 'eglot-server-programs '(go-mode . ("/usr/local/bin/gopls")))
+      :hook ((go-mode . eglot-ensure)))
+
+(setq gofmt-command "goimports") ; or "gofmt" for default
+(add-hook 'before-save-hook 'gofmt-before-save)
+
+;; Optional: Linter
+(require 'flymake)
+(defun go-flymake-init ()
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                     'flymake-create-temp-inplace))
+         (local-file (file-relative-name
+                      temp-file
+                      (file-name-directory buffer-file-name))))
+    (list "golint" (list local-file))))
+(add-to-list 'flymake-allowed-file-name-masks
+             '("\\.go\\'" go-flymake-init))
 
 (use-package go-eldoc
 :ensure t
@@ -417,6 +416,13 @@
                 ("C-c r" . go-run))
 :config
     (setq go-test-verbose t))
+
+(use-package dap-mode
+  :ensure t
+  :hook ((go-mode . dap-mode)
+         (go-mode . dap-ui-mode))
+  :config
+  (require 'dap-go))
 
 (use-package clojure-mode
    :defer t
@@ -530,26 +536,3 @@
 
 (use-package terraform-mode
     :ensure t)
-
-(use-package dired
-  :ensure nil
-  :commands (dired dired-jump)
-  :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-agho --group-directories-first")))
-
-(use-package dired-single
-  :commands (dired dired-jump))
-
-(use-package all-the-icons-dired
-  :hook (dired-mode . all-the-icons-dired-mode))
-
-(use-package dired-open
-  :commands (dired dired-jump)
-  :config
-  ;; Doesn't work as expected!
-  ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
-  (setq dired-open-extensions '(("png" . "feh")
-                                ("mkv" . "mpv"))))
-
-(use-package dired-hide-dotfiles
-  :hook (dired-mode . dired-hide-dotfiles-mode))

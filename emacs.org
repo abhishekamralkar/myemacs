@@ -89,7 +89,7 @@ Using Doom Emacs theme
 #+begin_src emacs-lisp
 (use-package doom-themes
   :defer t
-  :init (load-theme 'doom-palenight t))
+  :init (load-theme 'doom-dracula t))
 #+end_src
 
 Using JetBrains fonts
@@ -465,6 +465,7 @@ Electric Pair mode, a global minor mode, provides a way to easily insert matchin
 
 #+begin_src emacs-lisp
 (electric-pair-mode 1)
+(add-hook 'prog-mode-hook 'electric-pair-mode)
 ;; make electric-pair-mode work on more brackets
 (setq electric-pair-pairs '(
                             (?\" . ?\")
@@ -497,15 +498,18 @@ Code auto completion
 
 #+begin_src emacs-lisp
 (use-package company
-    :after lsp-mode
-    :hook (lsp-mode . company-mode)
-    :bind (:map company-active-map
-            ("<tab>" . company-complete-selection))
-            (:map lsp-mode-map
-            ("<tab>" . company-indent-or-complete-common))
-    :custom
-    (company-minimum-prefix-length 1)
-    (company-idle-delay 0.0))
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package company-go
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-go))
+
+(add-hook 'go-mode-hook (lambda ()
+                          (set (make-local-variable 'company-backends) '(company-go))
+                          (company-mode)))
 #+end_src
 
 ** flycheck
@@ -560,50 +564,25 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
    :ensure t)
 #+end_src
 
-** dap-mode
-
-#+begin_src emacs-lisp
-  (use-package dap-mode
-     :commands dap-debug
-     :config
-      ;; Bind `C-c l d` to `dap-hydra` for easy access
-       (general-define-key
-         :keymaps 'lsp-mode-map
-         :prefix lsp-keymap-prefix
-         "d" '(dap-hydra t :wk "debugger")))   
-#+end_src
-
-** exec-path-from-shell
-
-#+begin_src emacs-lisp
-(use-package exec-path-from-shell
-    :ensure t
-    :if (memq window-system '(mac ns x))
-    :config
-    (setq exec-path-from-shell-variables '("PATH" "GOPATH"))
-    (exec-path-from-shell-initialize))
-
-(setenv "SHELL" "/usr/bin/zsh")
-#+end_src
-
 * languages
 
 ** lsp-mode
 
 #+begin_src emacs-lisp
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook 
-  (lsp-mode . lsp-enable-which-key-integration)
-  :custom
-  (lsp-diagnostics-provider :capf)
-  (lsp-headerline-breadcrumb-enable t)
-  (lsp-headerline-breadcrumb-segments '(project file symbols))
-  (lsp-lens-enable nil)
-  (lsp-disabled-clients '((python-mode . pyls)))
-  :init
-  (setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
-  :config)
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :hook 
+    (lsp-mode . lsp-enable-which-key-integration)
+    (lsp-mode . lsp-deferred)
+    :custom
+    (lsp-diagnostics-provider :capf)
+    (lsp-headerline-breadcrumb-enable t)
+    (lsp-headerline-breadcrumb-segments '(project file symbols))
+    (lsp-lens-enable nil)
+    (lsp-disabled-clients '((python-mode . pyls)))
+    :init
+    (setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
+    :config)
 #+end_src
 
 ** lsp-ui
@@ -722,7 +701,7 @@ M-x lsp-workspace-folders-add
 #+begin_src sh
 # GO Path
 export GOROOT=/usr/local/go
-export GOPATH=$HOME/Code/golang
+export GOPATH=$HOME/code/golang
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 #+end_src
 
@@ -734,20 +713,38 @@ go install github.com/rogpeppe/godef@latest
 go install golang.org/x/tools/cmd/goimports@latest
 go install golang.org/x/tools/gopls@latest
 go install golang.org/x/tools/cmd/godoc@latest
+go install golang.org/x/tools/cmd/gofmt@latest
+go install golang.org/x/lint/golint@latest
 #+end_src
 
 
 #+begin_src emacs-lisp
-  (use-package go-mode 
+(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
+
+
+(use-package eglot
       :ensure t
-      :custom
-      (gofmt-command "goimports")
       :config
-      (add-hook 'go-mode-hook #'lsp)
-      (require 'dap-dlv-go)
-      (add-hook 'before-save-hook 'gofmt-before-save) ; run gofmt on each save
-      (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-      (add-hook 'go-mode-hook #'lsp-deferred))
+      (add-to-list 'eglot-server-programs '(go-mode . ("/usr/local/bin/gopls")))
+      :hook ((go-mode . eglot-ensure)))
+#+end_src
+
+#+begin_src emacs-lisp
+(setq gofmt-command "goimports") ; or "gofmt" for default
+(add-hook 'before-save-hook 'gofmt-before-save)
+
+;; Optional: Linter
+(require 'flymake)
+(defun go-flymake-init ()
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                     'flymake-create-temp-inplace))
+         (local-file (file-relative-name
+                      temp-file
+                      (file-name-directory buffer-file-name))))
+    (list "golint" (list local-file))))
+(add-to-list 'flymake-allowed-file-name-masks
+             '("\\.go\\'" go-flymake-init))
+
 #+end_src
 
 #+begin_src emacs-lisp
@@ -791,6 +788,16 @@ go install golang.org/x/tools/cmd/godoc@latest
                 ("C-c r" . go-run))
 :config
     (setq go-test-verbose t))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package dap-mode
+  :ensure t
+  :hook ((go-mode . dap-mode)
+         (go-mode . dap-ui-mode))
+  :config
+  (require 'dap-go))
+
 #+end_src
 
 ** clojure
@@ -965,7 +972,6 @@ Wrap a line
   (use-package terraform-mode
       :ensure t)
 #+end_src
-
 * file management
 
 #+begin_src emacs-lisp
@@ -993,9 +999,7 @@ Wrap a line
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
 
-#+end_src
-
-
+#+end_s
 * Thanks To
 
 My Emacs config is heavily borrowed from daviwil emacs-from-scratch
