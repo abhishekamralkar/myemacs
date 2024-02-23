@@ -16,6 +16,7 @@ This is my Emacs configuration that is written in Org Mode. README.org generates
 [[./images/emacs.png]]
 
 * speed up
+
 #+begin_src emacs-lisp
   (setq gc-cons-threshold (* 50 1000 1000))
 
@@ -28,6 +29,7 @@ This is my Emacs configuration that is written in Org Mode. README.org generates
 
   (add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
 #+end_src
+
 * installation
 
 git clone https://github.com/abhishekamralkar/myemacs ~/.emacs.d
@@ -89,33 +91,13 @@ Using Doom Emacs theme
 #+begin_src emacs-lisp
 (use-package doom-themes
   :defer t
-  :init (load-theme 'doom-dracula t))
+  :init (load-theme 'doom-one t))
 #+end_src
 
 Using JetBrains fonts
 
 #+begin_src emacs-lisp
-  (defvar myemacs/d-default-font-size 180)
-  (defvar myemacs/d-default-variable-font-size 180)
-  (defvar myemacs/l-default-font-size 160)
-  (defvar myemacs/l-default-variable-font-size 160)
-  (defvar myemacs/frame-transparency '(90 . 90))
-  (defvar myemacs/fonts "Iosevka-16")
-  (defvar myemacs/weight 'Regular)
-
-    (if (eq system-type 'darwin)
-        (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
-                 (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
-
-    (if (eq system-type 'darwin)
-           ;; Set the fixed pitch face
-        (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
-                 (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
-
-    (if (eq system-type 'darwin)
-        ;; Set the variable pitch face
-        (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
-      (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
+(set-frame-font "Iosevka-16" nil t)  
 #+end_src
 
 #+begin_src emacs-lisp
@@ -291,6 +273,19 @@ available key bindings that follow C-x (or as many as space allows given your se
 #+RESULTS:
 : dired-sidebar-toggle-sidebar
 
+** enable line
+#+begin_src emacs-lisp
+(global-display-line-numbers-mode)
+(global-hl-line-mode 1)
+#+end_src
+** electric
+#+begin_src emacs-lisp
+(use-package electric
+  :ensure t
+  :config
+  (electric-pair-mode 1))
+#+end_src
+
 * ivy and counsel
 
 #+begin_src emacs-lisp
@@ -393,7 +388,6 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 
 * beacon
 
-
 Beacon- Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
 
 #+begin_src emacs-lisp
@@ -410,8 +404,7 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 #+begin_src emacs-lisp
 (defun config-reload ()
   (interactive)
-  (find-file "~/.emacs.d/emacs.org"))
-(global-set-key (kbd "C-c r") 'config-reload)  
+  (find-file "~/.emacs.d/init.el"))  
 #+end_src>
 
 ** edit
@@ -429,18 +422,13 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 (global-set-key (kbd "M-<up>") 'beginning-of-buffer)
 (global-set-key (kbd "M-<down>") 'end-of-buffer)
 (global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c r") 'config-reload)
 #+end_src>
 
 ** suppress warning
 
 #+begin_src emacs-lisp
 (setq warning-minimum-level :emergency)
-#+end_src
-
-** line-mode
-
-#+begin_src emacs-lisp
-(global-hl-line-mode 1)
 #+end_src
 
 ** auto-save
@@ -459,20 +447,6 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 #+end_src
 
 * tools
-** electric
-
-Electric Pair mode, a global minor mode, provides a way to easily insert matching delimiters: parentheses, braces, brackets, etc. Whenever you insert an opening delimiter, the matching closing delimiter is automatically inserted as well, leaving point between the two.
-
-#+begin_src emacs-lisp
-(electric-pair-mode 1)
-(add-hook 'prog-mode-hook 'electric-pair-mode)
-;; make electric-pair-mode work on more brackets
-(setq electric-pair-pairs '(
-                            (?\" . ?\")
-                            (?\{ . ?\})
-                            ))
-#+end_src>
-
 ** show parens
 
 Highlights matching parens when the cursor is just behind one of them.
@@ -759,7 +733,10 @@ go install golang.org/x/lint/golint@latest
 
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
-:ensure t)
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -894,7 +871,7 @@ Wrap a line
 
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook
-              '(lambda ()
+              (lambda ()
                  (visual-line-mode 1)))
 #+end_src
 
@@ -928,7 +905,7 @@ Wrap a line
      :ensure t
      :config
      (customize-set-variable 'json-mode-hook
-                               '(lambda ()
+                               (lambda ()
                                    (setq tab-width 2))))
 #+end_src
 
@@ -1002,7 +979,11 @@ Wrap a line
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
 
-#+end_s
+#+end_src
+
+#+RESULTS:
+| dired-hide-dotfiles-mode | all-the-icons-dired-mode |
+
 * Thanks To
 
 My Emacs config is heavily borrowed from daviwil emacs-from-scratch

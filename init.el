@@ -43,29 +43,9 @@
 
 (use-package doom-themes
   :defer t
-  :init (load-theme 'doom-dracula t))
+  :init (load-theme 'doom-one t))
 
-(defvar myemacs/d-default-font-size 180)
-(defvar myemacs/d-default-variable-font-size 180)
-(defvar myemacs/l-default-font-size 160)
-(defvar myemacs/l-default-variable-font-size 160)
-(defvar myemacs/frame-transparency '(90 . 90))
-(defvar myemacs/fonts "Iosevka")
-(defvar myemacs/weight 'Regular)
-
-  (if (eq system-type 'darwin)
-      (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
-               (set-face-attribute 'default nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
-
-  (if (eq system-type 'darwin)
-         ;; Set the fixed pitch face
-      (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
-               (set-face-attribute 'fixed-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
-
-  (if (eq system-type 'darwin)
-      ;; Set the variable pitch face
-      (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/d-default-font-size :weight myemacs/weight)
-    (set-face-attribute 'variable-pitch nil :font myemacs/fonts :height myemacs/l-default-font-size :weight myemacs/weight))
+(set-frame-font "Iosevka-16" nil t)
 
 (use-package ac-emoji
   :ensure t)
@@ -164,6 +144,14 @@
   (setq dired-sidebar-use-term-integration t)
   (setq dired-sidebar-use-custom-font t))
 
+(global-display-line-numbers-mode)
+(global-hl-line-mode 1)
+
+(use-package electric
+  :ensure t
+  :config
+  (electric-pair-mode 1))
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -251,8 +239,6 @@
   (beacon-mode 1))
 
 (setq warning-minimum-level :emergency)
-
-(global-hl-line-mode 1)
 
 (setq auto-save-visited-file-name t)
 
@@ -394,7 +380,10 @@
 (go-eldoc-setup))
 
 (use-package exec-path-from-shell
-:ensure t)
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 (use-package go-guru
 :ensure t
@@ -490,7 +479,7 @@
 (add-hook 'org-mode-hook 'org-indent-mode)
 
 (add-hook 'org-mode-hook
-            '(lambda ()
+            (lambda ()
                (visual-line-mode 1)))
 
 (use-package diminish
@@ -515,7 +504,7 @@
    :ensure t
    :config
    (customize-set-variable 'json-mode-hook
-                             '(lambda ()
+                             (lambda ()
                                  (setq tab-width 2))))
 
 (use-package yaml-mode
@@ -539,16 +528,26 @@
 
 (use-package terraform-mode
     :ensure t)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(sqlite3 yasnippet-snippets which-key use-package terraform-mode slime-company rainbow-delimiters pyvenv python-mode projectile pkg-info org-bullets lsp-pyright kubernetes k8s-mode json-mode ivy-rich helm gotest go-guru go-eldoc general forge flycheck exec-path-from-shell eglot doom-themes doom-modeline dockerfile-mode docker dired-single dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell company-go clj-refactor blacken beacon auto-package-update all-the-icons-nerd-fonts all-the-icons-dired ac-emoji)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+(use-package dired
+  :ensure nil
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :custom ((dired-listing-switches "-agho --group-directories-first")))
+
+(use-package dired-single
+  :commands (dired dired-jump))
+
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(use-package dired-open
+  :commands (dired dired-jump)
+  :config
+  ;; Doesn't work as expected!
+  ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
+  (setq dired-open-extensions '(("png" . "feh")
+                                ("mkv" . "mpv"))))
+
+(use-package dired-hide-dotfiles
+  :hook (dired-mode . dired-hide-dotfiles-mode))
