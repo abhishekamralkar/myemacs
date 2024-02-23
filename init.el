@@ -152,6 +152,24 @@
   :config
   (electric-pair-mode 1))
 
+;; Enable company-mode globally with additional settings
+(use-package company
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 1
+        company-show-numbers t
+        company-tooltip-align-annotations t
+        company-tooltip-flip-when-above t))
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -254,20 +272,6 @@
    :init
    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-(use-package company
-  :ensure t
-  :config
-  (add-hook 'after-init-hook 'global-company-mode))
-
-(use-package company-go
-  :ensure t
-  :config
-  (add-to-list 'company-backends 'company-go))
-
-(add-hook 'go-mode-hook (lambda ()
-                          (set (make-local-variable 'company-backends) '(company-go))
-                          (company-mode)))
-
 (use-package flycheck
    :ensure t)
 
@@ -352,7 +356,6 @@
 
 (setq exec-path (append exec-path '("/usr/local/go/bin/go")))
 
-
 (use-package eglot
       :ensure t
       :config
@@ -379,25 +382,11 @@
 :config
 (go-eldoc-setup))
 
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize)))
-
 (use-package go-guru
 :ensure t
 :config
 (customize-set-variable 'go-guru-scope "...")
 (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
-
-(use-package company-go
-:ensure t
-:config
-(add-hook 'go-mode-hook (lambda ()
-			   (set (make-local-variable 'company-backends)
-				     '(company-go))
-				(company-mode))))
 
 (use-package gotest
 :ensure t
