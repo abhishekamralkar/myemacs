@@ -100,7 +100,7 @@ Using JetBrains fonts
   (defvar myemacs/l-default-font-size 160)
   (defvar myemacs/l-default-variable-font-size 160)
   (defvar myemacs/frame-transparency '(90 . 90))
-  (defvar myemacs/fonts "Iosevka")
+  (defvar myemacs/fonts "Iosevka-16")
   (defvar myemacs/weight 'Regular)
 
     (if (eq system-type 'darwin)
@@ -537,13 +537,16 @@ Code template
 GIT client for emacs
 
 #+begin_src emacs-lisp
-(use-package magit
-   :ensure t
-   :bind ("C-x g" . magit))
+    (use-package magit
+       :ensure t
+       :bind ("C-x g" . magit))
+
+  (use-package sqlite3
+    :ensure t)
   
-(use-package forge
-   :ensure t
-   :after magit)
+    (use-package forge
+       :ensure t
+       :after magit)
 #+end_src
 
 ** projectile
