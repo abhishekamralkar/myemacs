@@ -540,3 +540,16 @@
 
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(fzf telephone-line yasnippet-snippets which-key use-package terraform-mode sqlite3 slime-company rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright kubernetes k8s-mode json-mode ivy-rich helm gotest go-guru go-eldoc general forge flycheck exec-path-from-shell eglot doom-themes doom-modeline dockerfile-mode docker dired-single dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell company-go clj-refactor blacken beacon auto-package-update all-the-icons-dired ac-emoji)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
