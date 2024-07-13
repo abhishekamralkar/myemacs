@@ -91,7 +91,7 @@ Using Doom Emacs theme
 #+begin_src emacs-lisp
 (use-package doom-themes
   :defer t
-  :init (load-theme 'doom-one t))
+  :init (load-theme 'doom-solarized-light t))
 #+end_src
 
 #+RESULTS:
@@ -298,39 +298,18 @@ available key bindings that follow C-x (or as many as space allows given your se
 (global-display-line-numbers-mode)
 (global-hl-line-mode 1)
 #+end_src
-** electric
-#+begin_src emacs-lisp
-(use-package electric
-  :ensure t
-  :config
-  (electric-pair-mode 1))
-#+end_src
 
-** company
+** beacon
+
+Beacon- Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
 
 #+begin_src emacs-lisp
-;; Enable company-mode globally with additional settings
-(use-package company
-  :ensure t
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  (setq company-idle-delay 0.2
-        company-minimum-prefix-length 1
-        company-show-numbers t
-        company-tooltip-align-annotations t
-        company-tooltip-flip-when-above t))
-#+end_src
-
-** exec path from shell
-
-#+begin_src emacs-lisp
-(use-package exec-path-from-shell
+(use-package beacon
   :ensure t
   :config
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize)))
+  (beacon-mode 1))  
 #+end_src
+
 * ivy and counsel
 
 #+begin_src emacs-lisp
@@ -431,16 +410,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   (projectile-mode 1))
 #+end_src
 
-* beacon
 
-Beacon- Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
-
-#+begin_src emacs-lisp
-(use-package beacon
-  :ensure t
-  :config
-  (beacon-mode 1))  
-#+end_src
 
 * custom
 
@@ -492,6 +462,7 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 #+end_src
 
 * tools
+
 ** show parens
 
 Highlights matching parens when the cursor is just behind one of them.
@@ -585,8 +556,40 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
         fzf/window-height 15))
 #+end_src
 
-#+RESULTS:
-: t
+** exec path from shell
+
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
+#+end_src
+
+** electric
+#+begin_src emacs-lisp
+(use-package electric
+  :ensure t
+  :config
+  (electric-pair-mode 1))
+#+end_src
+
+** company
+
+#+begin_src emacs-lisp
+;; Enable company-mode globally with additional settings
+(use-package company
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 1
+        company-show-numbers t
+        company-tooltip-align-annotations t
+        company-tooltip-flip-when-above t))
+#+end_src
+
 
 * languages
 
@@ -725,7 +728,7 @@ M-x lsp-workspace-folders-add
 #+begin_src sh
 # GO Path
 export GOROOT=/usr/local/go
-export GOPATH=$HOME/code/golang
+export GOPATH=$HOME/Code/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 #+end_src
 
@@ -743,68 +746,17 @@ go install golang.org/x/lint/golint@latest
 
 
 #+begin_src emacs-lisp
-  (setq exec-path (append exec-path '("/usr/local/go/bin/go")))
-
-  (use-package eglot
+(setq exec-path (append exec-path '("/usr/local/go/bin/go")))
+(use-package eglot
         :ensure t
         :config
-        (add-to-list 'eglot-server-programs '(go-mode . ("/usr/local/bin/gopls")))
+        (add-to-list 'eglot-server-programs '(go-mode . ("~/go/bin/gopls")))
         :hook ((go-mode . eglot-ensure)))
 #+end_src
 
 #+begin_src emacs-lisp
-(setq gofmt-command "goimports") ; or "gofmt" for default
+(setq gofmt-command "goimports")
 (add-hook 'before-save-hook 'gofmt-before-save)
-
-;; Optional: Linter
-(require 'flymake)
-(defun go-flymake-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name))))
-    (list "golint" (list local-file))))
-(add-to-list 'flymake-allowed-file-name-masks
-             '("\\.go\\'" go-flymake-init))
-
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package go-eldoc
-:ensure t
-:config
-(go-eldoc-setup))
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package go-guru
-:ensure t
-:config
-(customize-set-variable 'go-guru-scope "...")
-(add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package gotest
-:ensure t
-:bind (:map go-mode-map
-                ("C-c C-t p" . go-test-current-project)
-                ("C-c C-t f" . go-test-current-file)
-                ("C-c C-t ." . go-test-current-test)
-                ("C-c r" . go-run))
-:config
-    (setq go-test-verbose t))
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package dap-mode
-  :ensure t
-  :hook ((go-mode . dap-mode)
-         (go-mode . dap-ui-mode))
-  :config
-  (require 'dap-go))
-
 #+end_src
 
 ** clojure

@@ -43,7 +43,7 @@
 
 (use-package doom-themes
   :defer t
-  :init (load-theme 'doom-one t))
+  :init (load-theme 'doom-solarized-light t))
 
 (set-frame-font "Iosevka-18" nil t)
 
@@ -157,28 +157,10 @@
 (global-display-line-numbers-mode)
 (global-hl-line-mode 1)
 
-(use-package electric
+(use-package beacon
   :ensure t
   :config
-  (electric-pair-mode 1))
-
-;; Enable company-mode globally with additional settings
-(use-package company
-  :ensure t
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  (setq company-idle-delay 0.2
-        company-minimum-prefix-length 1
-        company-show-numbers t
-        company-tooltip-align-annotations t
-        company-tooltip-flip-when-above t))
-
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize)))
+  (beacon-mode 1))
 
 (use-package ivy
   :diminish
@@ -261,11 +243,6 @@
   :init
   (projectile-mode 1))
 
-(use-package beacon
-  :ensure t
-  :config
-  (beacon-mode 1))
-
 (setq warning-minimum-level :emergency)
 
 (setq auto-save-visited-file-name t)
@@ -326,6 +303,29 @@
         fzf/position-bottom t
         fzf/window-height 15))
 
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
+
+(use-package electric
+  :ensure t
+  :config
+  (electric-pair-mode 1))
+
+;; Enable company-mode globally with additional settings
+(use-package company
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 1
+        company-show-numbers t
+        company-tooltip-align-annotations t
+        company-tooltip-flip-when-above t))
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook 
@@ -380,55 +380,14 @@
   :config)
 
 (setq exec-path (append exec-path '("/usr/local/go/bin/go")))
-
 (use-package eglot
-      :ensure t
-      :config
-      (add-to-list 'eglot-server-programs '(go-mode . ("/usr/local/bin/gopls")))
-      :hook ((go-mode . eglot-ensure)))
+        :ensure t
+        :config
+        (add-to-list 'eglot-server-programs '(go-mode . ("~/go/bin/gopls")))
+        :hook ((go-mode . eglot-ensure)))
 
-(setq gofmt-command "goimports") ; or "gofmt" for default
+(setq gofmt-command "goimports")
 (add-hook 'before-save-hook 'gofmt-before-save)
-
-;; Optional: Linter
-(require 'flymake)
-(defun go-flymake-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name))))
-    (list "golint" (list local-file))))
-(add-to-list 'flymake-allowed-file-name-masks
-             '("\\.go\\'" go-flymake-init))
-
-(use-package go-eldoc
-:ensure t
-:config
-(go-eldoc-setup))
-
-(use-package go-guru
-:ensure t
-:config
-(customize-set-variable 'go-guru-scope "...")
-(add-hook 'go-mode-hook #'go-guru-hl-identifier-mode))
-
-(use-package gotest
-:ensure t
-:bind (:map go-mode-map
-                ("C-c C-t p" . go-test-current-project)
-                ("C-c C-t f" . go-test-current-file)
-                ("C-c C-t ." . go-test-current-test)
-                ("C-c r" . go-run))
-:config
-    (setq go-test-verbose t))
-
-(use-package dap-mode
-  :ensure t
-  :hook ((go-mode . dap-mode)
-         (go-mode . dap-ui-mode))
-  :config
-  (require 'dap-go))
 
 (use-package clojure-mode
    :defer t
