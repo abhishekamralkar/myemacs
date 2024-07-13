@@ -9,13 +9,13 @@
 
 [[https://www.gnu.org/licenses/gpl-3.0][https://img.shields.io/badge/License-GPL%20v3-blue.svg]]
 
-* namaste!
+* Namaste!
 
 This is my Emacs configuration that is written in Org Mode. README.org generates init.el which Emacs loads up.
 
 [[./images/emacs.png]]
 
-* speed up
+* Speed Up
 
 #+begin_src emacs-lisp
   (setq gc-cons-threshold (* 50 1000 1000))
@@ -30,13 +30,13 @@ This is my Emacs configuration that is written in Org Mode. README.org generates
   (add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
 #+end_src
 
-* installation
+* Installation
 
 git clone https://github.com/abhishekamralkar/myemacs ~/.emacs.d
 
 To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning this configuration. 
 
-* about me
+* About Me
 
 #+begin_src emacs-lisp
 (setq user-full-name "Abhishek Anand Amralkar"
@@ -69,7 +69,7 @@ The use-package macro allows you to isolate package configuration in your .emacs
   (add-to-list 'org-structure-template-alist '("py" . "src python"))  
 #+end_src
 
-* automatic package updates
+* Automatic Package Updates
 
 With auto-package-update package we can keep emacs upto date
 
@@ -84,39 +84,23 @@ With auto-package-update package we can keep emacs upto date
   (auto-package-update-at-time "09:00"))
 #+end_src
 
-* emacs configuration
+* Configuration
 
-** no startup screen
-
+** UI
 #+begin_src emacs-lisp
-(setq inhibit-startup-message t)
+(setq inhibit-startup-message t)   ;no startup screen
+(tool-bar-mode -1)                 ;no toolbar
+(menu-bar-mode -1)                 ;no menubar
+(scroll-bar-mode -1)               ;no scrollbar
+(setq ring-bell-function 'ignore)  ;no ringing bells
+(defalias 'yes-or-no-p 'y-or-n-p)
+(setq line-number-mode t)
+(setq column-number-mode t)
+(global-display-line-numbers-mode)
+(global-hl-line-mode 1)
 #+end_src
 
-** no toolbar
-
-#+begin_src emacs-lisp
-(tool-bar-mode -1)
-#+end_src
-
-** no menubar
-
-#+begin_src emacs-lisp
-(menu-bar-mode -1)
-#+end_src
-
-** no scrollbar
-
-#+begin_src emacs-lisp
-(scroll-bar-mode -1)
-#+end_src
-
-** no ringing bells
-
-#+begin_src emacs-lisp
-(setq ring-bell-function 'ignore)  
-#+end_src
-
-** utf-8 encoding
+** UTF-8 Encoding
 
 #+begin_src emacs-lisp
 (setq locale-coding-system 'utf-8)
@@ -126,20 +110,14 @@ With auto-package-update package we can keep emacs upto date
 (prefer-coding-system 'utf-8)   
 #+end_src
 
-** no backup please!
+** No Backup
 
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
 (setq auto-save-default nil)   
 #+end_src
 
-** y for yes and n for no
-
-#+begin_src emacs-lisp
-(defalias 'yes-or-no-p 'y-or-n-p)
-#+end_src
-
-** dashboard
+** Dashboard
 
 #+begin_src emacs-lisp
 (use-package dashboard
@@ -165,25 +143,10 @@ With auto-package-update package we can keep emacs upto date
                         (registers . 5)))
 #+end_src
 
-** modeline
+** Modeline
 
 With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
 if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
-
-#+begin_src emacs-lisp
-(use-package telephone-line
-    :ensure t
-    :init (telephone-line-mode 0))
-(setq telephone-line-primary-left-separator 'telephone-line-cubed-left
-      telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
-      telephone-line-primary-right-separator 'telephone-line-cubed-right
-      telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
-(setq telephone-line-height 24
-      telephone-line-evil-use-short-tag t)
-#+end_src
-
-#+RESULTS:
-: t
 
 #+begin_src emacs-lisp
   (use-package doom-modeline
@@ -204,16 +167,7 @@ if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-i
     :ensure t)
 #+end_src
 
-** cursor position
-
-Show the current line and column for your cursor.
-
-#+begin_src emacs-lisp
-(setq line-number-mode t)
-(setq column-number-mode t)   
-#+end_src
-
-** which-key
+** Which-Key
 
 which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
 For example, after enabling the minor mode if you enter C-x and wait for the default of 1 second the minibuffer will expand with all of the
@@ -226,7 +180,7 @@ available key bindings that follow C-x (or as many as space allows given your se
   (which-key-mode))   
 #+end_src
 
-** dired-sidebar
+** Dired-Sidebar
 
 #+begin_src emacs-lisp
 (use-package dired-sidebar
@@ -248,16 +202,7 @@ available key bindings that follow C-x (or as many as space allows given your se
   (setq dired-sidebar-use-custom-font t))
 #+end_src
 
-#+RESULTS:
-: dired-sidebar-toggle-sidebar
-
-** enable line
-#+begin_src emacs-lisp
-(global-display-line-numbers-mode)
-(global-hl-line-mode 1)
-#+end_src
-
-** beacon
+** Beacon
 
 Beacon- Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
 
@@ -268,7 +213,7 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
   (beacon-mode 1))  
 #+end_src
 
-** theme and font
+** ThemeFont
 
 Using Doom Emacs theme 
 

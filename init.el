@@ -41,15 +41,16 @@
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
-(setq inhibit-startup-message t)
-
-(tool-bar-mode -1)
-
-(menu-bar-mode -1)
-
-(scroll-bar-mode -1)
-
-(setq ring-bell-function 'ignore)
+(setq inhibit-startup-message t)   ;no startup screen
+(tool-bar-mode -1)                 ;no toolbar
+(menu-bar-mode -1)                 ;no menubar
+(scroll-bar-mode -1)               ;no scrollbar
+(setq ring-bell-function 'ignore)  ;no ringing bells
+(defalias 'yes-or-no-p 'y-or-n-p)
+(setq line-number-mode t)
+(setq column-number-mode t)
+(global-display-line-numbers-mode)
+(global-hl-line-mode 1)
 
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -59,8 +60,6 @@
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
-
-(defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-package dashboard
   :ensure t
@@ -82,16 +81,6 @@
                         (agenda . 5)
                         (registers . 5)))
 
-(use-package telephone-line
-    :ensure t
-    :init (telephone-line-mode 0))
-(setq telephone-line-primary-left-separator 'telephone-line-cubed-left
-      telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
-      telephone-line-primary-right-separator 'telephone-line-cubed-right
-      telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
-(setq telephone-line-height 24
-      telephone-line-evil-use-short-tag t)
-
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
@@ -102,9 +91,6 @@
 
 (use-package nerd-icons
     :ensure t)
-
-(setq line-number-mode t)
-(setq column-number-mode t)
 
 (use-package which-key
   :ensure t
@@ -128,9 +114,6 @@
   (setq dired-sidebar-theme 'vscode)
   (setq dired-sidebar-use-term-integration t)
   (setq dired-sidebar-use-custom-font t))
-
-(global-display-line-numbers-mode)
-(global-hl-line-mode 1)
 
 (use-package beacon
   :ensure t
