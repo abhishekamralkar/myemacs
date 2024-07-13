@@ -261,7 +261,7 @@ Using Iosevka fonts
   (global-ligature-mode t))
 #+end_src
 
-* ivy and counsel
+* Ivy and Counsel
 
 #+begin_src emacs-lisp
 (use-package ivy
@@ -297,8 +297,8 @@ Using Iosevka fonts
   (counsel-mode 1))
 #+end_src
 
-* custom
-** reload
+* Custom
+** Reload
 
 #+begin_src emacs-lisp
 (defun config-reload ()
@@ -306,7 +306,7 @@ Using Iosevka fonts
   (find-file "~/.emacs.d/init.el"))  
 #+end_src>
 
-** edit
+** Edit
 
 #+begin_src emacs-lisp
 (defun config-edit ()
@@ -315,7 +315,7 @@ Using Iosevka fonts
 (global-set-key (kbd "C-c e") 'config-edit)
 #+end_src>
 
-** bindings
+** Bindings
 
 #+begin_src emacs-lisp
 (global-set-key (kbd "M-<up>") 'beginning-of-buffer)
@@ -324,19 +324,19 @@ Using Iosevka fonts
 (global-set-key (kbd "C-c r") 'config-reload)
 #+end_src>
 
-** suppress warning
+** Suppress Warning
 
 #+begin_src emacs-lisp
 (setq warning-minimum-level :emergency)
 #+end_src
 
-** auto-save
+** Auto-Save
 
 #+begin_src emacs-lisp
 (setq auto-save-visited-file-name t)
 #+end_src
 
-** auto-refresh-dired
+** Auto-Refresh-Dired
 
 #+begin_src emacs-lisp
 (global-auto-revert-mode 1)
@@ -345,8 +345,8 @@ Using Iosevka fonts
 (setq auto-revert-verbose nil)
 #+end_src
 
-* tools
-** show parens
+* Tools
+** Show Parens
 
 Highlights matching parens when the cursor is just behind one of them.
 
@@ -354,7 +354,7 @@ Highlights matching parens when the cursor is just behind one of them.
 (show-paren-mode 1)
 #+end_src
 
-** rainbow delimeter
+** Rainbow Delimeter
 
 Colors parentheses and other delimiters
 
@@ -365,14 +365,14 @@ Colors parentheses and other delimiters
    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))   
 #+end_src
 
-** flycheck
+** Flycheck
 
 #+begin_src emacs-lisp
 (use-package flycheck
    :ensure t)   
 #+end_src
 
-** yasnippet
+** Yasnippet
 
 Code template
 
@@ -385,7 +385,7 @@ Code template
      (yas-reload-all))
 #+end_src
 
-** magit
+** Magit
 
 GIT client for emacs
 
@@ -402,7 +402,7 @@ GIT client for emacs
        :after magit)
 #+end_src
 
-** projectile
+** Projectile
 
 Projectile is a project interaction library for Emacs. Its goal is to provide a nice set of features operating on a project level without introducing external dependencies (when feasible).
 
@@ -413,7 +413,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
      (projectile-mode 1))
 #+end_src
 
-** general
+** General
 
 #+begin_src emacs-lisp
 (use-package general
@@ -439,7 +439,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
         fzf/window-height 15))
 #+end_src
 
-** exec path from shell
+** Exec Path From Shell
 
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
@@ -449,7 +449,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
     (exec-path-from-shell-initialize)))
 #+end_src
 
-** electric
+** Electric
 #+begin_src emacs-lisp
 (use-package electric
   :ensure t
@@ -457,7 +457,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   (electric-pair-mode 1))
 #+end_src
 
-** company
+** Company
 
 #+begin_src emacs-lisp
 ;; Enable company-mode globally with additional settings
@@ -473,7 +473,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
         company-tooltip-flip-when-above t))
 #+end_src
 
-** projectile
+** Projectile
 
 Projectile is a project interaction library for Emacs. Its goal is to provide a nice set of features operating on a project level without introducing external dependencies (when feasible).
 
@@ -484,7 +484,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   (projectile-mode 1))
 #+end_src
 
-** hydra
+** Hydra
 
 #+begin_src emacs-lisp
 
@@ -498,7 +498,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
     ("f" nil "finished" :exit t))
 #+end_src
 
-** helm
+** Helm
 
 #+begin_src emacs-lisp
   (use-package helm
@@ -537,9 +537,9 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 #+end_src
 
-* languages
+* Languages
 
-** lsp-mode
+** LSP-Mode
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -558,7 +558,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
     :config)
 #+end_src
 
-** lsp-ui
+** LSP-UI
 
 #+begin_src emacs-lisp
 (use-package lsp-ui
@@ -570,21 +570,21 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   (setq lsp-ui-doc-position 'bottom))
 #+end_src>
 
-** lsp-treemacs
+** LSP-Treemacs
 
 #+begin_src emacs-lisp
 (use-package lsp-treemacs
   :after lsp)
 #+end_src>
 
-** lsp-ivy
+** LSP-Ivy
 
 #+begin_src emacs-lisp
 (use-package lsp-ivy
   :after lsp)
 #+end_src>
 
-** python
+** Python
 
 Install python-lsp server.
 
@@ -661,7 +661,7 @@ You can use M-x pyvenv-activate to activate specific venv
       :config)
 #+end_src
 
-** golang
+** Golang
 
 If you see error gopls not able to find module in your workspace 
 
@@ -716,7 +716,7 @@ go install golang.org/x/lint/golint@latest
              '("\\.go\\'" go-flymake-init))
 #+end_src
 
-** clojure
+** Clojure
 
 #+begin_src emacs-lisp
 (use-package clojure-mode
@@ -737,7 +737,7 @@ go install golang.org/x/lint/golint@latest
    :bind ("C-c '" . hydra-cljr-help-menu/body))   
 #+end_src
 
-** bash
+** Bash
 
 #+begin_src emacs-lisp
 (add-hook 'shell-mode-hook 'yas-minor-mode)
@@ -775,7 +775,7 @@ go install golang.org/x/lint/golint@latest
     (slime-setup '(slime-fancy slime-company)))
 #+end_src
 
-** rust
+** Rust
 #+begin_src emacs-lisp
 (use-package rust-mode
   :config
@@ -792,8 +792,8 @@ go install golang.org/x/lint/golint@latest
 (provide 'init-rust-mode)
 #+end_src
 
-* org-mode
-** org bullets
+* Org-Mode
+** Org Bullets
 
 Nice bullets instead of  asterik
 
@@ -804,7 +804,7 @@ Nice bullets instead of  asterik
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
 
-** common setting
+** Common Setting
 
 Some common setting
 
@@ -818,7 +818,7 @@ Some common setting
   (add-hook 'org-mode-hook 'org-indent-mode)
 #+end_src
 
-** line wrap
+** Line Wrap
 
 Wrap a line
 
@@ -828,7 +828,7 @@ Wrap a line
                  (visual-line-mode 1)))
 #+end_src
 
-** diminish
+** Diminish
 
 #+begin_src emacs-lisp
 (use-package diminish
@@ -849,9 +849,9 @@ Wrap a line
     (diminish 'flycheck-mode)
     (diminish 'helm-mode))  
 #+end_src
-* infrastructure
+* Infrastructure
 
-** json-mode
+** Json
 
 #+begin_src emacs-lisp
   (use-package json-mode
@@ -862,14 +862,14 @@ Wrap a line
                                    (setq tab-width 2))))
 #+end_src
 
-** yaml-mode
+** Yaml
 
 #+begin_src emacs-lisp 
   (use-package yaml-mode
        :ensure t)
 #+end_src
 
-** docker
+** Docker
 
 #+begin_src emacs-lisp
   (use-package docker
@@ -878,14 +878,14 @@ Wrap a line
               ("C-c d i" . docker-images)))
 #+end_src
 
-** dockerfile
+** Dockerfile
 
 #+begin_src emacs-lisp
   (use-package dockerfile-mode
       :ensure t)
 #+end_src
 
-** kubernetes
+** Kubernetes
 
 #+begin_src emacs-lisp
    (use-package kubernetes
@@ -899,13 +899,13 @@ Wrap a line
     :hook (k8s-mode . yas-minor-mode))
 #+end_src
 
-** terraform
+** Terraform
 
 #+begin_src emacs-lisp 
   (use-package terraform-mode
       :ensure t)
 #+end_src
-* file management
+* File Management
 
 #+begin_src emacs-lisp
 
