@@ -45,7 +45,7 @@
   :defer t
   :init (load-theme 'doom-one t))
 
-(set-frame-font "Iosevka-16" nil t)
+(set-frame-font "Iosevka-18" nil t)
 
 (use-package ac-emoji
   :ensure t)
@@ -106,6 +106,16 @@
                         (projects . 5)
                         (agenda . 5)
                         (registers . 5)))
+
+(use-package telephone-line
+    :ensure t
+    :init (telephone-line-mode 0))
+(setq telephone-line-primary-left-separator 'telephone-line-cubed-left
+      telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
+      telephone-line-primary-right-separator 'telephone-line-cubed-right
+      telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+(setq telephone-line-height 24
+      telephone-line-evil-use-short-tag t)
 
 (use-package doom-modeline
   :ensure t
@@ -301,6 +311,21 @@
 (use-package general
    :ensure t)
 
+(use-package fzf
+  :bind
+    ;; Don't forget to set keybinds!
+  :config
+  (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
+        fzf/executable "fzf"
+        fzf/git-grep-args "-i --line-number %s"
+        ;; command used for `fzf-grep-*` functions
+        ;; example usage for ripgrep:
+        ;; fzf/grep-command "rg --no-heading -nH"
+        fzf/grep-command "grep -nrH"
+        ;; If nil, the fzf buffer will appear at the top of the window
+        fzf/position-bottom t
+        fzf/window-height 15))
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook 
@@ -454,6 +479,20 @@
     (require 'company)
     (slime-setup '(slime-fancy slime-company)))
 
+(use-package rust-mode
+  :config
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode)
+  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+  (setq rust-format-on-save t)
+  (setq rust-indent-offset 4))
+
+(use-package cargo-mode
+  :config
+  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+
+(provide 'init-rust-mode)
+
 (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
     :custom
@@ -540,16 +579,3 @@
 
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(cargo-mode rust-mode fzf telephone-line yasnippet-snippets which-key use-package terraform-mode sqlite3 slime-company rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright kubernetes k8s-mode json-mode ivy-rich helm gotest go-guru go-eldoc general forge flycheck exec-path-from-shell eglot doom-themes doom-modeline dockerfile-mode docker dired-single dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell company-go clj-refactor blacken beacon auto-package-update all-the-icons-dired ac-emoji)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

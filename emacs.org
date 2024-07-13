@@ -97,10 +97,10 @@ Using Doom Emacs theme
 #+RESULTS:
 : t
 
-Using Dank Mono fonts
+Using Iosevka fonts
 
 #+begin_src emacs-lisp
-(set-frame-font "Dank Mono-18" nil t)
+(set-frame-font "Iosevka-18" nil t)
 #+end_src
 
 #+begin_src emacs-lisp
