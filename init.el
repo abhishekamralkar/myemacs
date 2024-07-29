@@ -122,9 +122,9 @@
 
 (use-package doom-themes
   :defer t
-  :init (load-theme 'doom-solarized-light t))
+  :init (load-theme 'doom-monokai-classic t))
 
-(set-frame-font "Iosevka-18" nil t)
+(set-frame-font "JetBrains Mono-18" nil t)
 
 (use-package ac-emoji
   :ensure t)

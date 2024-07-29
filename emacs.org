@@ -220,13 +220,13 @@ Using Doom Emacs theme
 #+begin_src emacs-lisp
 (use-package doom-themes
   :defer t
-  :init (load-theme 'doom-solarized-light t))
+  :init (load-theme 'doom-monokai-classic t))
 #+end_src
 
 Using Iosevka fonts
 
 #+begin_src emacs-lisp
-(set-frame-font "Iosevka-18" nil t)
+(set-frame-font "JetBrains Mono-18" nil t)
 #+end_src
 
 #+begin_src emacs-lisp
