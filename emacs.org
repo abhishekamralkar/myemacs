@@ -345,6 +345,14 @@ Using Iosevka fonts
 (setq auto-revert-verbose nil)
 #+end_src
 
+** Auto Tangle
+
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'org-babel-tangle nil t)))
+#+end_src
+
 * Tools
 ** Show Parens
 
@@ -369,7 +377,7 @@ Colors parentheses and other delimiters
 
 #+begin_src emacs-lisp
 (use-package flycheck
-   :ensure t)   
+  :init (global-flycheck-mode))
 #+end_src
 
 ** Yasnippet
@@ -462,15 +470,8 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 #+begin_src emacs-lisp
 ;; Enable company-mode globally with additional settings
 (use-package company
-  :ensure t
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  (setq company-idle-delay 0.2
-        company-minimum-prefix-length 1
-        company-show-numbers t
-        company-tooltip-align-annotations t
-        company-tooltip-flip-when-above t))
+  :hook ((python-mode . company-mode)
+         (go-mode . company-mode)))
 #+end_src
 
 ** Projectile
@@ -579,10 +580,36 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 
 ** LSP-Ivy
 
+
 #+begin_src emacs-lisp
 (use-package lsp-ivy
   :after lsp)
 #+end_src>
+
+** Eglot
+
+#+begin_src emacs-lisp
+  (use-package eglot
+    :ensure t
+    :config
+    ;; Associate eglot with Python and Go
+    (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
+    (add-to-list 'eglot-server-programs '(go-mode . ("gopls"))))
+#+end_src
+** Treesitter
+
+#+begin_src emacs-lisp
+;; Tree-sitter for enhanced syntax highlighting
+(use-package tree-sitter
+  :hook ((python-mode . tree-sitter-mode)
+         (python-mode . tree-sitter-hl-mode)
+         (go-mode . tree-sitter-mode)
+         (go-mode . tree-sitter-hl-mode)))
+
+  (use-package tree-sitter-langs
+    :ensure t
+    :after tree-sitter)
+#+end_src
 
 ** Python
 
@@ -689,31 +716,18 @@ go install golang.org/x/tools/cmd/godoc@latest
 go install golang.org/x/lint/golint@latest
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package go-mode
+    :ensure t)
+#+end_src
 
 #+begin_src emacs-lisp
 (setq exec-path (append exec-path '("/usr/local/go/bin/go")))
-(use-package eglot
-        :ensure t
-        :config
-        (add-to-list 'eglot-server-programs '(go-mode . ("~/go/bin/gopls")))
-        :hook ((go-mode . eglot-ensure)))
 #+end_src
 
 #+begin_src emacs-lisp
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)
-
-;; Optional: Linter
-(require 'flymake)
-(defun go-flymake-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name))))
-    (list "golint" (list local-file))))
-(add-to-list 'flymake-allowed-file-name-masks
-             '("\\.go\\'" go-flymake-init))
 #+end_src
 
 ** Clojure

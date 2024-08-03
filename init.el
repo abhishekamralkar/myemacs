@@ -195,6 +195,10 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'org-babel-tangle nil t)))
+
 (show-paren-mode 1)
 
 (use-package rainbow-delimiters
@@ -203,7 +207,7 @@
    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package flycheck
-   :ensure t)
+  :init (global-flycheck-mode))
 
 (use-package yasnippet
    :ensure t
@@ -259,15 +263,8 @@
 
 ;; Enable company-mode globally with additional settings
 (use-package company
-  :ensure t
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  (setq company-idle-delay 0.2
-        company-minimum-prefix-length 1
-        company-show-numbers t
-        company-tooltip-align-annotations t
-        company-tooltip-flip-when-above t))
+  :hook ((python-mode . company-mode)
+         (go-mode . company-mode)))
 
 (use-package projectile
   :ensure t
@@ -333,6 +330,24 @@
   (setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
   :config)
 
+(use-package eglot
+  :ensure t
+  :config
+  ;; Associate eglot with Python and Go
+  (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs '(go-mode . ("gopls"))))
+
+;; Tree-sitter for enhanced syntax highlighting
+(use-package tree-sitter
+  :hook ((python-mode . tree-sitter-mode)
+         (python-mode . tree-sitter-hl-mode)
+         (go-mode . tree-sitter-mode)
+         (go-mode . tree-sitter-hl-mode)))
+
+  (use-package tree-sitter-langs
+    :ensure t
+    :after tree-sitter)
+
 (use-package lsp-pyright
   :hook
   (python-mode . (lambda ()
@@ -371,27 +386,13 @@
   (python-shell-interpreter "python3")
   :config)
 
+(use-package go-mode
+    :ensure t)
+
 (setq exec-path (append exec-path '("/usr/local/go/bin/go")))
-(use-package eglot
-        :ensure t
-        :config
-        (add-to-list 'eglot-server-programs '(go-mode . ("~/go/bin/gopls")))
-        :hook ((go-mode . eglot-ensure)))
 
 (setq gofmt-command "goimports")
-  (add-hook 'before-save-hook 'gofmt-before-save)
-
-;; Optional: Linter
-(require 'flymake)
-(defun go-flymake-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name))))
-    (list "golint" (list local-file))))
-(add-to-list 'flymake-allowed-file-name-masks
-             '("\\.go\\'" go-flymake-init))
+(add-hook 'before-save-hook 'gofmt-before-save)
 
 (use-package clojure-mode
    :defer t
