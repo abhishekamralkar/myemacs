@@ -188,7 +188,9 @@
 
 (setq warning-minimum-level :emergency)
 
-(setq auto-save-visited-file-name t)
+(setq auto-save-default t)
+;; Set the interval between auto-saves based on time (in seconds)
+(setq auto-save-timeout 10)  ;; Save every 20 seconds of idle time
 
 (global-auto-revert-mode 1)
 ;; Also auto refresh dired, but be quiet about it
@@ -261,10 +263,16 @@
   :config
   (electric-pair-mode 1))
 
-;; Enable company-mode globally with additional settings
 (use-package company
-  :hook ((python-mode . company-mode)
-         (go-mode . company-mode)))
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 1
+        company-show-numbers t
+        company-tooltip-align-annotations t
+        company-tooltip-flip-when-above t))
 
 (use-package projectile
   :ensure t
