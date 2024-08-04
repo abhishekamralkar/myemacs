@@ -602,21 +602,24 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
     :config
     ;; Associate eglot with Python and Go
     (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
-    (add-to-list 'eglot-server-programs '(go-mode . ("gopls"))))
+    (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
+    (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
 #+end_src
 ** Treesitter
 
 #+begin_src emacs-lisp
-;; Tree-sitter for enhanced syntax highlighting
-(use-package tree-sitter
-  :hook ((python-mode . tree-sitter-mode)
-         (python-mode . tree-sitter-hl-mode)
-         (go-mode . tree-sitter-mode)
-         (go-mode . tree-sitter-hl-mode)))
+  ;; Tree-sitter for enhanced syntax highlighting
+  (use-package tree-sitter
+    :hook ((python-mode . tree-sitter-mode)
+           (python-mode . tree-sitter-hl-mode)
+           (go-mode . tree-sitter-mode)
+           (go-mode . tree-sitter-hl-mode)
+           (rust-mode . tree-sitter-mode)
+           (rust-mode . tree-sitter-hl-mode)))
 
-  (use-package tree-sitter-langs
-    :ensure t
-    :after tree-sitter)
+    (use-package tree-sitter-langs
+      :ensure t
+      :after tree-sitter)
 #+end_src
 
 ** Python
@@ -799,19 +802,17 @@ go install golang.org/x/lint/golint@latest
 
 ** Rust
 #+begin_src emacs-lisp
-(use-package rust-mode
-  :config
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode)
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-  (setq rust-format-on-save t)
-  (setq rust-indent-offset 4))
+  (use-package rust-mode
+    :ensure t
+    :hook
+    (rust-mode . eglot-ensure)
+    :config
+    (setq rust-format-on-save t))
 
-(use-package cargo-mode
-  :config
-  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+  (use-package cargo
+    :ensure t
+    :hook (rust-mode . cargo-minor-mode))
 
-(provide 'init-rust-mode)
 #+end_src
 
 * Org-Mode

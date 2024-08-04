@@ -343,14 +343,17 @@
   :config
   ;; Associate eglot with Python and Go
   (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
-  (add-to-list 'eglot-server-programs '(go-mode . ("gopls"))))
+  (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
 
 ;; Tree-sitter for enhanced syntax highlighting
 (use-package tree-sitter
   :hook ((python-mode . tree-sitter-mode)
          (python-mode . tree-sitter-hl-mode)
          (go-mode . tree-sitter-mode)
-         (go-mode . tree-sitter-hl-mode)))
+         (go-mode . tree-sitter-hl-mode)
+         (rust-mode . tree-sitter-mode)
+         (rust-mode . tree-sitter-hl-mode)))
 
   (use-package tree-sitter-langs
     :ensure t
@@ -452,18 +455,15 @@
     (slime-setup '(slime-fancy slime-company)))
 
 (use-package rust-mode
+  :ensure t
+  :hook
+  (rust-mode . eglot-ensure)
   :config
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode)
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-  (setq rust-format-on-save t)
-  (setq rust-indent-offset 4))
+  (setq rust-format-on-save t))
 
-(use-package cargo-mode
-  :config
-  (add-hook 'rust-mode-hook 'cargo-minor-mode))
-
-(provide 'init-rust-mode)
+(use-package cargo
+  :ensure t
+  :hook (rust-mode . cargo-minor-mode))
 
 (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
