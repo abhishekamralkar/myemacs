@@ -124,7 +124,7 @@
   :defer t
   :init (load-theme 'doom-monokai-classic t))
 
-(set-frame-font "JetBrains Mono-18" nil t)
+(set-frame-font "JetBrains Mono-16" nil t)
 
 (use-package ac-emoji
   :ensure t)
@@ -324,19 +324,14 @@
 (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 
 (use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook 
-  (lsp-mode . lsp-enable-which-key-integration)
-  (lsp-mode . lsp-deferred)
-  :custom
-  (lsp-diagnostics-provider :capf)
-  (lsp-headerline-breadcrumb-enable t)
-  (lsp-headerline-breadcrumb-segments '(project file symbols))
-  (lsp-lens-enable nil)
-  (lsp-disabled-clients '((python-mode . pyls)))
-  :init
-  (setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
-  :config)
+:ensure t
+:hook ((go-mode . lsp)
+       (rust-mode . lsp)
+       (python-mode . lsp))
+:commands lsp)
+
+(use-package dap-mode
+  :ensure t)
 
 (use-package eglot
   :ensure t

@@ -213,7 +213,7 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
   (beacon-mode 1))  
 #+end_src
 
-** ThemeFont
+** Theme&Font
 
 Using Doom Emacs theme 
 
@@ -226,7 +226,7 @@ Using Doom Emacs theme
 Using Iosevka fonts
 
 #+begin_src emacs-lisp
-(set-frame-font "JetBrains Mono-18" nil t)
+(set-frame-font "JetBrains Mono-16" nil t)
 #+end_src
 
 #+begin_src emacs-lisp
@@ -546,37 +546,23 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 #+end_src
 
-* Languages
-
 ** LSP-Mode
 
 #+begin_src emacs-lisp
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred)
-    :hook 
-    (lsp-mode . lsp-enable-which-key-integration)
-    (lsp-mode . lsp-deferred)
-    :custom
-    (lsp-diagnostics-provider :capf)
-    (lsp-headerline-breadcrumb-enable t)
-    (lsp-headerline-breadcrumb-segments '(project file symbols))
-    (lsp-lens-enable nil)
-    (lsp-disabled-clients '((python-mode . pyls)))
-    :init
-    (setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
-    :config)
+    (use-package lsp-mode
+    :ensure t
+    :hook ((go-mode . lsp)
+           (rust-mode . lsp)
+           (python-mode . lsp))
+    :commands lsp)
 #+end_src
 
 ** LSP-UI
 
 #+begin_src emacs-lisp
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :after lsp-mode
-  :custom
-  (lsp-ui-doc-show-with-cursor nil)
-  :config
-  (setq lsp-ui-doc-position 'bottom))
+  (use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
 #+end_src>
 
 ** LSP-Treemacs
@@ -588,12 +574,17 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 
 ** LSP-Ivy
 
-
 #+begin_src emacs-lisp
 (use-package lsp-ivy
   :after lsp)
 #+end_src>
 
+** DAP Mode
+
+#+begin_src emacs-lisp
+(use-package dap-mode
+  :ensure t)
+#+end_src
 ** Eglot
 
 #+begin_src emacs-lisp
@@ -606,6 +597,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
     (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
 #+end_src
 ** Treesitter
+
 
 #+begin_src emacs-lisp
   ;; Tree-sitter for enhanced syntax highlighting
@@ -621,6 +613,8 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
       :ensure t
       :after tree-sitter)
 #+end_src
+
+* Languages
 
 ** Python
 
