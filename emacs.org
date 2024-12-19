@@ -243,7 +243,8 @@ Using Modus Emacs theme
 Using Iosevka fonts
 
 #+begin_src emacs-lisp
-(set-frame-font "JetBrains Mono-10" nil t)
+(set-face-attribute 'default nil :family "Fira Code" :height 130)
+(set-face-attribute 'italic nil :family "Hack")
 #+end_src
 
 #+begin_src emacs-lisp
@@ -367,9 +368,9 @@ Using Iosevka fonts
 ** Auto Tangle
 
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook 'org-babel-tangle nil t)))
+;;(add-hook 'org-mode-hook
+;;          (lambda ()
+;;            (add-hook 'before-save-hook 'org-babel-tangle nil t)))
 #+end_src
 
 * Tools

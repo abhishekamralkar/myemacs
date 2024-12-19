@@ -141,7 +141,8 @@
 ;; Load the dark theme by default
 (load-theme 'ef-day :no-confirm)
 
-(set-frame-font "JetBrains Mono-10" nil t)
+(set-face-attribute 'default nil :family "Fira Code" :height 130)
+(set-face-attribute 'italic nil :family "Hack")
 
 (use-package ac-emoji
   :ensure t)
@@ -214,9 +215,9 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook 'org-babel-tangle nil t)))
+;;(add-hook 'org-mode-hook
+;;          (lambda ()
+;;            (add-hook 'before-save-hook 'org-babel-tangle nil t)))
 
 (show-paren-mode 1)
 
