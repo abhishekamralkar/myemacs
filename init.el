@@ -122,24 +122,28 @@
   :config
   (beacon-mode 1))
 
-(use-package ef-themes
-    :ensure t
-    :config)
-(setq ef-themes-headings ; read the manual's entry or the doc string
-      '((0 variable-pitch light 1.9)
-        (1 variable-pitch light 1.8)
-        (2 variable-pitch regular 1.7)
-        (3 variable-pitch regular 1.6)
-        (4 variable-pitch regular 1.5)
-        (5 variable-pitch 1.4) ; absence of weight means `bold'
-        (6 variable-pitch 1.3)
-        (7 variable-pitch 1.2)
-        (t variable-pitch 1.1)))
-(setq ef-themes-mixed-fonts t
-      ef-themes-variable-pitch-ui t)
-(mapc #'disable-theme custom-enabled-themes)
-;; Load the dark theme by default
-(load-theme 'ef-day :no-confirm)
+(use-package modus-theme
+  :ensure t
+  :config 
+  (setq modus-themes-mode-line '(accented borderless)
+        modus-themes-bold-constructs t
+        modus-themes-italic-constructs t
+        modus-themes-fringes 'subtle
+        modus-themes-tabs-accented t
+        modus-themes-paren-match '(bold intense)
+        modus-themes-prompts '(bold intense)
+        modus-themes-completions 'opinionated
+        modus-themes-org-blocks 'tinted-background
+        modus-themes-scale-headings t
+        modus-themes-region '(bg-only)
+        modus-themes-headings
+        '((1 . (rainbow overline background 1.4))
+          (2 . (rainbow background 1.3))
+          (3 . (rainbow bold 1.2))
+          (t . (semilight 1.1)))))
+
+  ;; Load the dark theme by default
+  (load-theme 'modus-operandi t)
 
 (set-face-attribute 'default nil :family "Fira Code" :height 130)
 (set-face-attribute 'italic nil :family "Hack")
