@@ -122,28 +122,24 @@
   :config
   (beacon-mode 1))
 
-(use-package modus-theme
-  :ensure t
-  :config 
-  (setq modus-themes-mode-line '(accented borderless)
-        modus-themes-bold-constructs t
-        modus-themes-italic-constructs t
-        modus-themes-fringes 'subtle
-        modus-themes-tabs-accented t
-        modus-themes-paren-match '(bold intense)
-        modus-themes-prompts '(bold intense)
-        modus-themes-completions 'opinionated
-        modus-themes-org-blocks 'tinted-background
-        modus-themes-scale-headings t
-        modus-themes-region '(bg-only)
-        modus-themes-headings
-        '((1 . (rainbow overline background 1.4))
-          (2 . (rainbow background 1.3))
-          (3 . (rainbow bold 1.2))
-          (t . (semilight 1.1)))))
-
-  ;; Load the dark theme by default
-  (load-theme 'modus-operandi t)
+(use-package ef-themes
+    :ensure t
+    :config)
+(setq ef-themes-headings ; read the manual's entry or the doc string
+      '((0 variable-pitch light 1.9)
+        (1 variable-pitch light 1.8)
+        (2 variable-pitch regular 1.7)
+        (3 variable-pitch regular 1.6)
+        (4 variable-pitch regular 1.5)
+        (5 variable-pitch 1.4) ; absence of weight means `bold'
+        (6 variable-pitch 1.3)
+        (7 variable-pitch 1.2)
+        (t variable-pitch 1.1)))
+(setq ef-themes-mixed-fonts t
+      ef-themes-variable-pitch-ui t)
+(mapc #'disable-theme custom-enabled-themes)
+;; Load the dark theme by default
+(load-theme 'ef-dark :no-confirm)
 
 (set-face-attribute 'default nil :family "Fira Code" :height 130)
 (set-face-attribute 'italic nil :family "Hack")
@@ -568,3 +564,16 @@
 
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(ligature yasnippet-snippets which-key use-package tree-sitter-langs terraform-mode sqlite3 slime-company rust-mode rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright kubernetes k8s-mode json-mode ivy-rich helm go-mode git-commit general fzf forge flycheck exec-path-from-shell eglot ef-themes doom-themes doom-modeline dockerfile-mode docker dired-single dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell clj-refactor cargo blacken beacon auto-package-update all-the-icons-ivy all-the-icons-dired ac-emoji)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
