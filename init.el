@@ -132,24 +132,8 @@
   :config
   (beacon-mode 1))
 
-(use-package ef-themes
-    :ensure t
-    :config)
-(setq ef-themes-headings ; read the manual's entry or the doc string
-      '((0 variable-pitch light 1.9)
-        (1 variable-pitch light 1.8)
-        (2 variable-pitch regular 1.7)
-        (3 variable-pitch regular 1.6)
-        (4 variable-pitch regular 1.5)
-        (5 variable-pitch 1.4) ; absence of weight means `bold'
-        (6 variable-pitch 1.3)
-        (7 variable-pitch 1.2)
-        (t variable-pitch 1.1)))
-(setq ef-themes-mixed-fonts t
-      ef-themes-variable-pitch-ui t)
-(mapc #'disable-theme custom-enabled-themes)
-;; Load the dark theme by default
-(load-theme 'ef-winter :no-confirm)
+(use-package doom-themes
+  :init (load-theme 'doom-palenight t))
 
 (set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 180)
 (set-face-attribute 'italic nil :family "Hack")
@@ -243,15 +227,15 @@
      (yas-reload-all))
 
 (use-package magit
-     :ensure t
-     :bind ("C-x g" . magit))
+  :ensure t
+  :bind ("C-x g" . magit))
 
 (use-package sqlite3
   :ensure t)
-
-  (use-package forge
-     :ensure t
-     :after magit)
+  
+(use-package forge
+  :ensure t
+  :after magit)
 
 (use-package projectile
    :ensure t
@@ -302,6 +286,7 @@
   :ensure t
   :init
   (projectile-mode 1))
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (use-package lsp-mode
 :ensure t
@@ -323,16 +308,18 @@
 
 ;; Tree-sitter for enhanced syntax highlighting
 (use-package tree-sitter
-  :hook ((python-mode . tree-sitter-mode)
-         (python-mode . tree-sitter-hl-mode)
-         (go-mode . tree-sitter-mode)
-         (go-mode . tree-sitter-hl-mode)
-         (rust-mode . tree-sitter-mode)
-         (rust-mode . tree-sitter-hl-mode)))
+  :ensure t
+  :hook (
+   (python-mode . tree-sitter-mode)
+   (python-mode . tree-sitter-hl-mode)
+   (go-mode . tree-sitter-mode)
+   (go-mode . tree-sitter-hl-mode)
+   (rust-mode . tree-sitter-mode)
+   (rust-mode . tree-sitter-hl-mode)))
 
-  (use-package tree-sitter-langs
-    :ensure t
-    :after tree-sitter)
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter)
 
 (use-package lsp-pyright
   :hook
@@ -454,8 +441,8 @@
 (add-hook 'org-mode-hook 'org-indent-mode)
 
 (add-hook 'org-mode-hook
-            (lambda ()
-               (visual-line-mode 1)))
+     (lambda ()
+     (visual-line-mode 1)))
 
 (use-package diminish
     :ensure t
@@ -526,16 +513,3 @@
 
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(doom-themes dired-single forge yasnippet-snippets which-key use-package tree-sitter-langs terraform-mode sqlite3 slime-company rust-mode rainbow-delimiters pyvenv python-mode projectile org-bullets magit lsp-pyright ligature kubernetes k8s-mode json-mode ivy-rich helm go-mode general fzf flycheck exec-path-from-shell eglot ef-themes doom-modeline dockerfile-mode docker dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell clj-refactor cargo blacken beacon auto-package-update all-the-icons-dired ac-emoji)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

@@ -405,16 +405,16 @@ Code template
 GIT client for emacs
 
 #+begin_src emacs-lisp
-    (use-package magit
-       :ensure t
-       :bind ("C-x g" . magit))
+(use-package magit
+  :ensure t
+  :bind ("C-x g" . magit))
 
-  (use-package sqlite3
-    :ensure t)
+(use-package sqlite3
+  :ensure t)
   
-    (use-package forge
-       :ensure t
-       :after magit)
+(use-package forge
+  :ensure t
+  :after magit)
 #+end_src
 
 ** Projectile
@@ -496,6 +496,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   :ensure t
   :init
   (projectile-mode 1))
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 #+end_src
 
 ** LSP-Mode
@@ -540,30 +541,31 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 ** Eglot
 
 #+begin_src emacs-lisp
-  (use-package eglot
-    :ensure t
-    :config
-    ;; Associate eglot with Python and Go
-    (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
-    (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
-    (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
+(use-package eglot
+  :ensure t
+  :config
+  ;; Associate eglot with Python and Go
+  (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
 #+end_src
 ** Treesitter
 
-
 #+begin_src emacs-lisp
-  ;; Tree-sitter for enhanced syntax highlighting
-  (use-package tree-sitter
-    :hook ((python-mode . tree-sitter-mode)
-           (python-mode . tree-sitter-hl-mode)
-           (go-mode . tree-sitter-mode)
-           (go-mode . tree-sitter-hl-mode)
-           (rust-mode . tree-sitter-mode)
-           (rust-mode . tree-sitter-hl-mode)))
+;; Tree-sitter for enhanced syntax highlighting
+(use-package tree-sitter
+  :ensure t
+  :hook (
+   (python-mode . tree-sitter-mode)
+   (python-mode . tree-sitter-hl-mode)
+   (go-mode . tree-sitter-mode)
+   (go-mode . tree-sitter-hl-mode)
+   (rust-mode . tree-sitter-mode)
+   (rust-mode . tree-sitter-hl-mode)))
 
-    (use-package tree-sitter-langs
-      :ensure t
-      :after tree-sitter)
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter)
 #+end_src
 
 * Languages
@@ -792,9 +794,9 @@ Some common setting
 Wrap a line
 
 #+begin_src emacs-lisp
-  (add-hook 'org-mode-hook
-              (lambda ()
-                 (visual-line-mode 1)))
+(add-hook 'org-mode-hook
+     (lambda ()
+     (visual-line-mode 1)))
 #+end_src
 
 ** Diminish
@@ -877,7 +879,6 @@ Wrap a line
 * File Management
 
 #+begin_src emacs-lisp
-
 (use-package dired
   :ensure nil
   :commands (dired dired-jump)
@@ -903,10 +904,3 @@ Wrap a line
 
 #+end_src
 
-* Thanks To
-
-My Emacs config is heavily borrowed from daviwil emacs-from-scratch
-
-#+begin_src sh
-https://github.com/daviwil/emacs-from-scratch
-#+end_src>
