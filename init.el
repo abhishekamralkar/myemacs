@@ -2,10 +2,11 @@
 
 (defun myemacs/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
-    (format "%.2f seconds"
-    (float-time
-    (time-subtract after-init-time before-init-time)))
-    gcs-done))
+           (format "%.2f seconds"
+                   (float-time
+                     (time-subtract after-init-time before-init-time)))
+           gcs-done))
+
 (add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
 
 (setq user-full-name "Abhishek Anand Amralkar"
@@ -13,8 +14,9 @@
 
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-	("org"   . "https://orgmode.org/elpa/")
-	("elpa"  . "https://elpa.gnu.org/packages/")))
+			  ("org"   . "https://orgmode.org/elpa/")
+			  ("elpa"  . "https://elpa.gnu.org/packages/")))
+
 (package-initialize)
 (unless package-archive-contents 
   (package-refresh-contents))
@@ -64,7 +66,7 @@
 (use-package dashboard
   :ensure t
   :config
-  (dashboard-setup-startup-hook))
+    (dashboard-setup-startup-hook))
 
 ;; Set the title
 (setq dashboard-banner-logo-title "Welcome to AAA Emacs ")
@@ -80,18 +82,6 @@
                         (projects . 5)
                         (agenda . 5)
                         (registers . 5)))
-
-;; To customize which widgets to display in order (example: Banner, footer message …):                      
-(setq dashboard-startupify-list '(dashboard-insert-banner
-                                  dashboard-insert-newline
-                                  dashboard-insert-banner-title
-                                  dashboard-insert-newline
-                                  dashboard-insert-navigator
-                                  dashboard-insert-newline
-                                  dashboard-insert-init-info
-                                  dashboard-insert-items
-                                  dashboard-insert-newline
-                                  dashboard-insert-footer))
 
 (use-package doom-modeline
   :ensure t
@@ -132,10 +122,26 @@
   :config
   (beacon-mode 1))
 
-(use-package doom-themes
-  :init (load-theme 'doom-palenight t))
+(use-package ef-themes
+    :ensure t
+    :config)
+(setq ef-themes-headings ; read the manual's entry or the doc string
+      '((0 variable-pitch light 1.9)
+        (1 variable-pitch light 1.8)
+        (2 variable-pitch regular 1.7)
+        (3 variable-pitch regular 1.6)
+        (4 variable-pitch regular 1.5)
+        (5 variable-pitch 1.4) ; absence of weight means `bold'
+        (6 variable-pitch 1.3)
+        (7 variable-pitch 1.2)
+        (t variable-pitch 1.1)))
+(setq ef-themes-mixed-fonts t
+      ef-themes-variable-pitch-ui t)
+(mapc #'disable-theme custom-enabled-themes)
+;; Load the dark theme by default
+(load-theme 'ef-dark :no-confirm)
 
-(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 180)
+(set-face-attribute 'default nil :family "Fira Code" :height 130)
 (set-face-attribute 'italic nil :family "Hack")
 
 (use-package ac-emoji
@@ -209,6 +215,10 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+;;(add-hook 'org-mode-hook
+;;          (lambda ()
+;;            (add-hook 'before-save-hook 'org-babel-tangle nil t)))
+
 (show-paren-mode 1)
 
 (use-package rainbow-delimiters
@@ -227,15 +237,15 @@
      (yas-reload-all))
 
 (use-package magit
-  :ensure t
-  :bind ("C-x g" . magit))
+     :ensure t
+     :bind ("C-x g" . magit))
 
 (use-package sqlite3
   :ensure t)
-  
-(use-package forge
-  :ensure t
-  :after magit)
+
+  (use-package forge
+     :ensure t
+     :after magit)
 
 (use-package projectile
    :ensure t
@@ -286,7 +296,50 @@
   :ensure t
   :init
   (projectile-mode 1))
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+(use-package hydra
+  :defer t)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
+
+(use-package helm
+  :ensure t
+  :bind
+  ("C-x C-f" . 'helm-find-files)
+  ("C-x C-b" . 'helm-buffers-list)
+  ("M-x" . 'helm-M-x)
+  :config
+  (defun daedreth/helm-hide-minibuffer ()
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'face
+                     (let ((bg-color (face-background 'default nil)))
+                       `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil))))
+  (add-hook 'helm-minibuffer-set-up-hook 'daedreth/helm-hide-minibuffer)
+  (setq helm-autoresize-max-height 0
+        helm-autoresize-min-height 40
+        helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t
+        helm-semantic-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-split-window-in-side-p nil
+        helm-move-to-line-cycle-in-source nil
+        helm-ff-search-library-in-sexp t
+        helm-scroll-amount 8 
+        helm-echo-input-in-header-line t)
+  :init
+  (helm-mode 1))
+
+(helm-autoresize-mode 1)
+(define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
+(define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 
 (use-package lsp-mode
 :ensure t
@@ -308,18 +361,16 @@
 
 ;; Tree-sitter for enhanced syntax highlighting
 (use-package tree-sitter
-  :ensure t
-  :hook (
-   (python-mode . tree-sitter-mode)
-   (python-mode . tree-sitter-hl-mode)
-   (go-mode . tree-sitter-mode)
-   (go-mode . tree-sitter-hl-mode)
-   (rust-mode . tree-sitter-mode)
-   (rust-mode . tree-sitter-hl-mode)))
+  :hook ((python-mode . tree-sitter-mode)
+         (python-mode . tree-sitter-hl-mode)
+         (go-mode . tree-sitter-mode)
+         (go-mode . tree-sitter-hl-mode)
+         (rust-mode . tree-sitter-mode)
+         (rust-mode . tree-sitter-hl-mode)))
 
-(use-package tree-sitter-langs
-  :ensure t
-  :after tree-sitter)
+  (use-package tree-sitter-langs
+    :ensure t
+    :after tree-sitter)
 
 (use-package lsp-pyright
   :hook
@@ -441,8 +492,8 @@
 (add-hook 'org-mode-hook 'org-indent-mode)
 
 (add-hook 'org-mode-hook
-     (lambda ()
-     (visual-line-mode 1)))
+            (lambda ()
+               (visual-line-mode 1)))
 
 (use-package diminish
     :ensure t
@@ -513,3 +564,16 @@
 
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(dired-single forge yasnippet-snippets which-key use-package tree-sitter-langs terraform-mode sqlite3 slime-company rust-mode rainbow-delimiters pyvenv python-mode projectile org-bullets magit lsp-pyright ligature kubernetes k8s-mode json-mode ivy-rich helm go-mode general fzf flycheck exec-path-from-shell eglot ef-themes doom-themes doom-modeline dockerfile-mode docker dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell clj-refactor cargo blacken beacon auto-package-update all-the-icons-dired ac-emoji)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
