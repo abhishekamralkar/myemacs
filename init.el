@@ -570,7 +570,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ligature yasnippet-snippets which-key use-package tree-sitter-langs terraform-mode sqlite3 slime-company rust-mode rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright kubernetes k8s-mode json-mode ivy-rich helm go-mode git-commit general fzf forge flycheck exec-path-from-shell eglot ef-themes doom-themes doom-modeline dockerfile-mode docker dired-single dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell clj-refactor cargo blacken beacon auto-package-update all-the-icons-ivy all-the-icons-dired ac-emoji)))
+   '(dired-hide-dotfiles dired-open all-the-icons-dired dired-single terraform-mode k8s-mode kubernetes dockerfile-mode docker yaml-mode json-mode diminish org-bullets cargo rust-mode slime-company slime company-shell clj-refactor cider clojure-mode go-mode python-mode blacken pyvenv lsp-pyright tree-sitter-langs tree-sitter eglot dap-mode lsp-mode helm hydra company exec-path-from-shell fzf general projectile forge sqlite3 magit yasnippet-snippets yasnippet flycheck rainbow-delimiters counsel ivy-rich ivy ligature ac-emoji ef-themes beacon dired-sidebar which-key all-the-icons doom-modeline dashboard auto-package-update use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

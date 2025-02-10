@@ -243,7 +243,7 @@ Using Modus Emacs theme
 Using FIRA CODE fonts
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :family "Fira Code" :height 130)
+(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 180)
 (set-face-attribute 'italic nil :family "Hack")
 #+end_src
 
