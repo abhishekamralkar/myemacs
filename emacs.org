@@ -229,24 +229,8 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 The ef-themes package in Emacs provides a collection of themes designed to be visually appealing and highly customizable.  
 
 #+begin_src emacs-lisp
-(use-package ef-themes
-    :ensure t
-    :config)
-(setq ef-themes-headings ; read the manual's entry or the doc string
-      '((0 variable-pitch light 1.9)
-        (1 variable-pitch light 1.8)
-        (2 variable-pitch regular 1.7)
-        (3 variable-pitch regular 1.6)
-        (4 variable-pitch regular 1.5)
-        (5 variable-pitch 1.4) ; absence of weight means `bold'
-        (6 variable-pitch 1.3)
-        (7 variable-pitch 1.2)
-        (t variable-pitch 1.1)))
-(setq ef-themes-mixed-fonts t
-      ef-themes-variable-pitch-ui t)
-(mapc #'disable-theme custom-enabled-themes)
-;; Load the dark theme by default
-(load-theme 'ef-winter :no-confirm)
+(use-package doom-themes
+  :init (load-theme 'doom-palenight t))
 #+end_src
 
 Using FIRACODE Nerd fonts
@@ -325,6 +309,7 @@ Using FIRACODE Nerd fonts
 #+end_src
 
 * Custom
+
 ** Reload
 
 #+begin_src emacs-lisp
@@ -374,15 +359,8 @@ Using FIRACODE Nerd fonts
 (setq auto-revert-verbose nil)
 #+end_src
 
-** Auto Tangle
-
-#+begin_src emacs-lisp
-;;(add-hook 'org-mode-hook
-;;          (lambda ()
-;;            (add-hook 'before-save-hook 'org-babel-tangle nil t)))
-#+end_src
-
 * Tools
+
 ** Show Parens
 
 Highlights matching parens when the cursor is just behind one of them.
@@ -518,59 +496,6 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   :ensure t
   :init
   (projectile-mode 1))
-#+end_src
-
-** Hydra
-
-#+begin_src emacs-lisp
-
-  (use-package hydra
-    :defer t)
-
-  (defhydra hydra-text-scale (:timeout 4)
-    "scale text"
-    ("j" text-scale-increase "in")
-    ("k" text-scale-decrease "out")
-    ("f" nil "finished" :exit t))
-#+end_src
-
-** Helm
-
-#+begin_src emacs-lisp
-  (use-package helm
-    :ensure t
-    :bind
-    ("C-x C-f" . 'helm-find-files)
-    ("C-x C-b" . 'helm-buffers-list)
-    ("M-x" . 'helm-M-x)
-    :config
-    (defun daedreth/helm-hide-minibuffer ()
-      (when (with-helm-buffer helm-echo-input-in-header-line)
-        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-          (overlay-put ov 'window (selected-window))
-          (overlay-put ov 'face
-                       (let ((bg-color (face-background 'default nil)))
-                         `(:background ,bg-color :foreground ,bg-color)))
-          (setq-local cursor-type nil))))
-    (add-hook 'helm-minibuffer-set-up-hook 'daedreth/helm-hide-minibuffer)
-    (setq helm-autoresize-max-height 0
-          helm-autoresize-min-height 40
-          helm-M-x-fuzzy-match t
-          helm-buffers-fuzzy-matching t
-          helm-recentf-fuzzy-match t
-          helm-semantic-fuzzy-match t
-          helm-imenu-fuzzy-match t
-          helm-split-window-in-side-p nil
-          helm-move-to-line-cycle-in-source nil
-          helm-ff-search-library-in-sexp t
-          helm-scroll-amount 8 
-          helm-echo-input-in-header-line t)
-    :init
-    (helm-mode 1))
-
-  (helm-autoresize-mode 1)
-  (define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
-  (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 #+end_src
 
 ** LSP-Mode
