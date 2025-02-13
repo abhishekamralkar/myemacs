@@ -15,21 +15,6 @@ This is my Emacs configuration that is written in Org Mode. README.org generates
 
 [[./images/emacs.png]]
 
-* Speed Up
-
-#+begin_src emacs-lisp
-  (setq gc-cons-threshold (* 50 1000 1000))
-
-  (defun myemacs/display-startup-time ()
-    (message "Emacs loaded in %s with %d garbage collections."
-             (format "%.2f seconds"
-                     (float-time
-                       (time-subtract after-init-time before-init-time)))
-             gcs-done))
-
-  (add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
-#+end_src
-
 * Installation
 
 git clone https://github.com/abhishekamralkar/myemacs ~/.emacs.d
@@ -44,33 +29,31 @@ To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning 
 #+end_src
 
 * use-package
-
 The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy. 
 
 #+begin_src emacs-lisp
-  (require 'package)
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+(require 'package)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			    ("org"   . "https://orgmode.org/elpa/")
 			    ("elpa"  . "https://elpa.gnu.org/packages/")))
 
-  (package-initialize)
-  (unless package-archive-contents 
-    (package-refresh-contents))
+(package-initialize)
+(unless package-archive-contents 
+  (package-refresh-contents))
 
-  ;; Initialize use-package on non-Linux platforms
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
+;; Initialize use-package on non-Linux platforms
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 
-  (require 'use-package)
-  (setq use-package-always-ensure t)
-  (require 'org-tempo)
-  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("py" . "src python"))  
+(require 'use-package)
+(setq use-package-always-ensure t)
+(require 'org-tempo)
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))  
 #+end_src
 
 * Automatic Package Updates
-
 With auto-package-update package we can keep emacs upto date
 
 #+begin_src emacs-lisp
@@ -85,7 +68,10 @@ With auto-package-update package we can keep emacs upto date
 #+end_src
 
 * Configuration
-
+** SpeeUP
+#+begin_src emacs-lisp
+(setq gc-cons-threshold (* 50 1000 1000))
+#+end_src
 ** UI
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t)   ;no startup screen
@@ -98,12 +84,9 @@ With auto-package-update package we can keep emacs upto date
 (setq column-number-mode t)
 (global-display-line-numbers-mode)
 (global-hl-line-mode 1)
-;;(setq package-check-signature nil)
-;;(setq package-check-signature 'allow-unsigned)
 #+end_src
 
 ** UTF-8 Encoding
-
 #+begin_src emacs-lisp
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -113,14 +96,12 @@ With auto-package-update package we can keep emacs upto date
 #+end_src
 
 ** No Backup
-
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
 (setq auto-save-default nil)   
 #+end_src
 
 ** Dashboard
-
 #+begin_src emacs-lisp
 (use-package dashboard
   :ensure t
@@ -129,35 +110,26 @@ With auto-package-update package we can keep emacs upto date
 #+end_src
 
 #+begin_src emacs-lisp
-;; Set the title
 (setq dashboard-banner-logo-title "Welcome to AAA Emacs ")
-
-;; Content is not centered by default. To center, set
 (setq dashboard-center-content t)
-
-;; To disable shortcut "jump" indicators for each section, set
 (setq dashboard-show-shortcuts nil)
-
 (setq dashboard-items '((recents  . 5)
                         (bookmarks . 5)
                         (projects . 5)
                         (agenda . 5)
                         (registers . 5)))
 #+end_src
-
 ** Modeline
 
 With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
 if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
 #+begin_src emacs-lisp
-  (use-package doom-modeline
-    :ensure t
-    :init (doom-modeline-mode 1)
-    :custom ((doom-modeline-height 15)))
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 15)))
 #+end_src
-
-#+RESULTS:
 
 #+begin_src emacs-lisp
 (use-package all-the-icons
@@ -170,7 +142,6 @@ if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-i
 #+end_src
 
 ** Which-Key
-
 which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
 For example, after enabling the minor mode if you enter C-x and wait for the default of 1 second the minibuffer will expand with all of the
 available key bindings that follow C-x (or as many as space allows given your settings).
@@ -183,7 +154,6 @@ available key bindings that follow C-x (or as many as space allows given your se
 #+end_src
 
 ** Dired-Sidebar
-
 #+begin_src emacs-lisp
 (use-package dired-sidebar
   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
@@ -205,7 +175,6 @@ available key bindings that follow C-x (or as many as space allows given your se
 #+end_src
 
 ** Beacon
-
 Beacon- Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
 
 #+begin_src emacs-lisp
@@ -216,34 +185,21 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 #+end_src
 
 ** Theme&Font
-
-Using Modus Emacs theme 
+Using Dooms Emacs theme 
 
 #+begin_src emacs-lisp
-(use-package ef-themes
-    :ensure t
-    :config)
-(setq ef-themes-headings ; read the manual's entry or the doc string
-      '((0 variable-pitch light 1.9)
-        (1 variable-pitch light 1.8)
-        (2 variable-pitch regular 1.7)
-        (3 variable-pitch regular 1.6)
-        (4 variable-pitch regular 1.5)
-        (5 variable-pitch 1.4) ; absence of weight means `bold'
-        (6 variable-pitch 1.3)
-        (7 variable-pitch 1.2)
-        (t variable-pitch 1.1)))
-(setq ef-themes-mixed-fonts t
-      ef-themes-variable-pitch-ui t)
-(mapc #'disable-theme custom-enabled-themes)
-;; Load the dark theme by default
-(load-theme 'ef-dark :no-confirm)
+(use-package doom-themes
+  :ensure t
+  :config
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-palenight t))
 #+end_src
 
 Using FIRA CODE fonts
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :family "Fira Code" :height 130)
+(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 160)
 (set-face-attribute 'italic nil :family "Hack")
 #+end_src
 

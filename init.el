@@ -1,21 +1,10 @@
-(setq gc-cons-threshold (* 50 1000 1000))
-
-(defun myemacs/display-startup-time ()
-  (message "Emacs loaded in %s with %d garbage collections."
-           (format "%.2f seconds"
-                   (float-time
-                     (time-subtract after-init-time before-init-time)))
-           gcs-done))
-
-(add-hook 'emacs-startup-hook #'myemacs/display-startup-time)
-
 (setq user-full-name "Abhishek Anand Amralkar"
   user-mail-address "abhishekamralkar@gmail.com")
 
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			  ("org"   . "https://orgmode.org/elpa/")
-			  ("elpa"  . "https://elpa.gnu.org/packages/")))
+			    ("org"   . "https://orgmode.org/elpa/")
+			    ("elpa"  . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents 
@@ -41,6 +30,8 @@
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
+(setq gc-cons-threshold (* 50 1000 1000))
+
 (setq inhibit-startup-message t)   ;no startup screen
 (tool-bar-mode -1)                 ;no toolbar
 (menu-bar-mode -1)                 ;no menubar
@@ -51,8 +42,6 @@
 (setq column-number-mode t)
 (global-display-line-numbers-mode)
 (global-hl-line-mode 1)
-;;(setq package-check-signature nil)
-;;(setq package-check-signature 'allow-unsigned)
 
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -68,15 +57,9 @@
   :config
     (dashboard-setup-startup-hook))
 
-;; Set the title
 (setq dashboard-banner-logo-title "Welcome to AAA Emacs ")
-
-;; Content is not centered by default. To center, set
 (setq dashboard-center-content t)
-
-;; To disable shortcut "jump" indicators for each section, set
 (setq dashboard-show-shortcuts nil)
-
 (setq dashboard-items '((recents  . 5)
                         (bookmarks . 5)
                         (projects . 5)
@@ -122,26 +105,14 @@
   :config
   (beacon-mode 1))
 
-(use-package ef-themes
-    :ensure t
-    :config)
-(setq ef-themes-headings ; read the manual's entry or the doc string
-      '((0 variable-pitch light 1.9)
-        (1 variable-pitch light 1.8)
-        (2 variable-pitch regular 1.7)
-        (3 variable-pitch regular 1.6)
-        (4 variable-pitch regular 1.5)
-        (5 variable-pitch 1.4) ; absence of weight means `bold'
-        (6 variable-pitch 1.3)
-        (7 variable-pitch 1.2)
-        (t variable-pitch 1.1)))
-(setq ef-themes-mixed-fonts t
-      ef-themes-variable-pitch-ui t)
-(mapc #'disable-theme custom-enabled-themes)
-;; Load the dark theme by default
-(load-theme 'ef-dark :no-confirm)
+(use-package doom-themes
+  :ensure t
+  :config
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-palenight t))
 
-(set-face-attribute 'default nil :family "Fira Code" :height 130)
+(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 160)
 (set-face-attribute 'italic nil :family "Hack")
 
 (use-package ac-emoji
@@ -564,16 +535,3 @@
 
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(dired-single forge yasnippet-snippets which-key use-package tree-sitter-langs terraform-mode sqlite3 slime-company rust-mode rainbow-delimiters pyvenv python-mode projectile org-bullets magit lsp-pyright ligature kubernetes k8s-mode json-mode ivy-rich helm go-mode general fzf flycheck exec-path-from-shell eglot ef-themes doom-themes doom-modeline dockerfile-mode docker dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell clj-refactor cargo blacken beacon auto-package-update all-the-icons-dired ac-emoji)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
