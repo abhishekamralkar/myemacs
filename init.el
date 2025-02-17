@@ -108,11 +108,11 @@
 (use-package doom-themes
   :ensure t
   :config
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (setq doom-themes-enable-bold t 
+        doom-themes-enable-italic t)
   (load-theme 'doom-palenight t))
 
-(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 160)
+(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 150)
 (set-face-attribute 'italic nil :family "Hack")
 
 (use-package ac-emoji
@@ -120,10 +120,8 @@
 
 (use-package ligature
   :config
-  ;; Enable the "www" ligature in every possible major mode
   (ligature-set-ligatures 't '("www"))
-  ;; Enable traditional ligature support in eww-mode, if the
-  ;; `variable-pitch' face supports it
+  ;; `variable-pitch' face
   (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
   ;; Enable all Cascadia Code ligatures in programming modes
   (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
@@ -313,22 +311,18 @@
 (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 
 (use-package lsp-mode
-:ensure t
-:hook ((go-mode . lsp)
-       (rust-mode . lsp)
-       (python-mode . lsp))
-:commands lsp)
+  :ensure t
+  :hook ((rust-mode . lsp)
+         (python-mode . lsp))
+  :commands lsp)
 
 (use-package dap-mode
   :ensure t)
 
 (use-package eglot
   :ensure t
-  :config
-  ;; Associate eglot with Python and Go
-  (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
-  (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
-  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
+  :defer t
+  :hook (go-mode . eglot-ensure))
 
 ;; Tree-sitter for enhanced syntax highlighting
 (use-package tree-sitter
@@ -535,3 +529,16 @@
 
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(dired-single yasnippet-snippets which-key tree-sitter-langs terraform-mode sqlite3 slime-company rust-mode rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright ligature kubernetes k8s-mode json-mode ivy-rich helm go-mode general fzf forge flycheck exec-path-from-shell ef-themes doom-themes doom-modeline dockerfile-mode docker dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell clj-refactor cargo blacken beacon auto-package-update all-the-icons-dired ac-emoji)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

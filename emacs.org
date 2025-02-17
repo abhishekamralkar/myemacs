@@ -120,7 +120,6 @@ With auto-package-update package we can keep emacs upto date
                         (registers . 5)))
 #+end_src
 ** Modeline
-
 With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
 if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
@@ -186,20 +185,19 @@ Beacon- Whenever the window scrolls a light will shine on top of your cursor so 
 
 ** Theme&Font
 Using Dooms Emacs theme 
-
 #+begin_src emacs-lisp
 (use-package doom-themes
   :ensure t
   :config
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (setq doom-themes-enable-bold t 
+        doom-themes-enable-italic t)
   (load-theme 'doom-palenight t))
 #+end_src
 
-Using FIRA CODE fonts
+Using FIRACODE Nerd fonts
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 160)
+(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 150)
 (set-face-attribute 'italic nil :family "Hack")
 #+end_src
 
@@ -211,10 +209,8 @@ Using FIRA CODE fonts
 #+begin_src emacs-lisp
 (use-package ligature
   :config
-  ;; Enable the "www" ligature in every possible major mode
   (ligature-set-ligatures 't '("www"))
-  ;; Enable traditional ligature support in eww-mode, if the
-  ;; `variable-pitch' face supports it
+  ;; `variable-pitch' face
   (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
   ;; Enable all Cascadia Code ligatures in programming modes
   (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
@@ -523,12 +519,11 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 ** LSP-Mode
 
 #+begin_src emacs-lisp
-    (use-package lsp-mode
-    :ensure t
-    :hook ((go-mode . lsp)
-           (rust-mode . lsp)
-           (python-mode . lsp))
-    :commands lsp)
+(use-package lsp-mode
+  :ensure t
+  :hook ((rust-mode . lsp)
+         (python-mode . lsp))
+  :commands lsp)
 #+end_src
 
 ** LSP-UI
@@ -562,21 +557,18 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 ** Eglot
 
 #+begin_src emacs-lisp
-  (use-package eglot
-    :ensure t
-    :config
-    ;; Associate eglot with Python and Go
-    (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
-    (add-to-list 'eglot-server-programs '(go-mode . ("gopls")))
-    (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
+(use-package eglot
+  :ensure t
+  :defer t
+  :hook (go-mode . eglot-ensure))
 #+end_src
 ** Treesitter
 
 
 #+begin_src emacs-lisp
   ;; Tree-sitter for enhanced syntax highlighting
-  (use-package tree-sitter
-    :hook ((python-mode . tree-sitter-mode)
+(use-package tree-sitter
+  :hook ((python-mode . tree-sitter-mode)
            (python-mode . tree-sitter-hl-mode)
            (go-mode . tree-sitter-mode)
            (go-mode . tree-sitter-hl-mode)
