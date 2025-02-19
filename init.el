@@ -141,6 +141,31 @@
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :config (column-number-mode 1)
+  :custom (
+           (doom-modeline-height 15)
+           (doom-modeline-window-width-limit nil)
+           (doom-modeline-minor-modes nil)
+           (doom-modeline-env-python-executable "python")
+           (doom-modeline-env-go-executable "go")))
+
+(use-package all-the-icons
+  :ensure t)
+
+(use-package nerd-icons
+    :ensure t)
+
+(use-package treemacs
+  :ensure t
+  :bind ("C-c t" . treemacs)
+  :custom
+  (treemacs-is-never-other-window t)
+  :hook
+  (treemacs-mode . treemacs-project-follow-mode))
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -327,15 +352,15 @@
 ;; Tree-sitter for enhanced syntax highlighting
 (use-package tree-sitter
   :hook ((python-mode . tree-sitter-mode)
-         (python-mode . tree-sitter-hl-mode)
-         (go-mode . tree-sitter-mode)
-         (go-mode . tree-sitter-hl-mode)
-         (rust-mode . tree-sitter-mode)
-         (rust-mode . tree-sitter-hl-mode)))
+           (python-mode . tree-sitter-hl-mode)
+           (go-mode . tree-sitter-mode)
+           (go-mode . tree-sitter-hl-mode)
+           (rust-mode . tree-sitter-mode)
+           (rust-mode . tree-sitter-hl-mode)))
 
-  (use-package tree-sitter-langs
-    :ensure t
-    :after tree-sitter)
+    (use-package tree-sitter-langs
+      :ensure t
+      :after tree-sitter)
 
 (use-package lsp-pyright
   :hook

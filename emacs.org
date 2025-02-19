@@ -72,7 +72,7 @@ With auto-package-update package we can keep emacs upto date
 #+begin_src emacs-lisp
 (setq gc-cons-threshold (* 50 1000 1000))
 #+end_src
-** UI
+** Screen
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t)   ;no startup screen
 (tool-bar-mode -1)                 ;no toolbar
@@ -99,45 +99,6 @@ With auto-package-update package we can keep emacs upto date
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
 (setq auto-save-default nil)   
-#+end_src
-
-** Dashboard
-#+begin_src emacs-lisp
-(use-package dashboard
-  :ensure t
-  :config
-    (dashboard-setup-startup-hook))
-#+end_src
-
-#+begin_src emacs-lisp
-(setq dashboard-banner-logo-title "Welcome to AAA Emacs ")
-(setq dashboard-center-content t)
-(setq dashboard-show-shortcuts nil)
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5)))
-#+end_src
-** Modeline
-With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
-if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
-
-#+begin_src emacs-lisp
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package all-the-icons
-  :ensure t)
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package nerd-icons
-    :ensure t)
 #+end_src
 
 ** Which-Key
@@ -230,7 +191,62 @@ Using FIRACODE Nerd fonts
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 #+end_src
+* Emacs UI
+** Treemacs/NeoTree
+#+begin_src emacs-lisp
+(use-package treemacs
+  :ensure t
+  :bind ("C-c t" . treemacs)
+  :custom
+  (treemacs-is-never-other-window t)
+  :hook
+  (treemacs-mode . treemacs-project-follow-mode))
+  #+end_src
+** Modeline
+With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
+if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
+#+begin_src emacs-lisp
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :config (column-number-mode 1)
+  :custom (
+  (doom-modeline-height 15)
+  (doom-modeline-window-width-limit nil)
+  (doom-modeline-minor-modes nil)
+  (doom-modeline-env-python-executable "python")
+  (doom-modeline-env-go-executable "go")))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package all-the-icons
+  :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package nerd-icons
+    :ensure t)
+#+end_src
+
+** Dashboard
+#+begin_src emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+    (dashboard-setup-startup-hook))
+#+end_src
+
+#+begin_src emacs-lisp
+(setq dashboard-banner-logo-title "Welcome to AAA Emacs ")
+(setq dashboard-center-content t)
+(setq dashboard-show-shortcuts nil)
+(setq dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 5)
+                        (registers . 5)))
+#+end_src
 * Ivy and Counsel
 
 #+begin_src emacs-lisp
