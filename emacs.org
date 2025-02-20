@@ -113,38 +113,65 @@ available key bindings that follow C-x (or as many as space allows given your se
   (which-key-mode))   
 #+end_src
 
-** Dired-Sidebar
+* Emacs UI
+** Treemacs/NeoTree
 #+begin_src emacs-lisp
-(use-package dired-sidebar
-  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+(use-package treemacs
   :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
-  :config
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-  (setq dired-sidebar-subtree-line-prefix "__")
-  (setq dired-sidebar-theme 'vscode)
-  (setq dired-sidebar-use-term-integration t)
-  (setq dired-sidebar-use-custom-font t))
-#+end_src
-
-** Beacon
-Beacon- Whenever the window scrolls a light will shine on top of your cursor so you know where it is.
+  :bind ("C-c t" . treemacs)
+  :custom
+  (treemacs-is-never-other-window t)
+  :hook
+  (treemacs-mode . treemacs-project-follow-mode))
+  #+end_src
+** Modeline
+With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
+if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
 #+begin_src emacs-lisp
-(use-package beacon
+(use-package doom-modeline
   :ensure t
-  :config
-  (beacon-mode 1))  
+  :init (doom-modeline-mode 1)
+  :config (column-number-mode 1)
+  :custom (
+  (doom-modeline-height 15)
+  (doom-modeline-window-width-limit nil)
+  (doom-modeline-minor-modes nil)
+  (doom-modeline-env-python-executable "python")
+  (doom-modeline-env-go-executable "go")))
 #+end_src
 
-** Theme&Font
+#+begin_src emacs-lisp
+(use-package all-the-icons
+  :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package nerd-icons
+    :ensure t)
+#+end_src
+
+** Dashboard
+
+#+begin_src emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+    (dashboard-setup-startup-hook))
+#+end_src
+
+#+begin_src emacs-lisp
+(setq dashboard-banner-logo-title "Welcome to AAA Emacs ")
+(setq dashboard-center-content t)
+(setq dashboard-show-shortcuts nil)
+(setq dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 5)
+                        (registers . 5)))
+#+end_src
+
+** Theme
 Using Dooms Emacs theme 
 #+begin_src emacs-lisp
 (use-package doom-themes
@@ -191,62 +218,7 @@ Using FIRACODE Nerd fonts
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 #+end_src
-* Emacs UI
-** Treemacs/NeoTree
-#+begin_src emacs-lisp
-(use-package treemacs
-  :ensure t
-  :bind ("C-c t" . treemacs)
-  :custom
-  (treemacs-is-never-other-window t)
-  :hook
-  (treemacs-mode . treemacs-project-follow-mode))
-  #+end_src
-** Modeline
-With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
-if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
-#+begin_src emacs-lisp
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :config (column-number-mode 1)
-  :custom (
-  (doom-modeline-height 15)
-  (doom-modeline-window-width-limit nil)
-  (doom-modeline-minor-modes nil)
-  (doom-modeline-env-python-executable "python")
-  (doom-modeline-env-go-executable "go")))
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package all-the-icons
-  :ensure t)
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package nerd-icons
-    :ensure t)
-#+end_src
-
-** Dashboard
-#+begin_src emacs-lisp
-(use-package dashboard
-  :ensure t
-  :config
-    (dashboard-setup-startup-hook))
-#+end_src
-
-#+begin_src emacs-lisp
-(setq dashboard-banner-logo-title "Welcome to AAA Emacs ")
-(setq dashboard-center-content t)
-(setq dashboard-show-shortcuts nil)
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5)))
-#+end_src
 * Ivy and Counsel
 
 #+begin_src emacs-lisp
@@ -468,17 +440,6 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
         company-tooltip-flip-when-above t))
 #+end_src
 
-** Projectile
-
-Projectile is a project interaction library for Emacs. Its goal is to provide a nice set of features operating on a project level without introducing external dependencies (when feasible).
-
-#+begin_src emacs-lisp
-(use-package projectile
-  :ensure t
-  :init
-  (projectile-mode 1))
-#+end_src
-
 ** Hydra
 
 #+begin_src emacs-lisp
@@ -532,54 +493,17 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 #+end_src
 
-** LSP-Mode
-
-#+begin_src emacs-lisp
-(use-package lsp-mode
-  :ensure t
-  :hook ((rust-mode . lsp)
-         (python-mode . lsp))
-  :commands lsp)
-#+end_src
-
-** LSP-UI
-
-#+begin_src emacs-lisp
-  (use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode)
-#+end_src>
-
-** LSP-Treemacs
-
-#+begin_src emacs-lisp
-(use-package lsp-treemacs
-  :after lsp)
-#+end_src>
-
-** LSP-Ivy
-
-#+begin_src emacs-lisp
-(use-package lsp-ivy
-  :after lsp)
-#+end_src>
-
-** DAP Mode
-
-#+begin_src emacs-lisp
-(use-package dap-mode
-  :ensure t)
-#+end_src
 ** Eglot
 
 #+begin_src emacs-lisp
 (use-package eglot
   :ensure t
   :defer t
-  :hook (go-mode . eglot-ensure))
+  :hook
+  (go-mode . eglot-ensure)
+  (python-mode . eglot-ensure))
 #+end_src
 ** Treesitter
-
 
 #+begin_src emacs-lisp
   ;; Tree-sitter for enhanced syntax highlighting

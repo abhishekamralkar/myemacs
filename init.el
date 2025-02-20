@@ -52,6 +52,36 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+(use-package treemacs
+  :ensure t
+  :bind ("C-c t" . treemacs)
+  :custom
+  (treemacs-is-never-other-window t)
+  :hook
+  (treemacs-mode . treemacs-project-follow-mode))
+
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :config (column-number-mode 1)
+  :custom (
+  (doom-modeline-height 15)
+  (doom-modeline-window-width-limit nil)
+  (doom-modeline-minor-modes nil)
+  (doom-modeline-env-python-executable "python")
+  (doom-modeline-env-go-executable "go")))
+
+(use-package all-the-icons
+  :ensure t)
+
+(use-package nerd-icons
+    :ensure t)
+
 (use-package dashboard
   :ensure t
   :config
@@ -65,45 +95,6 @@
                         (projects . 5)
                         (agenda . 5)
                         (registers . 5)))
-
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
-
-(use-package all-the-icons
-  :ensure t)
-
-(use-package nerd-icons
-    :ensure t)
-
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
-
-(use-package dired-sidebar
-  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-  :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
-  :config
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-  (setq dired-sidebar-subtree-line-prefix "__")
-  (setq dired-sidebar-theme 'vscode)
-  (setq dired-sidebar-use-term-integration t)
-  (setq dired-sidebar-use-custom-font t))
-
-(use-package beacon
-  :ensure t
-  :config
-  (beacon-mode 1))
 
 (use-package doom-themes
   :ensure t
@@ -140,31 +131,6 @@
   ;; Enables ligature checks globally in all buffers. You can also do it
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
-
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :config (column-number-mode 1)
-  :custom (
-           (doom-modeline-height 15)
-           (doom-modeline-window-width-limit nil)
-           (doom-modeline-minor-modes nil)
-           (doom-modeline-env-python-executable "python")
-           (doom-modeline-env-go-executable "go")))
-
-(use-package all-the-icons
-  :ensure t)
-
-(use-package nerd-icons
-    :ensure t)
-
-(use-package treemacs
-  :ensure t
-  :bind ("C-c t" . treemacs)
-  :custom
-  (treemacs-is-never-other-window t)
-  :hook
-  (treemacs-mode . treemacs-project-follow-mode))
 
 (use-package ivy
   :diminish
@@ -286,11 +252,6 @@
         company-tooltip-align-annotations t
         company-tooltip-flip-when-above t))
 
-(use-package projectile
-  :ensure t
-  :init
-  (projectile-mode 1))
-
 (use-package hydra
   :defer t)
 
@@ -335,19 +296,12 @@
 (define-key helm-find-files-map (kbd "C-b") 'helm-find-files-up-one-level)
 (define-key helm-find-files-map (kbd "C-f") 'helm-execute-persistent-action)
 
-(use-package lsp-mode
-  :ensure t
-  :hook ((rust-mode . lsp)
-         (python-mode . lsp))
-  :commands lsp)
-
-(use-package dap-mode
-  :ensure t)
-
 (use-package eglot
   :ensure t
   :defer t
-  :hook (go-mode . eglot-ensure))
+  :hook
+  (go-mode . eglot-ensure)
+  (python-mode . eglot-ensure))
 
 ;; Tree-sitter for enhanced syntax highlighting
 (use-package tree-sitter
@@ -554,16 +508,3 @@
 
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(dired-single yasnippet-snippets which-key tree-sitter-langs terraform-mode sqlite3 slime-company rust-mode rainbow-delimiters pyvenv python-mode projectile org-bullets lsp-pyright ligature kubernetes k8s-mode json-mode ivy-rich helm go-mode general fzf forge flycheck exec-path-from-shell ef-themes doom-themes doom-modeline dockerfile-mode docker dired-sidebar dired-open dired-hide-dotfiles diminish dashboard dap-mode counsel company-shell clj-refactor cargo blacken beacon auto-package-update all-the-icons-dired ac-emoji)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
