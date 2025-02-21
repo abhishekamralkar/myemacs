@@ -219,42 +219,6 @@ Using FIRACODE Nerd fonts
   (global-ligature-mode t))
 #+end_src
 
-* Ivy and Counsel
-
-#+begin_src emacs-lisp
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
-
-(use-package ivy-rich
-  :after ivy
-  :init
-  (ivy-rich-mode 1))
-
-(use-package counsel
-  :bind (("C-M-j" . 'counsel-switch-buffer)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history))
-  :custom
-  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
-  :config
-  (counsel-mode 1))
-#+end_src
-
 * Custom
 ** Reload
 
@@ -438,20 +402,6 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
         company-show-numbers t
         company-tooltip-align-annotations t
         company-tooltip-flip-when-above t))
-#+end_src
-
-** Hydra
-
-#+begin_src emacs-lisp
-
-  (use-package hydra
-    :defer t)
-
-  (defhydra hydra-text-scale (:timeout 4)
-    "scale text"
-    ("j" text-scale-increase "in")
-    ("k" text-scale-decrease "out")
-    ("f" nil "finished" :exit t))
 #+end_src
 
 ** Helm
