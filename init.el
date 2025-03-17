@@ -96,14 +96,12 @@
                         (agenda . 5)
                         (registers . 5)))
 
-(use-package doom-themes
+(use-package ef-themes
   :ensure t
   :config
-  (setq doom-themes-enable-bold t 
-        doom-themes-enable-italic t)
-  (load-theme 'doom-palenight t))
+  (load-theme 'ef-owl :no-confirm))
 
-(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 150)
+(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 130)
 (set-face-attribute 'italic nil :family "Hack")
 
 (use-package ac-emoji

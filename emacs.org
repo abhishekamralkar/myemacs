@@ -174,18 +174,16 @@ if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-i
 ** Theme
 Using Dooms Emacs theme 
 #+begin_src emacs-lisp
-(use-package doom-themes
-  :ensure t
-  :config
-  (setq doom-themes-enable-bold t 
-        doom-themes-enable-italic t)
-  (load-theme 'doom-palenight t))
+    (use-package ef-themes
+      :ensure t
+      :config
+      (load-theme 'ef-owl :no-confirm))
 #+end_src
 
 Using FIRACODE Nerd fonts
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 150)
+(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 130)
 (set-face-attribute 'italic nil :family "Hack")
 #+end_src
 
