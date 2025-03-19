@@ -68,9 +68,14 @@ With auto-package-update package we can keep emacs upto date
 #+end_src
 
 * Configuration
-** SpeeUP
+** GCMH
+Garbage Collector Magic Hack , to minimize GC interference with user activity
+
 #+begin_src emacs-lisp
-(setq gc-cons-threshold (* 50 1000 1000))
+(use-package gcmh
+  :demand
+  :config
+  (gcmh-mode 1))
 #+end_src
 ** Screen
 #+begin_src emacs-lisp
