@@ -29,7 +29,7 @@ To set up this Emacs configuration, follow these steps:
 
 4. Run the Installation Script
 
-   - Navigate to the cloned directory and execute the `install.sh` script to automate the setup process.
+   Navigate to the cloned directory and execute the `install.sh` script to automate the setup process.
 
     #+begin_src sh
     cd ~/.emacs.d
@@ -39,12 +39,12 @@ To set up this Emacs configuration, follow these steps:
 
 5. Start Emacs
 
-   - Open Emacs, and it will automatically install the required packages using `straight.el`.
+   Open Emacs, and it will automatically install the required packages using `straight.el`.
 
 6. Verify Configuration
 
-   - Check if all packages are installed and working correctly.
-   - Use `M-x config-edit` to edit the configuration if needed.
+   Check if all packages are installed and working correctly.
+   Use `M-x config-edit` to edit the configuration if needed.
 
 * package manager
 
