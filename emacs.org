@@ -46,7 +46,7 @@ To set up this Emacs configuration, follow these steps:
    Check if all packages are installed and working correctly.
    Use `M-x config-edit` to edit the configuration if needed.
 
-* package manager
+* Package Manager
 
 Use straight.el for the package management. Below code is from straight.el README.
 
@@ -74,8 +74,6 @@ Use straight.el for the package management. Below code is from straight.el READM
 (setq straight-use-package-by-default t)
 (setq use-package-always-defer t)
 #+end_src
-
-* Automatic Package Updates
 
 With auto-package-update package we can keep emacs upto date
 
