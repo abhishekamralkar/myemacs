@@ -9,26 +9,12 @@
 
 [[https://www.gnu.org/licenses/gpl-3.0][https://img.shields.io/badge/License-GPL%20v3-blue.svg]]
 
-* Namaste!
-
-This is my Emacs configuration that is written in Org Mode. README.org generates init.el which Emacs loads up.
+My Emacs configuration that is written in Org Mode. README.org generates init.el which Emacs loads up.
 
 [[./images/emacs.png]]
 
-* Installation
-
-git clone https://github.com/abhishekamralkar/myemacs ~/.emacs.d
-
-To use you should remove your own ~/.emacs and your ~/.emacs.d prior to cloning this configuration. 
-
-* About Me
-
-#+begin_src emacs-lisp
-(setq user-full-name "Abhishek Anand Amralkar"
-  user-mail-address "abhishekamralkar@gmail.com")
-#+end_src
-
 * package manager
+
 Use straight.el for the package management. Below code is from straight.el README.
 
 #+begin_src emacs-lisp
@@ -57,6 +43,7 @@ Use straight.el for the package management. Below code is from straight.el READM
 #+end_src
 
 * Automatic Package Updates
+
 With auto-package-update package we can keep emacs upto date
 
 #+begin_src emacs-lisp
@@ -71,7 +58,9 @@ With auto-package-update package we can keep emacs upto date
 #+end_src
 
 * Configuration
+
 ** GCMH
+
 Garbage Collector Magic Hack , to minimize GC interference with user activity
 
 #+begin_src emacs-lisp
@@ -80,7 +69,9 @@ Garbage Collector Magic Hack , to minimize GC interference with user activity
     :config
     (gcmh-mode 1))
 #+end_src
+
 ** Screen
+
 Remove everything
 
 #+begin_src emacs-lisp
@@ -107,13 +98,8 @@ Remove everything
   (setq default-process-coding-system '(utf-8-unix . utf-8-unix)))
 #+end_src
 
-** No Backup
-#+begin_src emacs-lisp
-(setq make-backup-files nil)
-(setq auto-save-default nil)   
-#+end_src
-
 ** Which-Key
+
 which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
 For example, after enabling the minor mode if you enter C-x and wait for the default of 1 second the minibuffer will expand with all of the
 available key bindings that follow C-x (or as many as space allows given your settings).
@@ -126,6 +112,7 @@ available key bindings that follow C-x (or as many as space allows given your se
 #+end_src
 
 * Emacs UI
+
 ** Modeline
 
 With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
@@ -157,7 +144,7 @@ if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-i
 #+end_src
 
 #+begin_src emacs-lisp
-(setq dashboard-banner-logo-title "Welcome to AAA Emacs ")
+(setq dashboard-banner-logo-title "Welcome to My Emacs ")
 (setq dashboard-center-content t)
 (setq dashboard-show-shortcuts nil)
 (setq dashboard-items '((recents  . 5)
@@ -170,6 +157,7 @@ if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-i
 ** Theme
 
 Using ef Emacs theme 
+
 #+begin_src emacs-lisp
     (use-package ef-themes
       :ensure t
@@ -214,6 +202,7 @@ Using FIRACODE Nerd fonts
 #+end_src
 
 * Custom
+
 ** Reload
 
 #+begin_src emacs-lisp
@@ -272,6 +261,7 @@ Using FIRACODE Nerd fonts
 #+end_src
 
 * Tools
+
 ** Show Parens
 
 Highlights matching parens when the cursor is just behind one of them.
