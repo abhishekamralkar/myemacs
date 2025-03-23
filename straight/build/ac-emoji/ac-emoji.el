@@ -1,0 +1,1 @@
+/home/abhishekamralkar/.emacs.d/straight/repos/ac-emoji/ac-emoji.el

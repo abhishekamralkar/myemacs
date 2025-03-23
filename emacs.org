@@ -47,10 +47,12 @@ Use straight.el for the package management. Below code is from straight.el READM
       (goto-char (point-max))
       (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
+#+end_src
 
-  (setq package-enable-at-startup nil)
-  (require 'org-tempo)
-  (setq straight-use-package-by-default t)
+#+begin_src
+(setq package-enable-at-startup nil)
+(require 'org-tempo)
+(setq straight-use-package-by-default t)
 (setq use-package-always-defer t)
 #+end_src
 

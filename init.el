@@ -1,25 +1,21 @@
 (setq user-full-name "Abhishek Anand Amralkar"
   user-mail-address "abhishekamralkar@gmail.com")
 
-(require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			    ("org"   . "https://orgmode.org/elpa/")
-			    ("elpa"  . "https://elpa.gnu.org/packages/")))
-
-(package-initialize)
-(unless package-archive-contents 
-  (package-refresh-contents))
-
-;; Initialize use-package on non-Linux platforms
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-always-ensure t)
-(require 'org-tempo)
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+    (expand-file-name
+      "straight/repos/straight.el/bootstrap.el"
+      (or (bound-and-true-p straight-base-dir)
+        user-emacs-directory)))
+    (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+       'silent 'inhibit-cookies)
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 (use-package auto-package-update
   :custom
@@ -30,18 +26,16 @@
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
-(setq gc-cons-threshold (* 50 1000 1000))
+(use-package gcmh
+  :demand
+  :config
+  (gcmh-mode 1))
 
-(setq inhibit-startup-message t)   ;no startup screen
-(tool-bar-mode -1)                 ;no toolbar
-(menu-bar-mode -1)                 ;no menubar
-(scroll-bar-mode -1)               ;no scrollbar
-(setq ring-bell-function 'ignore)  ;no ringing bells
-(defalias 'yes-or-no-p 'y-or-n-p)
-(setq line-number-mode t)
-(setq column-number-mode t)
-(global-display-line-numbers-mode)
-(global-hl-line-mode 1)
+(tool-bar-mode -1)             ; Hide the outdated icons
+(scroll-bar-mode -1)           ; Hide the always-visible scrollbar
+(menu-bar-mode -1)             ; Hide the menubar
+(setq inhibit-splash-screen t) ; Remove the "Welcome to GNU Emacs" splash screen
+(setq use-file-dialog nil)      ; Ask for textual confirmation instead of GUI
 
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -465,15 +459,3 @@
 
 (use-package dired-hide-dotfiles
   :hook (dired-mode . dired-hide-dotfiles-mode))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
