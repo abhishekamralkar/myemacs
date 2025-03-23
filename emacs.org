@@ -91,13 +91,20 @@ Remove everything
   (setq use-file-dialog nil)      ; Ask for textual confirmation instead of GUI
 #+end_src
 
-** UTF-8 Encoding
+** UTF-8
+
 #+begin_src emacs-lisp
-(setq locale-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)   
+(use-package emacs
+  :init
+  (set-charset-priority 'unicode)
+  (setq locale-coding-system 'utf-8
+        coding-system-for-read 'utf-8
+        coding-system-for-write 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+  (setq default-process-coding-system '(utf-8-unix . utf-8-unix)))
 #+end_src
 
 ** No Backup
@@ -119,31 +126,15 @@ available key bindings that follow C-x (or as many as space allows given your se
 #+end_src
 
 * Emacs UI
-** Treemacs/NeoTree
-#+begin_src emacs-lisp
-(use-package treemacs
-  :ensure t
-  :bind ("C-c t" . treemacs)
-  :custom
-  (treemacs-is-never-other-window t)
-  :hook
-  (treemacs-mode . treemacs-project-follow-mode))
-  #+end_src
 ** Modeline
+
 With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
 if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
 
 #+begin_src emacs-lisp
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1)
-  :config (column-number-mode 1)
-  :custom (
-  (doom-modeline-height 15)
-  (doom-modeline-window-width-limit nil)
-  (doom-modeline-minor-modes nil)
-  (doom-modeline-env-python-executable "python")
-  (doom-modeline-env-go-executable "go")))
+  :init (doom-modeline-mode 1))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -177,7 +168,8 @@ if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-i
 #+end_src
 
 ** Theme
-Using Dooms Emacs theme 
+
+Using ef Emacs theme 
 #+begin_src emacs-lisp
     (use-package ef-themes
       :ensure t
@@ -188,14 +180,13 @@ Using Dooms Emacs theme
 Using FIRACODE Nerd fonts
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :family "FiraCode Nerd Font" :height 130)
-(set-face-attribute 'italic nil :family "Hack")
+(use-package emacs
+  :init
+  (set-face-attribute 'default nil 
+    :font "FiraCode Nerd Font" 
+    :height 120))
 #+end_src
 
-#+begin_src emacs-lisp
-(use-package ac-emoji
-  :ensure t)
-#+end_src
 
 #+begin_src emacs-lisp
 (use-package ligature
