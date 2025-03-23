@@ -17,24 +17,32 @@ My Emacs configuration that is written in Org Mode. README.org generates init.el
 
 To set up this Emacs configuration, follow these steps:
 
-1. **Install Emacs**: Ensure you have Emacs installed on your system. You can download it from [GNU Emacs](https://www.gnu.org/software/emacs/) or use your system's package manager.
+1. Install Emacs: Ensure you have Emacs installed on your system. You can download it from [GNU Emacs](https://www.gnu.org/software/emacs/) or use your system's package manager.
 
-2. **Clone the Configuration**:
-   ```sh
+2. Install Git: Ensure `git` is installed on your system. Use your system's package manager to install it if necessary.
+
+3. Clone the Configuration
+
+   #+begin_src sh
    git clone git@github.com:abhishekamralkar/myemacs.git ~/.emacs.d
-   ```
+   #+end_src
 
-3. **Run the Installation Script**:
-   - Execute the `install.sh` script to automate the setup process.
-     ```sh
-     cd ~/.emacs.d
-     ./install.sh
-     ```
+4. Run the Installation Script
 
-4. **Start Emacs**:
+   - Navigate to the cloned directory and execute the `install.sh` script to automate the setup process.
+
+    #+begin_src sh
+    cd ~/.emacs.d
+    chmod +x install.sh
+    ./install.sh
+    #+end_src
+
+5. Start Emacs
+
    - Open Emacs, and it will automatically install the required packages using `straight.el`.
 
-5. **Verify Configuration**:
+6. Verify Configuration
+
    - Check if all packages are installed and working correctly.
    - Use `M-x config-edit` to edit the configuration if needed.
 
