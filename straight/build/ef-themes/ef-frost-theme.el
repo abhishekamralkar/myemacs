@@ -1,1 +1,0 @@
-/home/abhishekamralkar/.emacs.d/straight/repos/ef-themes/ef-frost-theme.el

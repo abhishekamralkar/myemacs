@@ -1,1 +1,0 @@
-/home/abhishekamralkar/.emacs.d/straight/repos/emacs-sqlite3-api/Makefile

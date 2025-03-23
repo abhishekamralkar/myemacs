@@ -1,1 +1,0 @@
-/home/abhishekamralkar/.emacs.d/straight/repos/flymake/.github/PULL_REQUEST_TEMPLATE.md

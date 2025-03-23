@@ -1,1 +1,0 @@
-/home/abhishekamralkar/.emacs.d/straight/repos/yaml.el/yaml.el

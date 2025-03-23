@@ -16,3 +16,5 @@ eln-cache/
 tramp
 tree-sitter/
 straight
+.cache
+init.el

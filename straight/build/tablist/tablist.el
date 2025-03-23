@@ -1,1 +1,0 @@
-/home/abhishekamralkar/.emacs.d/straight/repos/tablist/tablist.el

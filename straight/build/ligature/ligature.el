@@ -1,1 +1,0 @@
-/home/abhishekamralkar/.emacs.d/straight/repos/ligature.el/ligature.el
