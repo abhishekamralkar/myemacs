@@ -13,6 +13,31 @@ My Emacs configuration that is written in Org Mode. README.org generates init.el
 
 [[./images/emacs.png]]
 
+* Installation
+
+To set up this Emacs configuration, follow these steps:
+
+1. **Install Emacs**: Ensure you have Emacs installed on your system. You can download it from [GNU Emacs](https://www.gnu.org/software/emacs/) or use your system's package manager.
+
+2. **Clone the Configuration**:
+   ```sh
+   git clone git@github.com:abhishekamralkar/myemacs.git ~/.emacs.d
+   ```
+
+3. **Run the Installation Script**:
+   - Execute the `install.sh` script to automate the setup process.
+     ```sh
+     cd ~/.emacs.d
+     ./install.sh
+     ```
+
+4. **Start Emacs**:
+   - Open Emacs, and it will automatically install the required packages using `straight.el`.
+
+5. **Verify Configuration**:
+   - Check if all packages are installed and working correctly.
+   - Use `M-x config-edit` to edit the configuration if needed.
+
 * package manager
 
 Use straight.el for the package management. Below code is from straight.el README.
@@ -790,11 +815,3 @@ Wrap a line
   :hook (dired-mode . dired-hide-dotfiles-mode))
 
 #+end_src
-
-* Thanks To
-
-My Emacs config is heavily borrowed from daviwil emacs-from-scratch
-
-#+begin_src sh
-https://github.com/daviwil/emacs-from-scratch
-#+end_src>
