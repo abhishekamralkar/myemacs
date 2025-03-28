@@ -1,45 +1,43 @@
-name: Auto Tag my Application
+name: Emacs CI
+
 on:
   push:
     branches:
       - main
-concurrency: production
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  Patch:
+  test:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: '0'
-    - name: Minor version for each merge (Dry Run)
-      id: taggerDryRun
-      uses: anothrNick/github-tag-action@1.36.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WITH_V: true
-        DRY_RUN: true
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-    - name: Echo new tag
+    - name: Install Dependencies
       run: |
-        echo "The next tag version will be: ${{ steps.taggerDryRun.outputs.new_tag }}"
-    - name: Echo current tag
+        sudo apt update
+        sudo apt install -y emacs-nox git wget unzip
+
+    - name: Install Fonts (FiraCode Nerd Font)
       run: |
-        echo "The current tag is: ${{ steps.taggerDryRun.outputs.tag }}"
-    - name: Echo version increment
+        mkdir -p ~/.local/share/fonts
+        cd ~/.local/share/fonts
+        wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/FiraCode.zip
+        unzip -o FiraCode.zip
+        fc-cache -fv
+
+    - name: Tangle Org File
       run: |
-        echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
-    # Build process goes here
-    # If the build fails, the steps below will not execute.
+        emacs --batch --eval "(progn (find-file \"./emacs.org\") (org-babel-tangle) (kill-emacs))"
 
-    - name: Minor version for each merge (Final Tag)
-      id: taggerFinal
-      uses: anothrNick/github-tag-action@1.36.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WITH_V: true
-    - name: Tag/Release on Push Action
-      uses: rymndhng/release-on-push-action@v0.28.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Test Emacs Configuration
+      run: |
+        emacs --batch -l ./init.el --eval "(message \"Emacs configuration loaded successfully!\")"
 
-
+    - name: Run Tests (Optional)
+      run: |
+        # Add your test commands here if you have tests
+        echo "No tests defined yet."
