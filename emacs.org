@@ -142,6 +142,13 @@ available key bindings that follow C-x (or as many as space allows given your se
   (which-key-mode))   
 #+end_src
 
+** No Backup
+
+#+begin_src emacs-lisp
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+#+end_src
+
 * Emacs UI
 
 ** Modeline
@@ -203,7 +210,7 @@ Using FIRACODE Nerd fonts
   :init
   (set-face-attribute 'default nil 
     :font "FiraCode Nerd Font" 
-    :height 120))
+    :height 160))
 #+end_src
 
 
@@ -283,13 +290,6 @@ Using FIRACODE Nerd fonts
 (setq auto-revert-verbose nil)
 #+end_src
 
-** Auto Tangle
-
-#+begin_src emacs-lisp
-;;(add-hook 'org-mode-hook
-;;          (lambda ()
-;;            (add-hook 'before-save-hook 'org-babel-tangle nil t)))
-#+end_src
 
 * Tools
 
