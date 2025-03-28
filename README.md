@@ -1,6 +1,6 @@
-# My Emacs Configuration
+# OrgEmacs Configuration
 
-This repository contains my personal Emacs configuration, written in Org Mode and designed to enhance productivity, streamline workflows, and provide a personalized editing experience. The configuration is modular, easy to maintain, and uses `straight.el` for package management.
+This repository contains my personal Emacs configuration, named **OrgEmacs**, written in Org Mode and designed to enhance productivity, streamline workflows, and provide a personalized editing experience. The configuration is modular, easy to maintain, and uses `straight.el` for package management.
 
 ## Features
 
@@ -10,6 +10,22 @@ This repository contains my personal Emacs configuration, written in Org Mode an
 - **Org Mode Enhancements**: Improved support for `org-mode` with custom templates, bullets, and settings.
 - **Modern UI**: Features a clean and modern UI with `doom-modeline`, `dashboard`, and custom themes.
 - **Performance Optimizations**: Includes `gcmh` for optimized garbage collection and other tweaks for a smoother experience.
+
+## Supported Languages
+
+OrgEmacs provides configurations for the following programming languages:
+
+- **Python**: Integrated with `lsp-pyright`, `blacken`, and `pyvenv` for virtual environments and formatting.
+- **Golang**: Configured with `go-mode` and `gopls` for Go development.
+- **Rust**: Includes `rust-mode` and `cargo` for Rust development.
+- **Clojure**: Configured with `clojure-mode`, `cider`, and `clj-refactor`.
+- **Bash**: Enhanced with `company-shell` and `flycheck` for shell scripting.
+- **Emacs Lisp**: Includes `slime` and `slime-company` for Lisp development.
+- **JSON**: Configured with `json-mode` for editing JSON files.
+- **YAML**: Adds support for YAML files with `yaml-mode`.
+- **Docker**: Provides tools for managing Docker containers and images.
+- **Kubernetes**: Configured with `kubernetes` and `k8s-mode` for Kubernetes resources.
+- **Terraform**: Adds support for editing Terraform configuration files.
 
 ## Directory Structure
 
