@@ -107,7 +107,7 @@ Remove everything.
 
 #+begin_src emacs-lisp
 (tool-bar-mode -1)             ; Hide the outdated icons
-(scroll-bar-mode -1)           ; Hide the always-visible scrollbar
+;;(scroll-bar-mode -1)           ; Hide the always-visible scrollbar
 (menu-bar-mode -1)             ; Hide the menubar
 (setq inhibit-splash-screen t) ; Remove the "Welcome to GNU Emacs" splash screen
 (setq use-file-dialog nil)     ; Ask for textual confirmation instead of GUI
