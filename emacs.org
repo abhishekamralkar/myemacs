@@ -31,11 +31,11 @@ To set up this Emacs configuration, follow these steps:
 
    Navigate to the cloned directory and execute the `install.sh` script to automate the setup process.
 
-    #+begin_src sh
-    cd ~/.emacs.d
-    chmod +x install.sh
-    ./install.sh
-    #+end_src
+   #+begin_src sh
+   cd ~/.emacs.d
+   chmod +x install.sh
+   ./install.sh
+   #+end_src
 
 5. Start Emacs
 
@@ -48,34 +48,34 @@ To set up this Emacs configuration, follow these steps:
 
 * Package Manager
 
-Use straight.el for the package management. Below code is from straight.el README.
+Use `straight.el` for the package management. Below code is from `straight.el` README.
 
 #+begin_src emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-      (expand-file-name
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
         "straight/repos/straight.el/bootstrap.el"
         (or (bound-and-true-p straight-base-dir)
-          user-emacs-directory)))
+            user-emacs-directory)))
       (bootstrap-version 7))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
         (url-retrieve-synchronously
          "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+  (load bootstrap-file nil 'nomessage))
 #+end_src
 
-#+begin_src
+#+begin_src emacs-lisp
 (setq package-enable-at-startup nil)
 (require 'org-tempo)
 (setq straight-use-package-by-default t)
 (setq use-package-always-defer t)
 #+end_src
 
-With auto-package-update package we can keep emacs upto date
+With `auto-package-update` package, we can keep Emacs up to date.
 
 #+begin_src emacs-lisp
 (use-package auto-package-update
@@ -92,25 +92,25 @@ With auto-package-update package we can keep emacs upto date
 
 ** GCMH
 
-Garbage Collector Magic Hack , to minimize GC interference with user activity
+Garbage Collector Magic Hack, to minimize GC interference with user activity.
 
 #+begin_src emacs-lisp
-  (use-package gcmh
-    :demand
-    :config
-    (gcmh-mode 1))
+(use-package gcmh
+  :demand
+  :config
+  (gcmh-mode 1))
 #+end_src
 
 ** Screen
 
-Remove everything
+Remove everything.
 
 #+begin_src emacs-lisp
-  (tool-bar-mode -1)             ; Hide the outdated icons
-  (scroll-bar-mode -1)           ; Hide the always-visible scrollbar
-  (menu-bar-mode -1)             ; Hide the menubar
-  (setq inhibit-splash-screen t) ; Remove the "Welcome to GNU Emacs" splash screen
-  (setq use-file-dialog nil)      ; Ask for textual confirmation instead of GUI
+(tool-bar-mode -1)             ; Hide the outdated icons
+(scroll-bar-mode -1)           ; Hide the always-visible scrollbar
+(menu-bar-mode -1)             ; Hide the menubar
+(setq inhibit-splash-screen t) ; Remove the "Welcome to GNU Emacs" splash screen
+(setq use-file-dialog nil)     ; Ask for textual confirmation instead of GUI
 #+end_src
 
 ** UTF-8
@@ -131,15 +131,13 @@ Remove everything
 
 ** Which-Key
 
-which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
-For example, after enabling the minor mode if you enter C-x and wait for the default of 1 second the minibuffer will expand with all of the
-available key bindings that follow C-x (or as many as space allows given your settings).
+`which-key` is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
 
 #+begin_src emacs-lisp
 (use-package which-key
   :ensure t
   :config
-  (which-key-mode))   
+  (which-key-mode))
 #+end_src
 
 ** No Backup
@@ -247,7 +245,7 @@ Using FIRACODE Nerd fonts
 (defun config-reload ()
   (interactive)
   (find-file "~/.emacs.d/init.el"))  
-#+end_src>
+#+end_src
 
 ** Edit
 
@@ -256,7 +254,7 @@ Using FIRACODE Nerd fonts
   (interactive)
   (find-file "~/.emacs.d/emacs.org"))
 (global-set-key (kbd "C-c e") 'config-edit)
-#+end_src>
+#+end_src
 
 ** Bindings
 
@@ -265,7 +263,7 @@ Using FIRACODE Nerd fonts
 (global-set-key (kbd "M-<down>") 'end-of-buffer)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c r") 'config-reload)
-#+end_src>
+#+end_src
 
 ** Suppress Warning
 
@@ -289,7 +287,6 @@ Using FIRACODE Nerd fonts
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 #+end_src
-
 
 * Tools
 
