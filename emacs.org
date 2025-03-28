@@ -14,6 +14,7 @@ My Emacs configuration that is written in Org Mode. README.org generates init.el
 [[./images/emacs.png]]
 
 * Installation
+This section provides step-by-step instructions to set up the Emacs configuration, including installing Emacs, cloning the repository, and running the installation script.
 
 To set up this Emacs configuration, follow these steps:
 
@@ -47,6 +48,7 @@ To set up this Emacs configuration, follow these steps:
    Use `M-x config-edit` to edit the configuration if needed.
 
 * Package Manager
+This section explains the use of `straight.el` for package management, ensuring reproducibility and ease of customization.
 
 Use `straight.el` for the package management. Below code is from `straight.el` README.
 
@@ -89,10 +91,10 @@ With `auto-package-update` package, we can keep Emacs up to date.
 #+end_src
 
 * Configuration
+This section contains various configurations to optimize Emacs for performance and usability.
 
 ** GCMH
-
-Garbage Collector Magic Hack, to minimize GC interference with user activity.
+Garbage Collector Magic Hack minimizes garbage collection interference during user activity, improving performance.
 
 #+begin_src emacs-lisp
 (use-package gcmh
@@ -102,8 +104,7 @@ Garbage Collector Magic Hack, to minimize GC interference with user activity.
 #+end_src
 
 ** Screen
-
-Remove everything.
+This section customizes the Emacs UI by removing unnecessary elements like the toolbar, scrollbar, and splash screen.
 
 #+begin_src emacs-lisp
 (tool-bar-mode -1)             ; Hide the outdated icons
@@ -114,6 +115,7 @@ Remove everything.
 #+end_src
 
 ** UTF-8
+Ensures that Emacs uses UTF-8 encoding for better compatibility and support for international text.
 
 #+begin_src emacs-lisp
 (use-package emacs
@@ -130,8 +132,7 @@ Remove everything.
 #+end_src
 
 ** Which-Key
-
-`which-key` is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
+`which-key` displays available keybindings for partially entered commands, making it easier to learn and use shortcuts.
 
 #+begin_src emacs-lisp
 (use-package which-key
@@ -141,6 +142,7 @@ Remove everything.
 #+end_src
 
 ** No Backup
+Disables backup and auto-save files to keep the working directory clean.
 
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
@@ -148,11 +150,10 @@ Remove everything.
 #+end_src
 
 * Emacs UI
+This section enhances the visual appearance of Emacs with a modern modeline, dashboard, and themes.
 
 ** Modeline
-
-With modeline we can enhance the Emacs look and feel. Spacemacs spaceline is awesome. I tried spaceline but doom-modeline is best. This package is able to display icons
-if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-install-fonts to install the necessary fonts. Please refer to the installation guide.
+Uses `doom-modeline` to provide a clean and informative modeline.
 
 #+begin_src emacs-lisp
 (use-package doom-modeline
@@ -171,6 +172,7 @@ if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-i
 #+end_src
 
 ** Dashboard
+Displays a customizable startup dashboard with recent files, bookmarks, and projects.
 
 #+begin_src emacs-lisp
 (use-package dashboard
@@ -191,6 +193,7 @@ if all-the-icons packageand required fonts are installed.Run M-x all-the-icons-i
 #+end_src
 
 ** Theme
+Configures themes and fonts for a visually appealing interface.
 
 Using ef Emacs theme 
 
@@ -238,8 +241,10 @@ Using FIRACODE Nerd fonts
 #+end_src
 
 * Custom
+This section includes custom functions and keybindings to personalize the Emacs experience.
 
 ** Reload
+Defines a function to reload the configuration file.
 
 #+begin_src emacs-lisp
 (defun config-reload ()
@@ -248,6 +253,7 @@ Using FIRACODE Nerd fonts
 #+end_src
 
 ** Edit
+Defines a function to open the configuration file for editing.
 
 #+begin_src emacs-lisp
 (defun config-edit ()
@@ -257,6 +263,7 @@ Using FIRACODE Nerd fonts
 #+end_src
 
 ** Bindings
+Custom keybindings for navigation and frequently used commands.
 
 #+begin_src emacs-lisp
 (global-set-key (kbd "M-<up>") 'beginning-of-buffer)
@@ -266,12 +273,14 @@ Using FIRACODE Nerd fonts
 #+end_src
 
 ** Suppress Warning
+Suppresses unnecessary warnings to reduce distractions.
 
 #+begin_src emacs-lisp
 (setq warning-minimum-level :emergency)
 #+end_src
 
 ** Auto-Save
+Configures auto-save settings to prevent data loss.
 
 #+begin_src emacs-lisp
 (setq auto-save-default t)
@@ -280,6 +289,7 @@ Using FIRACODE Nerd fonts
 #+end_src
 
 ** Auto-Refresh-Dired
+Enables automatic refreshing of Dired buffers to reflect file changes.
 
 #+begin_src emacs-lisp
 (global-auto-revert-mode 1)
@@ -289,18 +299,17 @@ Using FIRACODE Nerd fonts
 #+end_src
 
 * Tools
+This section includes tools and packages to enhance productivity, such as syntax checking, snippet management, and Git integration.
 
 ** Show Parens
-
-Highlights matching parens when the cursor is just behind one of them.
+Highlights matching parentheses for better code readability.
 
 #+begin_src emacs-lisp
 (show-paren-mode 1)
 #+end_src
 
-** Rainbow Delimeter
-
-Colors parentheses and other delimiters
+** Rainbow Delimiter
+Colors parentheses and other delimiters to improve code structure visibility.
 
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters
@@ -310,6 +319,7 @@ Colors parentheses and other delimiters
 #+end_src
 
 ** Flycheck
+Provides real-time syntax checking for multiple programming languages.
 
 #+begin_src emacs-lisp
 (use-package flycheck
@@ -317,8 +327,7 @@ Colors parentheses and other delimiters
 #+end_src
 
 ** Yasnippet
-
-Code template
+Manages code snippets for faster coding.
 
 #+begin_src emacs-lisp
 (use-package yasnippet
@@ -330,8 +339,7 @@ Code template
 #+end_src
 
 ** Magit
-
-GIT client for emacs
+A powerful Git client for Emacs.
 
 #+begin_src emacs-lisp
     (use-package magit
@@ -347,8 +355,7 @@ GIT client for emacs
 #+end_src
 
 ** Projectile
-
-Projectile is a project interaction library for Emacs. Its goal is to provide a nice set of features operating on a project level without introducing external dependencies (when feasible).
+Simplifies project management and navigation.
 
 #+begin_src emacs-lisp
 (use-package projectile
@@ -358,6 +365,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 #+end_src
 
 ** General
+Provides additional keybinding utilities.
 
 #+begin_src emacs-lisp
 (use-package general
@@ -365,6 +373,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 #+end_src
 
 ** fzf
+Integrates fuzzy file searching into Emacs.
 
 #+begin_src emacs-lisp
 (use-package fzf
@@ -384,6 +393,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 #+end_src
 
 ** Exec Path From Shell
+Ensures that Emacs inherits the correct environment variables from the shell.
 
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
@@ -394,6 +404,8 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 #+end_src
 
 ** Electric
+Enables automatic pairing of brackets and quotes.
+
 #+begin_src emacs-lisp
 (use-package electric
   :ensure t
@@ -402,6 +414,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 #+end_src
 
 ** Company
+Provides context-aware autocompletion.
 
 #+begin_src emacs-lisp
 (use-package company
@@ -417,6 +430,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 #+end_src
 
 ** Helm
+Enhances navigation and command execution with fuzzy matching.
 
 #+begin_src emacs-lisp
   (use-package helm
@@ -456,6 +470,7 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 #+end_src
 
 ** Eglot
+Integrates language server protocol (LSP) support for better programming language features.
 
 #+begin_src emacs-lisp
 (use-package eglot
@@ -465,7 +480,9 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
   (go-mode . eglot-ensure)
   (python-mode . eglot-ensure))
 #+end_src
+
 ** Treesitter
+Enables advanced syntax highlighting and code parsing.
 
 #+begin_src emacs-lisp
   ;; Tree-sitter for enhanced syntax highlighting
@@ -483,8 +500,10 @@ Projectile is a project interaction library for Emacs. Its goal is to provide a 
 #+end_src
 
 * Languages
+This section provides language-specific configurations for Python, Go, Rust, and more.
 
 ** Python
+Configures Python development with LSP, virtual environments, and formatting tools.
 
 Install python-lsp server.
 
@@ -506,7 +525,6 @@ Install python-lsp server.
 #+end_src
 
 *** pyenv
-
 Strongly recommend to use python virtualenv to python work properly in emacs.
 
 Assuming venvs are installed here ~/.venvs
@@ -562,6 +580,7 @@ You can use M-x pyvenv-activate to activate specific venv
 #+end_src
 
 ** Golang
+Sets up Go development with `gopls` and other tools.
 
 If you see error gopls not able to find module in your workspace 
 
@@ -604,6 +623,7 @@ go install golang.org/x/lint/golint@latest
 #+end_src
 
 ** Clojure
+Configures Clojure development with `cider` and `clj-refactor`.
 
 #+begin_src emacs-lisp
 (use-package clojure-mode
@@ -625,6 +645,7 @@ go install golang.org/x/lint/golint@latest
 #+end_src
 
 ** Bash
+Enhances shell scripting with autocompletion and syntax checking.
 
 #+begin_src emacs-lisp
 (add-hook 'shell-mode-hook 'yas-minor-mode)
@@ -663,6 +684,8 @@ go install golang.org/x/lint/golint@latest
 #+end_src
 
 ** Rust
+Configures Rust development with `rust-mode` and `cargo`.
+
 #+begin_src emacs-lisp
   (use-package rust-mode
     :ensure t
@@ -678,9 +701,10 @@ go install golang.org/x/lint/golint@latest
 #+end_src
 
 * Org-Mode
-** Org Bullets
+This section enhances `org-mode` with custom bullets, visual improvements, and additional settings.
 
-Nice bullets instead of  asterik
+** Org Bullets
+Replaces default bullets with visually appealing symbols.
 
 #+begin_src emacs-lisp
 (use-package org-bullets
@@ -690,6 +714,7 @@ Nice bullets instead of  asterik
 #+end_src
 
 ** Common Setting
+Includes general settings for `org-mode`, such as ellipsis and fontification.
 
 Some common setting
 
@@ -704,6 +729,7 @@ Some common setting
 #+end_src
 
 ** Line Wrap
+Enables visual line wrapping in `org-mode`.
 
 Wrap a line
 
@@ -714,6 +740,7 @@ Wrap a line
 #+end_src
 
 ** Diminish
+Hides minor mode indicators in the modeline to reduce clutter.
 
 #+begin_src emacs-lisp
 (use-package diminish
@@ -734,9 +761,12 @@ Wrap a line
     (diminish 'flycheck-mode)
     (diminish 'helm-mode))  
 #+end_src
+
 * Infrastructure
+This section includes configurations for working with JSON, YAML, Docker, Kubernetes, and Terraform files.
 
 ** Json
+Configures `json-mode` for editing JSON files.
 
 #+begin_src emacs-lisp
   (use-package json-mode
@@ -748,6 +778,7 @@ Wrap a line
 #+end_src
 
 ** Yaml
+Adds support for YAML files with `yaml-mode`.
 
 #+begin_src emacs-lisp 
   (use-package yaml-mode
@@ -755,6 +786,7 @@ Wrap a line
 #+end_src
 
 ** Docker
+Provides tools for managing Docker containers and images.
 
 #+begin_src emacs-lisp
   (use-package docker
@@ -764,6 +796,7 @@ Wrap a line
 #+end_src
 
 ** Dockerfile
+Adds syntax highlighting for Dockerfiles.
 
 #+begin_src emacs-lisp
   (use-package dockerfile-mode
@@ -771,6 +804,7 @@ Wrap a line
 #+end_src
 
 ** Kubernetes
+Configures tools for managing Kubernetes resources.
 
 #+begin_src emacs-lisp
    (use-package kubernetes
@@ -785,12 +819,15 @@ Wrap a line
 #+end_src
 
 ** Terraform
+Adds support for editing Terraform configuration files.
 
 #+begin_src emacs-lisp 
   (use-package terraform-mode
       :ensure t)
 #+end_src
+
 * File Management
+This section enhances file management in Emacs with Dired and related packages.
 
 #+begin_src emacs-lisp
 
